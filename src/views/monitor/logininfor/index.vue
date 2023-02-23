@@ -46,8 +46,8 @@
     </el-row>
 
     <el-table ref="tables" v-loading="loading" :data="list" @selection-change="handleSelectionChange"
-      :default-sort="defaultSort" @sort-change="handleSortChange">
-      <el-table-column type="selection" width="55" align="center" />
+      :default-sort="defaultSort" @sort-change="handleSortChange" border>
+      <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="访问编号" align="center" prop="infoId" />
       <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" sortable="custom"
         :sort-orders="['descending', 'ascending']" />

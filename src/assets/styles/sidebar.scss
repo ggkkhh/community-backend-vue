@@ -24,8 +24,7 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    box-shadow: 2px 0 6px rgba(0,21,41,.35);
+    box-shadow: 2px 0 2px #000f1c2f;
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -93,7 +92,7 @@
       min-width: $base-sidebar-width !important;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: #0000001a !important;
       }
     }
 

@@ -37,8 +37,8 @@ import { getCommunityAmount } from "@/api/system/dept";
 export default {
   data() {
     return {
-      sysCommunityAmount: 0,
-      sysUserAmount: 0,
+      sysCommunityAmount: 1,
+      sysUserAmount: 1,
     }
   },
   components: {

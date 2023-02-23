@@ -27,7 +27,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-if="refreshTable" v-loading="loading" :data="menuList" row-key="menuId"
+    <el-table v-if="refreshTable" v-loading="loading" :data="menuList" row-key="menuId" border
       :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
       <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true" width="160"></el-table-column>
       <el-table-column prop="icon" label="图标" align="center" width="100">

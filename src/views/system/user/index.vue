@@ -24,6 +24,10 @@
             <el-input v-model="queryParams.phonenumber" placeholder="请输入手机号码" clearable style="width: 240px"
               @keyup.enter.native="handleQuery" />
           </el-form-item>
+          <el-form-item label="身份证" prop="idCard">
+            <el-input v-model="queryParams.idCard" placeholder="请输入身份证" clearable style="width: 240px"
+              @keyup.enter.native="handleQuery" />
+          </el-form-item>
           <el-form-item label="状态" prop="status">
             <el-select v-model="queryParams.status" placeholder="用户状态" clearable style="width: 240px">
               <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
@@ -39,7 +43,7 @@
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
-
+        <!-- 用户操作 -->
         <el-row :gutter="10" class="mb8">
           <el-col :span="1.5">
             <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
@@ -63,9 +67,9 @@
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
         </el-row>
-
-        <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="50" align="center" />
+        <!-- 用户表格 -->
+        <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange" border>
+          <el-table-column type="selection" width="40" align="center" />
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
           <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible"
             :show-overflow-tooltip="true" />
@@ -75,6 +79,7 @@
             :show-overflow-tooltip="true" />
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
             width="120" />
+          <el-table-column label="身份证号" align="center" key="idCard" prop="idCard" v-if="columns[4].visible" width="150" />
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
@@ -114,27 +119,40 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="用户昵称" prop="nickName">
               <el-input v-model="form.nickName" placeholder="请输入用户昵称" maxlength="30" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="归属社区" prop="deptId">
               <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属社区" />
             </el-form-item>
           </el-col>
+          <el-col :span="8">
+            <el-form-item label="岗位">
+              <el-select v-model="form.postIds" multiple placeholder="请选择岗位">
+                <el-option v-for="item in postOptions" :key="item.postId" :label="item.postName" :value="item.postId"
+                  :disabled="item.status == 1"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="手机号码" prop="phonenumber">
               <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
+            <el-form-item label="身份证" prop="idCard">
+              <el-input v-model="form.idCard" placeholder="请输入身份证号" maxlength="18" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
@@ -153,7 +171,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="用户性别">
               <el-select v-model="form.sex" placeholder="请选择性别">
                 <el-option v-for="dict in dict.type.sys_user_sex" :key="dict.value" :label="dict.label"
@@ -161,7 +179,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">{{
@@ -170,17 +188,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="岗位">
-              <el-select v-model="form.postIds" multiple placeholder="请选择岗位">
-                <el-option v-for="item in postOptions" :key="item.postId" :label="item.postName" :value="item.postId"
-                  :disabled="item.status == 1"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="角色">
               <el-select v-model="form.roleIds" multiple placeholder="请选择角色">
                 <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"

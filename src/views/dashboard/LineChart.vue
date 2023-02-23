@@ -20,7 +20,7 @@ export default {
     },
     height: {
       type: String,
-      default: '350px'
+      default: '300px'
     },
     autoResize: {
       type: Boolean,
@@ -64,7 +64,7 @@ export default {
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
           boundaryGap: false,
           axisTick: {
             show: false
@@ -90,11 +90,11 @@ export default {
           }
         },
         legend: {
-          data: [ 'actual']
+          data: [ '数据折线图']
         },
         series: [
         {
-          name: 'actual',
+          name: '数据折线图',
           smooth: false,
           type: 'line',
           itemStyle: {

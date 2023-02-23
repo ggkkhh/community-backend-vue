@@ -52,24 +52,24 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['郑州', '商丘', '廊坊', '曹县', '北京']
         },
         series: [
           {
             name: 'WEEKLY WRITE ARTICLES',
             type: 'pie',
             roseType: 'radius',
-            radius: [15, 95],
+            radius: [20, 80],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 250, name: '郑州' },
+              { value: 200, name: '商丘' },
+              { value: 149, name: '廊坊' },
+              { value: 100, name: '曹县' },
+              { value: 59, name: '北京' }
             ],
             animationEasing: 'cubicInOut',
-            animationDuration: 2600
+            animationDuration: 3000
           }
         ]
       })

@@ -9,7 +9,7 @@
               @click="refreshCacheNames()"></el-button>
           </div>
           <el-table v-loading="loading" :data="cacheNames" :height="tableHeight" highlight-current-row
-            @row-click="getCacheKeys" style="width: 100%">
+            @row-click="getCacheKeys" style="width: 100%" border>
             <el-table-column label="序号" width="60" type="index"></el-table-column>
 
             <el-table-column label="缓存名称" align="center" prop="cacheName" :show-overflow-tooltip="true"
@@ -34,7 +34,7 @@
               @click="refreshCacheKeys()"></el-button>
           </div>
           <el-table v-loading="subLoading" :data="cacheKeys" :height="tableHeight" highlight-current-row
-            @row-click="handleCacheValue" style="width: 100%">
+            @row-click="handleCacheValue" style="width: 100%" border>
             <el-table-column label="序号" width="60" type="index"></el-table-column>
             <el-table-column label="缓存键名" align="center" :show-overflow-tooltip="true" :formatter="keyFormatter">
             </el-table-column>

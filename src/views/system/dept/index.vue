@@ -27,16 +27,20 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-if="refreshTable" v-loading="loading" :data="deptList" row-key="deptId" :default-expand-all="isExpandAll"
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-      <el-table-column prop="deptName" label="社区名称" width="260"></el-table-column>
-      <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
-      <el-table-column prop="status" label="状态" width="100">
+    <el-table v-if="refreshTable" border v-loading="loading" :data="deptList" row-key="deptId"
+      :default-expand-all="isExpandAll" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+      :row-class-name="tableRowClassName">
+      <el-table-column prop="deptName" label="社区名称"></el-table-column>
+      <el-table-column prop="orderNum" label="排序" align="center" width="50"></el-table-column>
+      <el-table-column prop="leader" label="负责人" align="center" width="100"></el-table-column>
+      <el-table-column prop="phone" label="电话" align="center"></el-table-column>
+      <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+      <el-table-column prop="status" label="状态" align="center" width="80">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status" />
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="200">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="150">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -69,7 +73,7 @@
               <el-input v-model="form.deptName" placeholder="请输入社区名称" />
             </el-form-item>
           </el-col>
-          
+
         </el-row>
         <el-row>
           <el-col :span="8">
@@ -94,20 +98,20 @@
               <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
-          
+
           <el-col :span="8">
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
-                <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value"
-                  :label="dict.value">{{ dict.label }}</el-radio>
+                <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="是否社区">
               <el-radio-group v-model="form.isCommunity">
-                <el-radio v-for="dict in dict.type.sys_is_community" :key="dict.value"
-                  :label="dict.value">{{ dict.label }}</el-radio>
+                <el-radio v-for="dict in dict.type.sys_is_community" :key="dict.value" :label="dict.value">{{ dict.label
+                }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -128,7 +132,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Dept",
-  dicts: ['sys_normal_disable','sys_is_community'],
+  dicts: ['sys_normal_disable', 'sys_is_community'],
   components: { Treeselect },
   data() {
     return {
@@ -299,7 +303,19 @@ export default {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => { });
+    },
+    /* 社区高亮 */
+    tableRowClassName(row, rowIndex) {
+      console.log(row)
+      if (row.row.isCommunity == "1") {
+        console.log(row)
+        return 'success-row';
+
+      }
+      return ''
     }
   }
 };
 </script>
+
+<style scoped></style>

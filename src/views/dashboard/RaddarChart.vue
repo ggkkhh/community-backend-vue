@@ -54,7 +54,7 @@ export default {
           }
         },
         radar: {
-          radius: '66%',
+          radius: '60%',
           center: ['50%', '42%'],
           splitNumber: 8,
           splitArea: {
@@ -72,14 +72,13 @@ export default {
             { name: 'Administration', max: 20000 },
             { name: 'Information Techology', max: 20000 },
             { name: 'Customer Support', max: 20000 },
-            { name: 'Development', max: 20000 },
-            { name: 'Marketing', max: 20000 }
+            { name: 'Development', max: 20000 }
           ]
         },
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
+          data: ['城市数', '社区数', '人数']
         },
         series: [{
           type: 'radar',
@@ -96,15 +95,15 @@ export default {
           data: [
             {
               value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: 'Allocated Budget'
+              name: '城市数'
             },
             {
               value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: 'Expected Spending'
+              name: '社区数'
             },
             {
               value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: 'Actual Spending'
+              name: '人数'
             }
           ],
           animationDuration: animationDuration
