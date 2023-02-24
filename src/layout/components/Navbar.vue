@@ -48,7 +48,7 @@ import Screenfull from '@/components/Screenfull'
 // import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 // import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
+// import RuoYiDoc from '@/components/RuoYi/Doc'
 
 export default {
   components: {
@@ -56,8 +56,7 @@ export default {
     TopNav,
     Hamburger,
     Screenfull,
-    Search,
-    RuoYiDoc
+    Search
   },
   computed: {
     ...mapGetters([

@@ -1,15 +1,10 @@
 <template>
   <div class="dashboard-editor-container">
+
     <div class="index-carousel">
       <el-carousel :interval="5000" arrow autoplay>
-        <el-carousel-item>
-          <img class="carousel-img" src="@/assets/images/carousel-1.webp" />
-        </el-carousel-item>
-        <el-carousel-item>
-          <img class="carousel-img" src="@/assets/images/carousel-2.webp" />
-        </el-carousel-item>
-        <el-carousel-item>
-          <img class="carousel-img" src="@/assets/images/carousel-3.webp" />
+        <el-carousel-item v-for="item in noticeList" :key="item.noticeId">
+          <div class="notice-content" v-html="item.noticeContent"></div>
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -150,7 +145,7 @@ export default {
     /** 查询公告列表 */
     getList() {
       listNotice(this.queryParams).then(response => {
-        // console.log(response.rows);
+        console.log(response.rows);
         this.noticeList = response.rows;
       });
     },
@@ -166,6 +161,10 @@ export default {
 
   .index-carousel {
     margin-bottom: 20px;
+
+    .notice-content {
+      padding: 20px;
+    }
 
     .carousel-img {
       width: 100%;

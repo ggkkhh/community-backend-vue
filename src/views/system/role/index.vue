@@ -52,7 +52,7 @@
       <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" width="150" />
       <el-table-column label="显示顺序" prop="roleSort" width="100" />
       <el-table-column label="数据权限" prop="dataScope" width="100" />
-      <el-table-column label="状态" align="center" width="100">
+      <el-table-column label="状态" align="center" width="80">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
             @change="handleStatusChange(scope.row)"></el-switch>
