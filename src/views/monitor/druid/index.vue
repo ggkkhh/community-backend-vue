@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <i-frame :src="url" />
 </template>
 <script>
@@ -12,4 +12,4 @@ export default {
     };
   },
 };
-</script>
+</script> -->
