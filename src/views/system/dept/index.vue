@@ -34,7 +34,7 @@
       <el-table-column prop="orderNum" label="排序" align="center" width="50"></el-table-column>
       <el-table-column prop="leader" label="负责人" align="center" width="100"></el-table-column>
       <el-table-column prop="phone" label="电话" align="center"></el-table-column>
-      <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+      <!-- <el-table-column prop="email" label="邮箱" align="center"></el-table-column> -->
       <el-table-column prop="status" label="状态" align="center" width="80">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status" />
@@ -76,21 +76,21 @@
 
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="负责人" prop="leader">
               <el-input v-model="form.leader" placeholder="请输入负责人" maxlength="20" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="联系电话" prop="phone">
               <el-input v-model="form.phone" placeholder="请输入联系电话" maxlength="11" />
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <!-- <el-col :span="8">
             <el-form-item label="电子邮箱" prop="email">
               <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
-          </el-col>
+          </el-col> -->
         </el-row>
         <el-row>
           <el-col :span="8">
@@ -149,7 +149,7 @@ export default {
       // 是否显示弹出层
       open: false,
       // 是否展开，默认全部展开
-      isExpandAll: true,
+      isExpandAll: false,
       // 重新渲染表格状态
       refreshTable: true,
       // 查询参数
@@ -170,13 +170,13 @@ export default {
         orderNum: [
           { required: true, message: "显示排序不能为空", trigger: "blur" }
         ],
-        email: [
-          {
-            type: "email",
-            message: "请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
-        ],
+        // email: [
+        //   {
+        //     type: "email",
+        //     message: "请输入正确的邮箱地址",
+        //     trigger: ["blur", "change"]
+        //   }
+        // ],
         phone: [
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
@@ -224,7 +224,7 @@ export default {
         orderNum: undefined,
         leader: undefined,
         phone: undefined,
-        email: undefined,
+        // email: undefined,
         status: "0",
         isCommunity: "0"
       };
@@ -306,9 +306,9 @@ export default {
     },
     /* 社区高亮 */
     tableRowClassName(row, rowIndex) {
-      console.log(row)
+      // console.log(row)
       if (row.row.isCommunity == "1") {
-        console.log(row)
+        // console.log(row)
         return 'success-row';
 
       }

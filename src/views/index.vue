@@ -48,12 +48,11 @@
             <el-timeline-item v-for="item in noticeList" :key="item.noticeId" :timestamp="item.createTime"
               placement="top">
               <el-card shadow="hover">
-                <h4>{{ item.noticeTitle }}</h4>
+                <h3>{{ item.noticeTitle }}</h3>
                 <el-divider><svg-icon icon-class="message" /></el-divider>
-                <p>{{ item.noticeContent }}</p>
+                <div v-html="item.noticeContent"></div>
               </el-card>
             </el-timeline-item>
-
           </el-timeline>
         </div>
       </el-col>
@@ -145,7 +144,7 @@ export default {
     /** 查询公告列表 */
     getList() {
       listNotice(this.queryParams).then(response => {
-        console.log(response.rows);
+        // console.log(response.rows);
         this.noticeList = response.rows;
       });
     },

@@ -9,7 +9,7 @@
         </div>
         <div class="head-container">
           <el-tree :data="deptOptions" :props="defaultProps" :expand-on-click-node="false"
-            :filter-node-method="filterNode" ref="tree" default-expand-all highlight-current
+            :filter-node-method="filterNode" ref="tree" highlight-current accordion
             @node-click="handleNodeClick" />
         </div>
       </el-col>

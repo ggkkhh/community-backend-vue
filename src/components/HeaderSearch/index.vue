@@ -1,6 +1,9 @@
 <template>
   <div :class="{ 'show': show }" class="header-search">
-    <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
+    <el-tooltip class="item" effect="dark" content="搜索" placement="bottom">
+      <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
+    </el-tooltip>
+    
     <el-select ref="headerSearchSelect" v-model="search" :remote-method="querySearch" filterable default-first-option
       remote placeholder="Search" class="header-search-select" @change="change">
       <el-option v-for="option in options" :key="option.item.path" :value="option.item"

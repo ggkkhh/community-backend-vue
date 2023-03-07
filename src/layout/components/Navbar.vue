@@ -9,14 +9,18 @@
     <div class="right-menu">
       <template v-if="device !== 'mobile'">
         <search id="header-search" class="right-menu-item" />
-
+      </template>
+      <!-- 通知 -->
+      <notification id="notification" :noticeList="noticeList" class="right-menu-item hover-effect" />
+      <template v-if="device !== 'mobile'">
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <!-- 用户头像 -->
+      <el-dropdown class="user-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar">
+          <span class="user-name">{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/profile">
@@ -47,6 +51,8 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 // import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import Notification from '@/components/Notification'
+import { listNotice } from "@/api/system/notice";
 // import RuoYiGit from '@/components/RuoYi/Git'
 // import RuoYiDoc from '@/components/RuoYi/Doc'
 
@@ -56,12 +62,28 @@ export default {
     TopNav,
     Hamburger,
     Screenfull,
-    Search
+    Search,
+    Notification
+  },
+  data() {
+    return {
+      // 公告表格数据
+      noticeList: [],
+      // 查询参数，noticeType: 2表示只会查询类型为公告的数据
+      queryParams: {
+        pageNum: 1,
+        pageSize: 5,
+        noticeTitle: undefined,
+        noticeType: 1,
+        createBy: undefined
+      },
+    }
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
+      'name',
       'device'
     ]),
     setting: {
@@ -81,6 +103,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getNoticeList()
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
@@ -95,7 +120,14 @@ export default {
           location.href = '/index';
         })
       }).catch(() => { });
-    }
+    },
+    /** 查询公告列表 */
+    getNoticeList() {
+      listNotice(this.queryParams).then(response => {
+        // console.log(response.rows);
+        this.noticeList = response.rows;
+      });
+    },
   }
 }
 </script>
@@ -138,7 +170,8 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    display: flex;
+    align-items: center;
 
     &:focus {
       outline: none;
@@ -147,7 +180,6 @@ export default {
     .right-menu-item {
       display: inline-block;
       padding: 0 8px;
-      height: 100%;
       font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
@@ -162,18 +194,26 @@ export default {
       }
     }
 
-    .avatar-container {
+    .user-container {
       margin-right: 20px;
 
       .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
+        display: flex;
+        align-items: center;
 
         .user-avatar {
           cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
+        }
+
+        .user-name {
+          max-width: 50px;
+          margin-left: 8px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .el-icon-caret-bottom {
