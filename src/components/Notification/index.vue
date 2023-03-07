@@ -10,14 +10,12 @@
         <div slot="reference">
             <el-badge is-dot class="item">
                 <svg-icon icon-class="notification" />
-</el-badge>
-            
+            </el-badge>
         </div>
     </el-popover>
 </template>
   
 <script>
-
 
 export default {
     name: 'Notification',
@@ -32,7 +30,7 @@ export default {
 </script>
   
 <style scoped>
-.notive-card:not(:last-child){
+.notive-card {
     margin-bottom: 8px;
 }
 </style>

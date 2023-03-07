@@ -2,7 +2,7 @@
   <div class="dashboard-editor-container">
 
     <div class="index-carousel">
-      <el-carousel :interval="5000" arrow autoplay>
+      <el-carousel :interval="5000" arrow autoplay v-viewer>
         <el-carousel-item v-for="item in noticeList" :key="item.noticeId">
           <div class="notice-content" v-html="item.noticeContent"></div>
         </el-carousel-item>
@@ -50,7 +50,7 @@
               <el-card shadow="hover">
                 <h3>{{ item.noticeTitle }}</h3>
                 <el-divider><svg-icon icon-class="message" /></el-divider>
-                <div v-html="item.noticeContent"></div>
+                <div v-viewer v-html="item.noticeContent"></div>
               </el-card>
             </el-timeline-item>
           </el-timeline>

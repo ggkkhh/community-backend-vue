@@ -69,7 +69,7 @@ export default {
     return {
       // 公告表格数据
       noticeList: [],
-      // 查询参数，noticeType: 2表示只会查询类型为公告的数据
+      // 查询参数，noticeType: 1表示只会查询类型为通知的数据
       queryParams: {
         pageNum: 1,
         pageSize: 5,
@@ -124,7 +124,6 @@ export default {
     /** 查询公告列表 */
     getNoticeList() {
       listNotice(this.queryParams).then(response => {
-        // console.log(response.rows);
         this.noticeList = response.rows;
       });
     },
@@ -209,7 +208,7 @@ export default {
         }
 
         .user-name {
-          max-width: 50px;
+          max-width: 100px;
           margin-left: 8px;
           overflow: hidden;
           text-overflow: ellipsis;
