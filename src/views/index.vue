@@ -19,15 +19,16 @@
             <div class="user-info">
               <span class="user-tips">欢迎 </span><strong class="user-name">{{ name }}</strong>
               <span class="user-tips"> 访问后台系统，您可以选择继续进行操作。</span>
-              <div class="bottom clearfix">
+              <div class="">
                 <!-- <el-statistic ref="statistic" format="HH:mm:ss" @finish="hilarity" :value="deadline" title="距离明日："
                   time-indices>
                 </el-statistic> -->
                 <span>若您发现没有相应菜单可操作，或者分配的角色权限错误，请联系管理员==></span>
-                <a target="_blank" href="https://www.roydon.top"> admin </a>
-                <el-button type="text" class="button">操作按钮</el-button>
-                <el-rate v-model="sysValue" :icon-classes="iconClasses" void-icon-class="icon-rate-face-off"
-                  :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+                <el-link type="primary" target="_blank" href="https://www.roydon.top"> admin </el-link>
+                <!-- <el-button type="text" class="button">操作按钮</el-button> -->
+                
+                <el-rate v-model="sysValue" show-text>
+                  
                 </el-rate>
               </div>
             </div>
@@ -169,8 +170,6 @@ export default {
       stop: true,
       //系统评分
       sysValue: null,
-      iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'] // 等同于 { 2: 'icon-rate-face-1', 4: { value: 'icon-rate-face-2', excluded: true }, 5: 'icon-rate-face-3' }
-
     }
   },
   computed: {
