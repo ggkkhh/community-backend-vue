@@ -16,6 +16,18 @@
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
       </template>
 
+      <el-dropdown class="right-menu-item hover-effect" trigger="hover">
+        <div >
+          <i class="el-icon-setting"></i>
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="setting = true" class="right-menu-item">
+            <i class="el-icon-setting"></i>
+            <span>布局设置</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
       <!-- 用户头像 -->
       <el-dropdown class="user-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">

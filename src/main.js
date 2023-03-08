@@ -54,6 +54,7 @@ import DictData from '@/components/DictData'
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey

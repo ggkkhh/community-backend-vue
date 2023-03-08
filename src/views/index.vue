@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
 
+    <!-- 首页顶部轮播 -->
     <div class="index-carousel">
       <el-carousel :interval="5000" arrow autoplay v-viewer>
         <el-carousel-item v-for="item in noticeList" :key="item.noticeId">
@@ -9,10 +10,50 @@
       </el-carousel>
     </div>
 
+    <!-- 首页个人信息卡片 -->
+    <div class="index-container">
+      <el-row>
+        <el-col :span="24">
+          <el-card>
+            <img :src="avatar" class="user-avatar">
+            <div class="user-info">
+              <span class="user-tips">欢迎 </span><strong class="user-name">{{ name }}</strong>
+              <span class="user-tips"> 访问后台系统，您可以选择继续进行操作。</span>
+              <div class="bottom clearfix">
+                <!-- <el-statistic ref="statistic" format="HH:mm:ss" @finish="hilarity" :value="deadline" title="距离明日："
+                  time-indices>
+                </el-statistic> -->
+                <span>若您发现没有相应菜单可操作，或者分配的角色权限错误，请联系管理员==></span>
+                <a target="_blank" href="https://www.roydon.top"> admin </a>
+                <el-button type="text" class="button">操作按钮</el-button>
+                <el-rate v-model="sysValue" :icon-classes="iconClasses" void-icon-class="icon-rate-face-off"
+                  :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+                </el-rate>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
+
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:10px;margin-bottom:20px;border-radius: 10px;">
       <line-chart :chart-data="lineChartData" />
+
+    </el-row>
+    <el-row :gutter="24">
+      <el-col :xs="24" :sm="24" :lg="12">
+        <div class="chart-wrapper">
+          <china-map></china-map>
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="12">
+        <div class="chart-wrapper">
+          <el-empty description="描述文字"></el-empty>
+        </div>
+      </el-col>
+
     </el-row>
 
     <el-row :gutter="24">
@@ -76,6 +117,7 @@
     </el-row>
 
 
+
   </div>
 </template>
 
@@ -86,6 +128,8 @@ import RaddarChart from './dashboard/RaddarChart'
 import PieChart from './dashboard/PieChart'
 import BarChart from './dashboard/BarChart'
 import { listNotice } from "@/api/system/notice";
+import { mapGetters } from 'vuex'
+import ChinaMap from './dashboard/ChinaMap'
 
 const lineChartData = {
   nowCommunityAmount: {
@@ -103,22 +147,12 @@ export default {
     LineChart,
     RaddarChart,
     PieChart,
-    BarChart
+    BarChart,
+    ChinaMap
   },
   data() {
     return {
       lineChartData: lineChartData.nowCommunityAmount,
-      // 首页轮播图资源
-      carouselImages: [
-        {
-          "id": 0, "path": "@/assets/images/carousel-1.webp"
-        },
-        {
-          "id": 1, "path": "@/assets/images/carousel-2.webp"
-        },
-        {
-          "id": 2, "path": "@/assets/images/carousel-3.webp"
-        },],
       // 公告表格数据
       noticeList: [],
       // 查询参数，noticeType: 2表示只会查询类型为公告的数据
@@ -130,9 +164,21 @@ export default {
         createBy: undefined
       },
       //日历
-      timeDate: new Date()
+      timeDate: new Date(),
+      deadline: Date.now() + (new Date().setHours(23, 59, 59) - Date.now()),
+      stop: true,
+      //系统评分
+      sysValue: null,
+      iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'] // 等同于 { 2: 'icon-rate-face-1', 4: { value: 'icon-rate-face-2', excluded: true }, 5: 'icon-rate-face-3' }
 
     }
+  },
+  computed: {
+    ...mapGetters([
+      'avatar',
+      'name',
+      'device'
+    ]),
   },
   created() {
     this.getList()
@@ -146,6 +192,13 @@ export default {
       listNotice(this.queryParams).then(response => {
         // console.log(response.rows);
         this.noticeList = response.rows;
+      });
+    },
+    hilarity() {
+      this.$notify({
+        title: '提示',
+        message: '今日已过',
+        duration: 0,
       });
     },
   }
@@ -188,6 +241,30 @@ export default {
       .el-carousel__item:nth-child(2n+1) {
         background-color: #d3dce6;
       }
+    }
+  }
+
+  .index-container {
+    margin-bottom: 20px;
+
+    .user-avatar {
+      max-width: 96px;
+      border-radius: 50%;
+    }
+
+    .user-info {
+      padding: 10px 20px;
+    }
+
+    .user-name {
+      font-size: 1.3em;
+      color: blue !important;
+    }
+
+    .user-tips {
+      font-size: 1.2em;
+      line-height: 2;
+      font-weight: bold;
     }
   }
 
