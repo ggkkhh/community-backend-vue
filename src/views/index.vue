@@ -197,7 +197,7 @@ export default {
     Toast() {
       this.$customModal.info({
         title: '标题提示信息',
-        content: "要删除吗？一旦删除将不可恢复要删除吗？一旦删除将不可恢复要删除吗？一旦删除将不可恢复要删除吗？一旦删除将不可恢复",
+        content: "要删除吗？一旦删除将不可恢复要删除吗？",
         onCancel: () => {
           console.log('...');
         }
