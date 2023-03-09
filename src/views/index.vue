@@ -20,16 +20,12 @@
               <span class="user-tips">欢迎 </span><strong class="user-name">{{ name }}</strong>
               <span class="user-tips"> 访问后台系统，您可以选择继续进行操作。</span>
               <div class="">
-                <!-- <el-statistic ref="statistic" format="HH:mm:ss" @finish="hilarity" :value="deadline" title="距离明日："
-                  time-indices>
-                </el-statistic> -->
                 <span>若您发现没有相应菜单可操作，或者分配的角色权限错误，请联系管理员==></span>
                 <el-link type="primary" target="_blank" href="https://www.roydon.top"> admin </el-link>
                 <!-- <el-button type="text" class="button">操作按钮</el-button> -->
-                
                 <el-rate v-model="sysValue" show-text>
-                  
                 </el-rate>
+                <el-button type="text" @click="Toast">弹框</el-button>
               </div>
             </div>
           </el-card>
@@ -166,8 +162,6 @@ export default {
       },
       //日历
       timeDate: new Date(),
-      deadline: Date.now() + (new Date().setHours(23, 59, 59) - Date.now()),
-      stop: true,
       //系统评分
       sysValue: null,
     }
@@ -200,8 +194,20 @@ export default {
         duration: 0,
       });
     },
+    Toast() {
+      this.$customModal.info({
+        title: '标题提示信息',
+        content: "要删除吗？一旦删除将不可恢复要删除吗？一旦删除将不可恢复要删除吗？一旦删除将不可恢复要删除吗？一旦删除将不可恢复",
+        onCancel: () => {
+          console.log('...');
+        }
+      })
+    }
+
+
   }
 }
+
 </script>
 
 <style lang="scss" scoped>

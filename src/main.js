@@ -53,6 +53,8 @@ import DictData from '@/components/DictData'
 // 图片预览组件
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
+// 自定义弹框
+import customModal from '@/components/Toast/modal.js';
 
 
 // 全局方法挂载
@@ -65,6 +67,7 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+Vue.prototype.$customModal = customModal;
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
