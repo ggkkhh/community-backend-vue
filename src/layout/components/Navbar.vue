@@ -11,14 +11,21 @@
       <template v-if="device !== 'mobile'">
         <search id="header-search" class="right-menu-item" />
       </template>
+
       <!-- 通知 -->
       <notification id="notification" :noticeList="noticeList" class="right-menu-item hover-effect" />
-      <template v-if="device !== 'mobile'">
-        <!-- 全屏 -->
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-      </template>
+      <!-- 下载手机App -->
+      <el-tooltip class="svg-icon-item" effect="dark" content="下载手机App" placement="bottom">
+        <el-badge is-dot>
+          <svg-icon icon-class="iphone12" @click.stop="Toast" />
+        </el-badge>
+      </el-tooltip>
       <!-- 设置 -->
-      <el-button icon="el-icon-setting" @click.stop.native="setting = true" circle></el-button>
+      <el-tooltip class="svg-icon-item" effect="dark" content="主题设置" placement="bottom">
+        <el-badge >
+          <svg-icon icon-class="system" @click.stop.native="setting = true" />
+        </el-badge>
+      </el-tooltip>
       <!-- 用户头像 -->
       <el-dropdown class="user-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
@@ -38,6 +45,10 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <!-- 全屏 -->
+      <template v-if="device !== 'mobile'">
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+      </template>
     </div>
   </div>
 </template>
@@ -126,6 +137,15 @@ export default {
         this.noticeList = response.rows;
       });
     },
+    Toast() {
+      this.$customModal.info({
+        title: '扫码下载手机APP',
+        content: "手机App二维码接口待对接",
+        onCancel: () => {
+          console.log('...');
+        }
+      })
+    }
   }
 }
 </script>
@@ -193,7 +213,7 @@ export default {
     }
 
     .user-container {
-      margin-right: 20px;
+      // margin-right: 20px;
 
       .avatar-wrapper {
         display: flex;
@@ -224,5 +244,10 @@ export default {
       }
     }
   }
+}
+
+.svg-icon-item {
+  padding: 0 8px;
+  cursor: pointer;
 }
 </style>

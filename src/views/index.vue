@@ -25,7 +25,6 @@
                 <!-- <el-button type="text" class="button">操作按钮</el-button> -->
                 <el-rate v-model="sysValue" show-text>
                 </el-rate>
-                <el-button type="text" @click="Toast">弹框</el-button>
               </div>
             </div>
           </el-card>
@@ -194,15 +193,7 @@ export default {
         duration: 0,
       });
     },
-    Toast() {
-      this.$customModal.info({
-        title: '扫码下载手机APP',
-        content: "要删除吗？一旦删除将不可恢复要删除吗？",
-        onCancel: () => {
-          console.log('...');
-        }
-      })
-    }
+
 
 
   }
