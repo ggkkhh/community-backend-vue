@@ -94,7 +94,7 @@ export default {
     overflow: hidden;
     color: #666;
     background: #fff;
-    box-shadow: 2px 2px 5px #0000001a;
+    box-shadow: 1px 1px 2px #0000001a;
 
     &:hover {
       .card-panel-icon-wrapper {
