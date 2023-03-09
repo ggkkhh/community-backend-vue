@@ -196,7 +196,7 @@ export default {
     },
     Toast() {
       this.$customModal.info({
-        title: '标题提示信息',
+        title: '扫码下载手机APP',
         content: "要删除吗？一旦删除将不可恢复要删除吗？",
         onCancel: () => {
           console.log('...');

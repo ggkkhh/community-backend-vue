@@ -7,27 +7,18 @@
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav" />
 
     <div class="right-menu">
+      <!-- 搜索 -->
       <template v-if="device !== 'mobile'">
         <search id="header-search" class="right-menu-item" />
       </template>
       <!-- 通知 -->
       <notification id="notification" :noticeList="noticeList" class="right-menu-item hover-effect" />
       <template v-if="device !== 'mobile'">
+        <!-- 全屏 -->
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
       </template>
-
-      <el-dropdown class="right-menu-item hover-effect" trigger="hover">
-        <div >
-          <i class="el-icon-setting"></i>
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="setting = true" class="right-menu-item">
-            <i class="el-icon-setting"></i>
-            <span>布局设置</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-
+      <!-- 设置 -->
+      <el-button icon="el-icon-setting" @click.stop.native="setting = true" circle></el-button>
       <!-- 用户头像 -->
       <el-dropdown class="user-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
@@ -41,10 +32,6 @@
               <span>个人中心</span>
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item @click.native="setting = true">
-            <i class="el-icon-setting"></i>
-            <span>布局设置</span>
-          </el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">
             <i class="el-icon-switch-button"></i>
             <span>退出登录</span>
