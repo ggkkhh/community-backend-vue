@@ -8,11 +8,9 @@
         <div class="custom-toast-body">
           <div class="content-info">{{ content }}</div>
         </div>
-
       </div>
       <img class="toast-close" @click="handleCancel" src="@/assets/images/cancel.png" />
     </div>
-
   </div>
 </template>
 
