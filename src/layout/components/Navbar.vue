@@ -34,13 +34,11 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/profile">
-            <el-dropdown-item>
-              <i class="el-icon-user"></i>
+            <el-dropdown-item icon="el-icon-user">
               <span>个人中心</span>
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item divided @click.native="logout">
-            <i class="el-icon-switch-button"></i>
+          <el-dropdown-item divided @click.native="logout" icon="el-icon-switch-button">
             <span>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -197,7 +195,7 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 10px;
       font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
@@ -228,7 +226,7 @@ export default {
 
         .user-name {
           max-width: 100px;
-          margin-left: 8px;
+          margin-left: 10px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -247,7 +245,7 @@ export default {
 }
 
 .svg-icon-item {
-  padding: 0 8px;
+  padding: 0 10px;
   cursor: pointer;
 }
 </style>
