@@ -133,6 +133,9 @@ const lineChartData = {
   },
   nowUserAmount: {
     actualData: [2, 5, 10, 10, 10, 12, 13]
+  },
+  nowVisitPeople: {
+    actualData: [3, 10, 20, 50, 100, 120, 200]
   }
 }
 
