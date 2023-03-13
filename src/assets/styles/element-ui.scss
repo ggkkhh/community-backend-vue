@@ -48,11 +48,7 @@
 
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
-  transform: none;
-  left: 0;
-  position: relative;
-  margin: 0 auto;
-  border-radius: 10px;
+  border-radius: 20px;
 }
 
 // refine element ui upload
@@ -101,4 +97,25 @@
 
 .el-rate {
   line-height: 2;
+}
+
+.el-message-box {
+  display: inline-block;
+  width: 500px;
+  padding-bottom: 10px;
+  vertical-align: middle;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  border: 10px solid #e6ebf5;
+  font-size: 18px;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  text-align: left;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.el-dialog {
+  .el-dialog__body {
+    padding: 10px;
+  }
 }

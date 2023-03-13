@@ -22,7 +22,7 @@
       </el-tooltip>
       <!-- 设置 -->
       <el-tooltip class="svg-icon-item" effect="dark" content="主题设置" placement="bottom">
-        <el-badge >
+        <el-badge>
           <svg-icon icon-class="system" @click.stop.native="setting = true" />
         </el-badge>
       </el-tooltip>
@@ -61,6 +61,7 @@ import Screenfull from '@/components/Screenfull'
 import Search from '@/components/HeaderSearch'
 import Notification from '@/components/Notification'
 import { listNotice } from "@/api/system/notice";
+import { getBase64 } from "@/api/system/qrcode";
 // import RuoYiGit from '@/components/RuoYi/Git'
 // import RuoYiDoc from '@/components/RuoYi/Doc'
 
@@ -85,6 +86,14 @@ export default {
         noticeType: 1,
         createBy: undefined
       },
+      qrCodeQueryParams: {
+        // content 为必填
+        content: "https://www.roydon.top",
+        logoUrl: "https://gcore.jsdelivr.net/gh/roydonGuo/CDN/avatar/ganyu.webp",
+        width: 160,
+        height: 160,
+      },
+      phoneQrCode: ""
     }
   },
   computed: {
@@ -136,14 +145,23 @@ export default {
       });
     },
     Toast() {
-      this.$customModal.info({
-        title: '扫码下载手机APP',
-        content: "手机App二维码接口待对接",
-        onCancel: () => {
-          console.log('...');
-        }
+      //调用弹框组件的同时获取二维码
+      getBase64(this.qrCodeQueryParams).then(res => {
+        // console.log(res);
+        this.phoneQrCode = res.data
+        this.$customModal.info({
+          title: '扫码下载手机APP',
+          imgSrc: this.phoneQrCode,
+          content: "",
+          onCancel: () => {
+            console.log('...');
+          }
+        })
       })
+
     }
+
+
   }
 }
 </script>

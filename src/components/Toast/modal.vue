@@ -6,6 +6,8 @@
       </div>
       <div class="custom-toast-content">
         <div class="custom-toast-body">
+          <div class="content-img"><img :src="imgSrc" /></div>
+
           <div class="content-info">{{ content }}</div>
         </div>
       </div>
@@ -22,6 +24,7 @@ export default {
       //调用的时候里面的配置除了content外其他都为非必填，不传以默认项为准
       isShow: false, //控制显隐
       title: "提醒", //标题
+      imgSrc: "",
       type: "confirm", //类型
       content: "", //内容
       width: "520px",
@@ -86,6 +89,11 @@ export default {
         font-size: 14px;
         line-height: 1.5;
 
+        .content-img {
+          text-align: center;
+          margin: 0 auto;
+        }
+
         .content-info {
           min-height: 80px;
           font-size: 14px;
@@ -116,5 +124,4 @@ export default {
 
   }
 }
-
 </style>
