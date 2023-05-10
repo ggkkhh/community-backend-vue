@@ -79,7 +79,7 @@
             :show-overflow-tooltip="true" />
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
             width="120" />
-          <!-- <el-table-column label="身份证号" align="center" key="idCard" prop="idCard" v-if="columns[4].visible" width="150" /> -->
+          <el-table-column label="身份证号" align="center" key="idCard" prop="idCard" v-if="columns[4].visible" width="150" />
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible" width="80">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"

@@ -3,7 +3,7 @@
         <div id="china-map" :style="{ height: '500px', width: '100%' }"></div>
     </div>
 </template>
-  
+
 <script>
 import * as echarts from 'echarts';
 import 'echarts/map/js/china.js';
