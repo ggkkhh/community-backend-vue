@@ -18,6 +18,22 @@ export function login(username, password, code, uuid) {
   })
 }
 
+//手机短信登录
+export function smsLogin(telephone, code) {
+  const data = {
+    telephone,
+    code
+  }
+  return request({
+    url: '/sms-login',
+    headers: {
+      isToken: false
+    },
+    method: 'post',
+    data: data
+  })
+}
+
 // 注册方法
 export function register(data) {
   return request({

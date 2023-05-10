@@ -119,3 +119,10 @@
     padding: 10px;
   }
 }
+
+.login .el-tabs__nav{
+  float: none !important;
+  .el-tabs__item{
+    width: 50%;
+  }
+}
