@@ -120,9 +120,12 @@
   }
 }
 
-.login .el-tabs__nav{
+.field .form-cont .el-tabs__nav{
+  width: 100% !important;
   float: none !important;
   .el-tabs__item{
+    text-align: center;
+    padding: 0 !important;
     width: 50%;
   }
 }

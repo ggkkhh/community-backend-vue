@@ -1,7 +1,8 @@
 import {
   login,
   logout,
-  getInfo
+  getInfo,
+  smsLogin
 } from '@/api/login'
 import {
   getToken,
@@ -47,6 +48,22 @@ const user = {
       const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid).then(res => {
+          setToken(res.token)
+          commit('SET_TOKEN', res.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    SmsLogin({
+      commit
+    }, userInfo) {
+      const telephone = userInfo.telephone.trim()
+      const phoneCode = userInfo.phoneCode.trim()
+      return new Promise((resolve, reject) => {
+        smsLogin(telephone, phoneCode).then(res => {
           setToken(res.token)
           commit('SET_TOKEN', res.token)
           resolve()

@@ -18,19 +18,29 @@ export function login(username, password, code, uuid) {
   })
 }
 
+// 获取登录验证码
+export function sendSmsCode(telephone) {
+  return request({
+    url: '/sms/sendCode/' + telephone,
+    headers: {
+      isToken: false
+    },
+    method: 'GET'
+  })
+}
+
 //手机短信登录
-export function smsLogin(telephone, code) {
-  const data = {
-    telephone,
-    code
-  }
+export function smsLogin(telephone, phoneCode) {
   return request({
     url: '/sms-login',
     headers: {
       isToken: false
     },
     method: 'post',
-    data: data
+    data: {
+      telephone,
+      phoneCode
+    }
   })
 }
 
