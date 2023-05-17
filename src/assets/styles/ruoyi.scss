@@ -304,3 +304,21 @@ h6 {
   position: relative;
   float: right;
 }
+
+.newsDetails {
+  img {
+    display: table-cell;
+    vertical-align: middle;
+    margin: auto;
+    border-radius: 6px;
+    max-height: 240px;
+  }
+
+  img.newsDetails-img {
+    display: table-cell;
+    vertical-align: middle;
+    margin: auto;
+    border-radius: 6px;
+    max-height: 240px;
+  }
+}

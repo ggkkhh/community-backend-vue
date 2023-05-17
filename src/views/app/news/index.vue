@@ -10,13 +10,13 @@
         <el-input v-model="queryParams.source" placeholder="请输入新闻来源" clearable style="width: 240px"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="新闻类型" prop="newsType">
+      <el-form-item label="是否展示" prop="newsType">
         <el-select v-model="queryParams.newsType" placeholder="新闻类型" clearable style="width: 240px">
           <el-option v-for="dict in dict.type.app_news_type" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
       </el-form-item>
       <el-form-item label="新闻状态" prop="delFlag">
-        <el-select v-model="queryParams.delFlag" placeholder="新闻状态" clearable style="width: 240px">
+        <el-select v-model="queryParams.showInApp" placeholder="新闻状态" clearable style="width: 240px">
           <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
@@ -34,32 +34,30 @@
     <!-- 操作栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['system:role:add']">新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
           v-hasPermi="['system:role:remove']">删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border>
+    <!-- 新闻数据表格 -->
+    <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border>
       <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="新闻标识" prop="newsId" width="150" />
-      <el-table-column label="新闻封面" width="150">
+      <el-table-column v-viewer label="新闻封面" width="150">
         <template slot-scope="scope">
-          <el-image style="height: 80px" :src="scope.row.coverImg" :fit="contain"></el-image>
+          <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.coverImg" :fit="contain"></el-image>
+          <!-- <div><img style="max-height: 100px;" :src="scope.row.coverImg" /></div> -->
         </template>
       </el-table-column>
       <el-table-column label="新闻标题" prop="newsTitle" :show-overflow-tooltip="true" />
-
-      <!-- <el-table-column label="摘要" prop="digest" :show-overflow-tooltip="true" /> -->
+      <el-table-column label="摘要" prop="digest" :show-overflow-tooltip="true" />
       <el-table-column label="新闻类型" prop="newsType" width="80" />
-      <el-table-column label="来源" prop="source" :show-overflow-tooltip="true" width="100" />
-      <el-table-column label="app展示" prop="delFlag" width="80">
+      <el-table-column label="来源" prop="source" :show-overflow-tooltip="true" width="120" />
+      <el-table-column label="app展示" align="center" prop="showInApp" width="80">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.delFlag" />
+          <el-switch v-model="scope.row.showInApp" active-value="0" inactive-value="1"
+            @change="handleShowInAppChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="推送时间" align="center" prop="postTime" width="150">
@@ -78,41 +76,20 @@
         </template>
       </el-table-column>
     </el-table>
-
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
 
-    <!-- 添加或修改角色配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+    <!-- 修改对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+      <el-form ref="form" :model="form" label-width="100px">
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="请输入角色名称" />
-        </el-form-item>
-        <el-form-item prop="roleKey">
-          <span slot="label">
-            <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole('admin')`)" placement="top">
-              <i class="el-icon-question"></i>
-            </el-tooltip>
-            权限字符
-          </span>
-          <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
-        </el-form-item>
-        <el-form-item label="角色顺序" prop="roleSort">
-          <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">
             <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label
             }}</el-radio>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="菜单权限">
-          <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
-          <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
-          <el-checkbox v-model="form.menuCheckStrictly"
-            @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox>
-          <el-tree class="tree-border" :data="menuOptions" show-checkbox ref="menu" node-key="id"
-            :check-strictly="!form.menuCheckStrictly" empty-text="加载中，请稍候" :props="defaultProps"></el-tree>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
@@ -124,13 +101,23 @@
       </div>
     </el-dialog>
 
+    <!-- 新闻详情 -->
+    <el-dialog :title="newsDetails.newsTitle" :data="newsDetails" :visible.sync="openDetails" width="70%" append-to-body>
+      <div class="newsDetails">
+        <hr />
+
+        <div style="color: gold;text-align: end;">来源 ------ {{ newsDetails.source }}</div>
+
+        <div v-viewer v-html="newsDetails.newsContent"></div>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus, deptTreeSelect } from "@/api/system/role";
-import { listNews, } from "@/api/app/news";
-import { treeselect as menuTreeselect, roleMenuTreeselect } from "@/api/system/menu";
+import { listNews, newsDetails, changeNewsStatus } from "@/api/app/news";
 
 export default {
   name: "Role",
@@ -151,10 +138,13 @@ export default {
       total: 0,
       // 新闻表格数据
       newsList: [],
+      newsDetails: {},
+      contain: "contain",
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
+      openDetails: false,
       // 是否显示弹出层（数据权限）
       openDataScope: false,
       menuExpand: false,
@@ -197,7 +187,7 @@ export default {
         newsTitle: undefined,
         source: undefined,
         newsType: undefined,
-        delFlag: undefined
+        showInApp: undefined
       },
       // 表单参数
       form: {},
@@ -205,25 +195,13 @@ export default {
         children: "children",
         label: "label"
       },
-      // 表单校验
-      rules: {
-        roleName: [
-          { required: true, message: "角色名称不能为空", trigger: "blur" }
-        ],
-        roleKey: [
-          { required: true, message: "权限字符不能为空", trigger: "blur" }
-        ],
-        roleSort: [
-          { required: true, message: "角色顺序不能为空", trigger: "blur" }
-        ]
-      }
     };
   },
   created() {
     this.getList();
   },
   methods: {
-    /** 查询列表 */
+    /** 查询新闻列表 */
     getList() {
       this.loading = true;
       listNews(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
@@ -233,17 +211,26 @@ export default {
       }
       );
     },
-    // 角色状态修改
-    handleStatusChange(row) {
-      let text = row.status === "0" ? "启用" : "停用";
-      this.$modal.confirm('确认要"' + text + '""' + row.roleName + '"角色吗？').then(function () {
-        return changeRoleStatus(row.roleId, row.status);
+    // 新闻详情
+    handleDetails(newsId) {
+      newsDetails(newsId).then(response => {
+        this.newsDetails = response.data;
+        this.openDetails = true
+      }
+      );
+    },
+    // 新闻状态修改
+    handleShowInAppChange(row) {
+      let text = row.showInApp === 0 ? "停用" : "展示";
+      this.$modal.confirm('确认要"' + text + '""' + row.newsId + '"新闻吗？').then(function () {
+        return changeNewsStatus(row.newsId, row.showInApp);
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");
       }).catch(function () {
-        row.status = row.status === "0" ? "1" : "0";
+        row.showInApp = row.showInApp === 0 ? 1 : 0;
       });
     },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -408,3 +395,5 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped></style>

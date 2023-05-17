@@ -8,3 +8,22 @@ export function listNews(query) {
     params: query
   })
 }
+
+export function newsDetails(newsId) {
+  return request({
+    url: '/app/news/'+newsId,
+    method: 'get'
+  })
+}
+
+export function changeNewsStatus(newsId,showInApp) {
+  const data = {
+    newsId,
+    showInApp
+  }
+  return request({
+    url: '/app/news/changeStatus',
+    method: 'put',
+    data: data
+  })
+}
