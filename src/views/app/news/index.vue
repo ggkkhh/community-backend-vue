@@ -10,7 +10,7 @@
         <el-input v-model="queryParams.source" placeholder="请输入新闻来源" clearable style="width: 240px"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="是否展示" prop="newsType">
+      <el-form-item label="新闻类型" prop="newsType">
         <el-select v-model="queryParams.newsType" placeholder="新闻类型" clearable style="width: 240px">
           <el-option v-for="dict in dict.type.app_news_type" :key="dict.value" :label="dict.label" :value="dict.value" />
         </el-select>
@@ -56,7 +56,7 @@
       <el-table-column label="来源" prop="source" :show-overflow-tooltip="true" width="120" />
       <el-table-column label="app展示" align="center" prop="showInApp" width="80">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.showInApp" active-value="0" inactive-value="1"
+          <el-switch v-model="scope.row.showInApp" active-value="1" inactive-value="0"
             @change="handleShowInAppChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
@@ -80,20 +80,28 @@
       @pagination="getList" />
 
     <!-- 修改对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="70%" append-to-body>
       <el-form ref="form" :model="form" label-width="100px">
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="form.roleName" placeholder="请输入角色名称" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status">
-            <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label
-            }}</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="新闻标题" prop="noticeTitle">
+              <el-input v-model="form.newsTitle" placeholder="请输入新闻标题" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="新闻类型" prop="noticeType">
+              <el-select v-model="form.newsType" placeholder="请选择新闻类型">
+                <el-option v-for="dict in dict.type.app_news_type" :key="dict.value" :label="dict.label"
+                  :value="dict.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="新闻内容">
+              <editor v-model="form.newsContent" :min-height="190" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -108,7 +116,7 @@
 
         <div style="color: gold;text-align: end;">来源 ------ {{ newsDetails.source }}</div>
 
-        <div v-viewer v-html="newsDetails.newsContent"></div>
+        <div style="overflow:auto;" v-viewer v-html="newsDetails.newsContent"></div>
       </div>
     </el-dialog>
 
@@ -116,8 +124,7 @@
 </template>
 
 <script>
-import { listRole, getRole, delRole, addRole, updateRole, dataScope, changeRoleStatus, deptTreeSelect } from "@/api/system/role";
-import { listNews, newsDetails, changeNewsStatus } from "@/api/app/news";
+import { listNews, newsDetails, changeNewsStatus, delNews, updateNews } from "@/api/app/news";
 
 export default {
   name: "Role",
@@ -147,39 +154,8 @@ export default {
       openDetails: false,
       // 是否显示弹出层（数据权限）
       openDataScope: false,
-      menuExpand: false,
-      menuNodeAll: false,
-      deptExpand: true,
-      deptNodeAll: false,
       // 日期范围
       dateRange: [],
-      // 数据范围选项
-      dataScopeOptions: [
-        {
-          value: "1",
-          label: "全部数据权限"
-        },
-        {
-          value: "2",
-          label: "自定数据权限"
-        },
-        {
-          value: "3",
-          label: "本社区数据权限"
-        },
-        {
-          value: "4",
-          label: "本社区及以下数据权限"
-        },
-        {
-          value: "5",
-          label: "仅本人数据权限"
-        }
-      ],
-      // 菜单列表
-      menuOptions: [],
-      // 社区列表
-      deptOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -191,10 +167,6 @@ export default {
       },
       // 表单参数
       form: {},
-      defaultProps: {
-        children: "children",
-        label: "label"
-      },
     };
   },
   created() {
@@ -243,25 +215,11 @@ export default {
     },
     // 表单重置
     reset() {
-      if (this.$refs.menu != undefined) {
-        this.$refs.menu.setCheckedKeys([]);
-      }
-      this.menuExpand = false,
-        this.menuNodeAll = false,
-        this.deptExpand = true,
-        this.deptNodeAll = false,
-        this.form = {
-          roleId: undefined,
-          roleName: undefined,
-          roleKey: undefined,
-          roleSort: 0,
-          status: "0",
-          menuIds: [],
-          deptIds: [],
-          menuCheckStrictly: true,
-          deptCheckStrictly: true,
-          remark: undefined
-        };
+      this.form = {
+        newsTitle: undefined,
+        newsType: undefined,
+        newsContent: undefined
+      };
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -277,123 +235,47 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.roleId)
+      this.ids = selection.map(item => item.newsId)
       this.single = selection.length != 1
       this.multiple = !selection.length
-    },
-    // 更多操作触发
-    handleCommand(command, row) {
-      switch (command) {
-        case "handleDataScope":
-          this.handleDataScope(row);
-          break;
-        case "handleAuthUser":
-          this.handleAuthUser(row);
-          break;
-        default:
-          break;
-      }
-    },
-
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.getMenuTreeselect();
-      this.open = true;
-      this.title = "添加角色";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const roleId = row.roleId || this.ids
-      const roleMenu = this.getRoleMenuTreeselect(roleId);
-      getRole(roleId).then(response => {
+      newsDetails(row.newsId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.$nextTick(() => {
-          roleMenu.then(res => {
-            let checkedKeys = res.checkedKeys
-            checkedKeys.forEach((v) => {
-              this.$nextTick(() => {
-                this.$refs.menu.setChecked(v, true, false);
-              })
-            })
-          });
-        });
-        this.title = "修改角色";
+        this.title = "修改新闻";
       });
     },
-    /** 选择角色权限范围触发 */
-    dataScopeSelectChange(value) {
-      if (value !== '2') {
-        this.$refs.dept.setCheckedKeys([]);
-      }
-    },
-    /** 分配数据权限操作 */
-    handleDataScope(row) {
-      this.reset();
-      const deptTreeSelect = this.getDeptTree(row.roleId);
-      getRole(row.roleId).then(response => {
-        this.form = response.data;
-        this.openDataScope = true;
-        this.$nextTick(() => {
-          deptTreeSelect.then(res => {
-            this.$refs.dept.setCheckedKeys(res.checkedKeys);
-          });
-        });
-        this.title = "分配数据权限";
-      });
-    },
-    /** 分配用户操作 */
-    handleAuthUser: function (row) {
-      const roleId = row.roleId;
-      this.$router.push("/system/role-auth/user/" + roleId);
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const newsIds = row.newsId || this.ids;
+      this.$modal.confirm('是否永久删除编号为【' + newsIds + '】的新闻数据？').then(function () {
+        return delNews(newsIds);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => { });
     },
     /** 提交按钮 */
     submitForm: function () {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          if (this.form.roleId != undefined) {
-            this.form.menuIds = this.getMenuAllCheckedKeys();
-            updateRole(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            this.form.menuIds = this.getMenuAllCheckedKeys();
-            addRole(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
+          updateNews(this.form).then(res => {
+            this.$modal.msgSuccess("修改成功");
+            this.open = false;
+            this.getList();
+          });
         }
       });
-    },
-    /** 提交按钮（数据权限） */
-    submitDataScope: function () {
-      if (this.form.roleId != undefined) {
-        this.form.deptIds = this.getDeptAllCheckedKeys();
-        dataScope(this.form).then(response => {
-          this.$modal.msgSuccess("修改成功");
-          this.openDataScope = false;
-          this.getList();
-        });
-      }
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const newsIds = row.newsId || this.ids;
-      this.$modal.confirm('是否确认删除编号为"' + newsIds + '"的新闻数据？').then(function () {
-        return delRole(newsIds);
-      }).then(() => {
-        this.getList();
-        this.$modal.msgSuccess("删除成功");
-      }).catch(() => { });
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.newsDetails {
+  max-height: 70%;
+}
+</style>

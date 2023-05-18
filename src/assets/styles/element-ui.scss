@@ -48,8 +48,13 @@
 
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
+  overflow: auto;
   border-radius: 20px;
   padding: 20px;
+  max-height: 80vh;
+  .el-dialog__footer{
+    text-align: center;
+  }
 }
 
 // refine element ui upload
@@ -102,7 +107,7 @@
 
 .el-message-box {
   display: inline-block;
-  width: 500px;
+  width: 600px;
   padding-bottom: 10px;
   vertical-align: middle;
   background-color: #FFFFFF;

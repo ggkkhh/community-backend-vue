@@ -81,7 +81,7 @@ h6 {
 }
 
 .el-dialog:not(.is-fullscreen) {
-  margin-top: 6vh !important;
+  margin-top: 5vh !important;
 }
 
 .el-dialog__wrapper.scrollbar .el-dialog .el-dialog__body {
@@ -306,6 +306,7 @@ h6 {
 }
 
 .newsDetails {
+  overflow: auto;
   img {
     display: table-cell;
     vertical-align: middle;
@@ -321,4 +322,8 @@ h6 {
     border-radius: 6px;
     max-height: 240px;
   }
+}
+.ql-container.ql-snow{
+  max-height: 480px;
+  overflow: auto;
 }

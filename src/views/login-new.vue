@@ -1,6 +1,6 @@
 <template xmlns="">
   <div class="container">
-    <!-- <div class="logo"></div> -->
+    <div class="logo"></div>
     <!-- 登录区域 -->
     <div class="content">
       <!-- 配图 -->
@@ -233,6 +233,9 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "~@/assets/styles/login.scss";
 
+.logo {
+  display: block;
+}
 
 .oauth-login {
   display: flex;
