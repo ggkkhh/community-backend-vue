@@ -43,23 +43,24 @@
     <!-- 新闻数据表格 -->
     <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border>
       <el-table-column type="selection" width="40" align="center" />
-      <el-table-column label="新闻标识" prop="newsId" width="150" />
-      <el-table-column v-viewer label="新闻封面" width="150">
+      <el-table-column label="新闻标识" align="center" prop="newsId" width="150" />
+      <el-table-column v-viewer label="新闻封面" align="center" width="150">
         <template slot-scope="scope">
           <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.coverImg" :fit="contain"></el-image>
           <!-- <div><img style="max-height: 100px;" :src="scope.row.coverImg" /></div> -->
         </template>
       </el-table-column>
-      <el-table-column label="新闻标题" prop="newsTitle" :show-overflow-tooltip="true" />
-      <el-table-column label="摘要" prop="digest" :show-overflow-tooltip="true" />
-      <el-table-column label="新闻类型" prop="newsType" width="80" />
-      <el-table-column label="来源" prop="source" :show-overflow-tooltip="true" width="120" />
+      <el-table-column label="新闻标题" align="center" prop="newsTitle" :show-overflow-tooltip="true" />
+      <el-table-column label="摘要" align="center" prop="digest" :show-overflow-tooltip="true" />
+      <el-table-column label="新闻类型" align="center" prop="newsType" width="80" />
+      <el-table-column label="来源" align="center" prop="source" :show-overflow-tooltip="true" width="120" />
       <el-table-column label="app展示" align="center" prop="showInApp" width="80">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.showInApp" active-value="1" inactive-value="0"
             @change="handleShowInAppChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
+      <el-table-column label="阅读量" align="center" prop="viewNum" :show-overflow-tooltip="true" width="80" />
       <el-table-column label="推送时间" align="center" prop="postTime" width="150">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.postTime) }}</span>
@@ -80,7 +81,7 @@
       @pagination="getList" />
 
     <!-- 修改对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="70%" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="12">
@@ -110,7 +111,7 @@
     </el-dialog>
 
     <!-- 新闻详情 -->
-    <el-dialog :title="newsDetails.newsTitle" :data="newsDetails" :visible.sync="openDetails" width="70%" append-to-body>
+    <el-dialog :title="newsDetails.newsTitle" :data="newsDetails" :visible.sync="openDetails" width="80%" append-to-body>
       <div class="newsDetails">
         <hr />
 
@@ -276,6 +277,6 @@ export default {
 
 <style lang="scss" scoped>
 .newsDetails {
-  max-height: 70%;
+  max-height: 80%;
 }
 </style>

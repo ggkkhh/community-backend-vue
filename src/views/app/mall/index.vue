@@ -80,7 +80,7 @@
       @pagination="getList" />
 
     <!-- 修改对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="70%" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="12">
@@ -110,7 +110,7 @@
     </el-dialog>
 
     <!-- 新闻详情 -->
-    <el-dialog :title="newsDetails.newsTitle" :data="newsDetails" :visible.sync="openDetails" width="70%" append-to-body>
+    <el-dialog :title="newsDetails.newsTitle" :data="newsDetails" :visible.sync="openDetails" width="80%" append-to-body>
       <div class="newsDetails">
         <hr />
 
@@ -276,6 +276,6 @@ export default {
 
 <style lang="scss" scoped>
 .newsDetails {
-  max-height: 70%;
+  max-height: 80%;
 }
 </style>

@@ -1,31 +1,14 @@
 <template>
   <div>
-    <el-dialog
-      v-bind="$attrs"
-      width="500px"
-      :close-on-click-modal="false"
-      :modal-append-to-body="false"
-      v-on="$listeners"
-      @open="onOpen"
-      @close="onClose"
-    >
+    <el-dialog v-bind="$attrs" width="500px" :close-on-click-modal="false" :modal-append-to-body="false" v-on="$listeners"
+      @open="onOpen" @close="onClose">
       <el-row :gutter="15">
-        <el-form
-          ref="elForm"
-          :model="formData"
-          :rules="rules"
-          size="medium"
-          label-width="100px"
-        >
+        <el-form ref="elForm" :model="formData" :rules="rules" size="medium" label-width="100px">
           <el-col :span="24">
             <el-form-item label="生成类型" prop="type">
               <el-radio-group v-model="formData.type">
-                <el-radio-button
-                  v-for="(item, index) in typeOptions"
-                  :key="index"
-                  :label="item.value"
-                  :disabled="item.disabled"
-                >
+                <el-radio-button v-for="(item, index) in typeOptions" :key="index" :label="item.value"
+                  :disabled="item.disabled">
                   {{ item.label }}
                 </el-radio-button>
               </el-radio-group>
@@ -82,7 +65,7 @@ export default {
   computed: {
   },
   watch: {},
-  mounted() {},
+  mounted() { },
   methods: {
     onOpen() {
       if (this.showFileName) {

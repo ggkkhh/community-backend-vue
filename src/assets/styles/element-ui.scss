@@ -51,8 +51,9 @@
   overflow: auto;
   border-radius: 20px;
   padding: 20px;
-  max-height: 80vh;
-  .el-dialog__footer{
+  max-height: 90vh;
+
+  .el-dialog__footer {
     text-align: center;
   }
 }
@@ -139,4 +140,15 @@
 
 .el-card {
   border-radius: 10px !important;
+}
+
+.el-transfer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.el-transfer__buttons {
+  padding: 0 !important;
+  margin: auto 10%;
 }

@@ -1,55 +1,20 @@
 <template>
   <div>
-    <el-dialog
-      v-bind="$attrs"
-      :close-on-click-modal="false"
-      :modal-append-to-body="false"
-      v-on="$listeners"
-      @open="onOpen"
-      @close="onClose"
-    >
+    <el-dialog v-bind="$attrs" :close-on-click-modal="false" :modal-append-to-body="false" v-on="$listeners"
+      @open="onOpen" @close="onClose">
       <el-row :gutter="0">
-        <el-form
-          ref="elForm"
-          :model="formData"
-          :rules="rules"
-          size="small"
-          label-width="100px"
-        >
+        <el-form ref="elForm" :model="formData" :rules="rules" size="small" label-width="100px">
           <el-col :span="24">
-            <el-form-item
-              label="选项名"
-              prop="label"
-            >
-              <el-input
-                v-model="formData.label"
-                placeholder="请输入选项名"
-                clearable
-              />
+            <el-form-item label="选项名" prop="label">
+              <el-input v-model="formData.label" placeholder="请输入选项名" clearable />
             </el-form-item>
           </el-col>
           <el-col :span="24">
-            <el-form-item
-              label="选项值"
-              prop="value"
-            >
-              <el-input
-                v-model="formData.value"
-                placeholder="请输入选项值"
-                clearable
-              >
-                <el-select
-                  slot="append"
-                  v-model="dataType"
-                  :style="{width: '100px'}"
-                >
-                  <el-option
-                    v-for="(item, index) in dataTypeOptions"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value"
-                    :disabled="item.disabled"
-                  />
+            <el-form-item label="选项值" prop="value">
+              <el-input v-model="formData.value" placeholder="请输入选项值" clearable>
+                <el-select slot="append" v-model="dataType" :style="{ width: '100px' }">
+                  <el-option v-for="(item, index) in dataTypeOptions" :key="index" :label="item.label" :value="item.value"
+                    :disabled="item.disabled" />
                 </el-select>
               </el-input>
             </el-form-item>
@@ -57,10 +22,7 @@
         </el-form>
       </el-row>
       <div slot="footer">
-        <el-button
-          type="primary"
-          @click="handleConfirm"
-        >
+        <el-button type="primary" @click="handleConfirm">
           确定
         </el-button>
         <el-button @click="close">
@@ -120,8 +82,8 @@ export default {
       this.dataType = isNumberStr(val) ? 'number' : 'string'
     }
   },
-  created() {},
-  mounted() {},
+  created() { },
+  mounted() { },
   methods: {
     onOpen() {
       this.formData = {
@@ -129,7 +91,7 @@ export default {
         value: undefined
       }
     },
-    onClose() {},
+    onClose() { },
     close() {
       this.$emit('update:visible', false)
     },

@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= webpackConfig.name %></title>
-    <!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]-->
-	  <style>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>
+    <%= webpackConfig.name %>
+  </title>
+  <!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]-->
+  <style>
     html,
     body,
     #app {
       height: 100%;
       margin: 0px;
       padding: 0px;
+      box-sizing: border-box;
     }
+
     .chromeframe {
       margin: 0.2em 0;
       background: #ccc;
@@ -92,6 +97,7 @@
         -ms-transform: rotate(0deg);
         transform: rotate(0deg);
       }
+
       100% {
         -webkit-transform: rotate(360deg);
         -ms-transform: rotate(360deg);
@@ -105,6 +111,7 @@
         -ms-transform: rotate(0deg);
         transform: rotate(0deg);
       }
+
       100% {
         -webkit-transform: rotate(360deg);
         -ms-transform: rotate(360deg);
@@ -118,7 +125,7 @@
       top: 0;
       width: 51%;
       height: 100%;
-      background: #7171C6;
+      background: #7f7fe7;
       z-index: 1000;
       -webkit-transform: translateX(0);
       -ms-transform: translateX(0);
@@ -194,15 +201,17 @@
       opacity: 0.5;
     }
   </style>
-  </head>
-  <body>
-    <div id="app">
-	    <div id="loader-wrapper">
-		    <div id="loader"></div>
-		    <div class="loader-section section-left"></div>
-		    <div class="loader-section section-right"></div>
-		    <div class="load_title">正在加载系统资源，请耐心等待</div>
-        </div>
-	</div>
-  </body>
+</head>
+
+<body>
+  <div id="app">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+      <div class="loader-section section-left"></div>
+      <div class="loader-section section-right"></div>
+      <div class="load_title">正在加载系统资源，请耐心等待</div>
+    </div>
+  </div>
+</body>
+
 </html>
