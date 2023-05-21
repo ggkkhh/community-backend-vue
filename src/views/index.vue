@@ -300,7 +300,7 @@ export default {
   justify-content: space-between;
 
   .platform-card {
-    width: 24.5%;
+    width: 24.25%;
     height: 84px;
     margin: 0 auto 10px;
     align-content: center;
