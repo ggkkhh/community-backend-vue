@@ -35,13 +35,14 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:role:remove']">删除</el-button>
+          v-hasPermi="['app:news:remove']">删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <!-- 新闻数据表格 -->
-    <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border>
+    <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border
+      :default-sort="{ prop: 'postTime', order: 'descending' }">
       <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="新闻标识" align="center" prop="newsId" width="150" />
       <el-table-column v-viewer label="新闻封面" align="center" width="150">
@@ -61,7 +62,7 @@
         </template>
       </el-table-column>
       <el-table-column label="阅读量" align="center" prop="viewNum" :show-overflow-tooltip="true" width="80" />
-      <el-table-column label="推送时间" align="center" prop="postTime" width="150">
+      <el-table-column label="推送时间" align="center" prop="postTime" sortable width="150">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.postTime) }}</span>
         </template>
@@ -128,7 +129,7 @@
 import { listNews, newsDetails, changeNewsStatus, delNews, updateNews } from "@/api/app/news";
 
 export default {
-  name: "Role",
+  name: "News",
   dicts: ['app_news_type', 'sys_normal_disable'],
   data() {
     return {

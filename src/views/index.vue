@@ -46,10 +46,18 @@
       </el-col>
       <el-col :xs="24" :sm="24" :lg="12">
         <div class="chart-wrapper">
-          <el-empty description="描述文字"></el-empty>
+          <div class="platform-flex">
+            <el-card v-for="i in 8" :key="i" shadow="hover" class="platform-card">
+              <router-link to="" @click.native="openLink(`https://github.com/`)">
+                <img class="platform-avatar"
+                  src="https://community-server-oss.oss-cn-shanghai.aliyuncs.com/2023/05/21/53699ba393b4495a8c407896567bf0c3favicon.png">
+                <span class="platform-name">github</span>
+              </router-link>
+            </el-card>
+
+          </div>
         </div>
       </el-col>
-
     </el-row>
 
     <el-row :gutter="24">
@@ -196,9 +204,10 @@ export default {
         duration: 0,
       });
     },
-
-
-
+    openLink(link) {
+      console.log(link);
+      window.open(link, "_blank")
+    }
   }
 }
 
@@ -283,5 +292,34 @@ export default {
   .chart-wrapper {
     padding: 10px;
   }
+}
+
+.platform-flex {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  .platform-card {
+    width: 24.5%;
+    height: 84px;
+    margin: 0 auto 10px;
+    align-content: center;
+
+    .platform-avatar {
+      width: 64px;
+      width: 64px;
+      border-radius: 5px;
+    }
+
+    .platform-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 64px;
+      display: inline-block;
+      padding: 0 10px;
+    }
+  }
+
 }
 </style>

@@ -2,28 +2,15 @@
   <div class="app-container">
     <!-- 搜索框 -->
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-      <el-form-item label="新闻标题" prop="newsTitle">
-        <el-input v-model="queryParams.newsTitle" placeholder="请输入新闻标题" clearable style="width: 240px"
+      <el-form-item label="商品标题" prop="goodsTitle">
+        <el-input v-model="queryParams.goodsTitle" placeholder="请输入商品标题" clearable style="width: 240px"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="新闻来源" prop="source">
-        <el-input v-model="queryParams.source" placeholder="请输入新闻来源" clearable style="width: 240px"
-          @keyup.enter.native="handleQuery" />
-      </el-form-item>
-      <el-form-item label="新闻类型" prop="newsType">
-        <el-select v-model="queryParams.newsType" placeholder="新闻类型" clearable style="width: 240px">
-          <el-option v-for="dict in dict.type.app_news_type" :key="dict.value" :label="dict.label" :value="dict.value" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="新闻状态" prop="delFlag">
-        <el-select v-model="queryParams.showInApp" placeholder="新闻状态" clearable style="width: 240px">
-          <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
+      <el-form-item label="上架状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="商品状态" clearable style="width: 240px">
+          <el-option v-for="dict in dict.type.mall_goods_status" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
-      </el-form-item>
-      <el-form-item label="推送时间">
-        <el-date-picker v-model="dateRange" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"
-          range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -34,35 +21,44 @@
     <!-- 操作栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
+          v-hasPermi="['mall:goods:add']">新增</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['mall:goods:edit']">修改</el-button>
+      </el-col>
+      <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:role:remove']">删除</el-button>
+          v-hasPermi="['mall:goods:remove']">删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <!-- 新闻数据表格 -->
-    <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border>
+    <el-table v-viewer v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange" border
+      :default-sort="{ prop: 'updateTime', order: 'descending' }">
       <el-table-column type="selection" width="40" align="center" />
-      <el-table-column label="新闻标识" prop="newsId" width="150" />
-      <el-table-column v-viewer label="新闻封面" width="150">
+      <el-table-column label="商品名称" prop="goodsTitle" :show-overflow-tooltip="true" align="center" />
+      <el-table-column v-viewer label="商品封面" width="150" align="center">
         <template slot-scope="scope">
-          <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.coverImg" :fit="contain"></el-image>
-          <!-- <div><img style="max-height: 100px;" :src="scope.row.coverImg" /></div> -->
+          <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.goodsImg" :fit="contain"></el-image>
         </template>
       </el-table-column>
-      <el-table-column label="新闻标题" prop="newsTitle" :show-overflow-tooltip="true" />
-      <el-table-column label="摘要" prop="digest" :show-overflow-tooltip="true" />
-      <el-table-column label="新闻类型" prop="newsType" width="80" />
-      <el-table-column label="来源" prop="source" :show-overflow-tooltip="true" width="120" />
-      <el-table-column label="app展示" align="center" prop="showInApp" width="80">
+      <el-table-column label="商品描述" prop="goodsDetails" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="单价" prop="goodsPrice" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="库存" prop="stock" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="浏览量" prop="viewNum" width="80" align="center" />
+      <el-table-column label="所属用户" prop="nickName" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="上架/下架" align="center" prop="status" width="80">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.showInApp" active-value="1" inactive-value="0"
+          <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
             @change="handleShowInAppChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="推送时间" align="center" prop="postTime" width="150">
+      <el-table-column label="上架时间" align="center" prop="updateTime" sortable width="150">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.postTime) }}</span>
+          <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
@@ -124,11 +120,11 @@
 </template>
 
 <script>
-import { listNews, newsDetails, changeNewsStatus, delNews, updateNews } from "@/api/app/news";
+import { listGoods } from "@/api/mall/goods";
 
 export default {
-  name: "Role",
-  dicts: ['app_news_type', 'sys_normal_disable'],
+  name: "Goods",
+  dicts: ['sys_normal_disable', 'mall_goods_status'],
   data() {
     return {
       // 遮罩层
@@ -144,7 +140,7 @@ export default {
       // 总条数
       total: 0,
       // 新闻表格数据
-      newsList: [],
+      goodsList: [],
       newsDetails: {},
       contain: "contain",
       // 弹出层标题
@@ -160,10 +156,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        newsTitle: undefined,
-        source: undefined,
-        newsType: undefined,
-        showInApp: undefined
+        goodsTitle: undefined,
+        status: undefined
       },
       // 表单参数
       form: {},
@@ -173,19 +167,19 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询新闻列表 */
+    /** 查询商品列表 */
     getList() {
       this.loading = true;
-      listNews(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-        this.newsList = response.rows;
-        this.total = response.total;
+      listGoods(this.queryParams).then(res => {
+        this.goodsList = res.data;
+        this.total = res.total;
         this.loading = false;
       }
       );
     },
     // 新闻详情
     handleDetails(newsId) {
-      newsDetails(newsId).then(response => {
+      newsDetails(newsId).then(res => {
         this.newsDetails = response.data;
         this.openDetails = true
       }
@@ -202,7 +196,6 @@ export default {
         row.showInApp = row.showInApp === 0 ? 1 : 0;
       });
     },
-
     // 取消按钮
     cancel() {
       this.open = false;
