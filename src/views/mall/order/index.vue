@@ -36,15 +36,15 @@
       :header-cell-style="isCenter">
       <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="订单号" prop="orderId" :show-overflow-tooltip="true" align="center" />
-      <el-table-column label="商品信息" width="350" fixed prop="mallOrderGoodsVOList">
+      <el-table-column label="商品信息" width="350" fixed>
         <template slot-scope="scope">
           <div class="info_box">
             <div class="info_box_img">
-              <img :src="scope.row.mallGoods.goodsImg" alt="" />
+              <img :src="scope.row.goodsImg" alt="" />
             </div>
             <div class="info_describe">
               <p class="text">
-                <span>{{ scope.row.mallGoods.goodsTitle }}</span>
+                <span>{{ scope.row.goodsTitle }}</span>
               </p>
             </div>
           </div>
