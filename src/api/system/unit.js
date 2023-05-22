@@ -10,50 +10,43 @@ export function listUnit(query) {
 }
 
 // 查询列表（排除节点）
-export function listDeptExcludeChild(deptId) {
+export function listUnitExcludeChild(unitId) {
   return request({
-    url: '/system/dept/list/exclude/' + deptId,
+    url: '/system/unit/list/exclude/' + unitId,
     method: 'get'
   })
 }
 
-// 查询社区详细
-export function getDept(deptId) {
+// 查询详细
+export function getUnit(unitId) {
   return request({
-    url: '/system/dept/' + deptId,
+    url: '/system/unit/' + unitId,
     method: 'get'
   })
 }
 
 // 新增
-export function addDept(data) {
+export function addUnit(data) {
   return request({
-    url: '/system/dept',
+    url: '/system/unit',
     method: 'post',
     data: data
   })
 }
 
 // 修改
-export function updateDept(data) {
+export function updateUnit(data) {
   return request({
-    url: '/system/dept',
+    url: '/system/unit',
     method: 'put',
     data: data
   })
 }
 
 // 删除
-export function delDept(deptId) {
+export function delUnit(unitId) {
   return request({
-    url: '/system/dept/' + deptId,
+    url: '/system/unit/' + unitId,
     method: 'delete'
-  })
-}
-//查询社区数量
-export function getCommunityAmount() {
-  return request({
-    url: '/system/dept/amount',
-    method: 'get'
   })
 }
