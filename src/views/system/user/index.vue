@@ -9,12 +9,12 @@
         </div>
         <div class="head-container">
           <el-tree :data="deptOptions" :props="defaultProps" :expand-on-click-node="false"
-            :filter-node-method="filterNode" ref="tree" highlight-current accordion
-            @node-click="handleNodeClick" />
+            :filter-node-method="filterNode" ref="tree" highlight-current accordion @node-click="handleNodeClick" />
         </div>
       </el-col>
       <!--用户数据-->
       <el-col :span="20" :xs="24">
+        <!-- 搜索栏 -->
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="用户名称" prop="userName">
             <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable style="width: 240px"
@@ -31,6 +31,12 @@
           <el-form-item label="状态" prop="status">
             <el-select v-model="queryParams.status" placeholder="用户状态" clearable style="width: 240px">
               <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
+                :value="dict.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="是否租客" prop="isTenant">
+            <el-select v-model="queryParams.isTenant" placeholder="是否租客" clearable style="width: 240px">
+              <el-option v-for="dict in dict.type.sys_user_is_tenant" :key="dict.value" :label="dict.label"
                 :value="dict.value" />
             </el-select>
           </el-form-item>
@@ -75,18 +81,31 @@
             :show-overflow-tooltip="true" />
           <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
             :show-overflow-tooltip="true" />
-          <el-table-column label="社区" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
+          <el-table-column label="所属单元" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
             :show-overflow-tooltip="true" />
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
-            width="120" />
-          <el-table-column label="身份证号" align="center" key="idCard" prop="idCard" v-if="columns[4].visible" width="150" />
-          <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible" width="80">
+            width="100" />
+          <el-table-column label="真实姓名" align="center" key="realName" prop="realName" v-if="columns[5].visible"
+            :show-overflow-tooltip="true" />
+          <el-table-column label="身份证号" align="center" key="idCard" prop="idCard" v-if="columns[6].visible"
+            :show-overflow-tooltip="true" />
+          <el-table-column label="性别" align="center" key="sex" prop="sex" v-if="columns[7].visible" width="80">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.sex" />
+            </template>
+          </el-table-column>
+          <el-table-column label="年龄" align="center" key="age" prop="age" v-if="columns[8].visible" width="80">
+            <template slot-scope="scope">
+              <el-tag>{{ scope.row.age }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="状态" align="center" key="status" v-if="columns[9].visible" width="80">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
                 @change="handleStatusChange(scope.row)"></el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="150">
+          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[10].visible" width="150">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
@@ -119,17 +138,12 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="70%" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="60%" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="用户昵称" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称" maxlength="30" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="归属社区" prop="deptId">
-              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属社区" />
+            <el-form-item label="归属单元" prop="deptId">
+              <treeselect v-model="form.deptId" :options="deptOptions" :show-count="true" placeholder="请选择归属单元" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -140,8 +154,21 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="8">
+            <el-form-item label="角色">
+              <el-select v-model="form.roleIds" multiple placeholder="请选择角色">
+                <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"
+                  :disabled="item.status == 1"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row>
+          <el-col :span="8">
+            <el-form-item label="用户昵称" prop="nickName">
+              <el-input v-model="form.nickName" placeholder="请输入用户昵称" maxlength="30" />
+            </el-form-item>
+          </el-col>
           <el-col :span="8">
             <el-form-item label="手机号码" prop="phonenumber">
               <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
@@ -152,9 +179,24 @@
               <el-input v-model="form.idCard" placeholder="请输入身份证号" maxlength="18" />
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="8">
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="用户性别">
+              <el-select v-model="form.sex" placeholder="请选择性别">
+                <el-option v-for="dict in dict.type.sys_user_sex" :key="dict.value" :label="dict.label"
+                  :value="dict.value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="年龄">
+              <el-input-number v-model="form.age" :min="1" :max="120"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -172,14 +214,6 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-            <el-form-item label="用户性别">
-              <el-select v-model="form.sex" placeholder="请选择性别">
-                <el-option v-for="dict in dict.type.sys_user_sex" :key="dict.value" :label="dict.label"
-                  :value="dict.value"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
                 <el-radio v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.value">{{
@@ -188,14 +222,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="角色">
-              <el-select v-model="form.roleIds" multiple placeholder="请选择角色">
-                <el-option v-for="item in roleOptions" :key="item.roleId" :label="item.roleName" :value="item.roleId"
-                  :disabled="item.status == 1"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+
         </el-row>
         <el-row>
           <el-col :span="24">
@@ -243,7 +270,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "User",
-  dicts: ['sys_normal_disable', 'sys_user_sex'],
+  dicts: ['sys_normal_disable', 'sys_user_sex', 'sys_user_is_tenant'],
   components: { Treeselect },
   data() {
     return {
@@ -305,6 +332,7 @@ export default {
         userName: undefined,
         phonenumber: undefined,
         status: undefined,
+        isTenant: undefined,
         deptId: undefined
       },
       // 列信息
@@ -314,8 +342,12 @@ export default {
         { key: 2, label: `用户昵称`, visible: true },
         { key: 3, label: `社区`, visible: true },
         { key: 4, label: `手机号码`, visible: true },
-        { key: 5, label: `状态`, visible: true },
-        { key: 6, label: `创建时间`, visible: true }
+        { key: 5, label: `真实姓名`, visible: true },
+        { key: 6, label: `身份证号`, visible: true },
+        { key: 7, label: `性别`, visible: true },
+        { key: 8, label: `年龄`, visible: true },
+        { key: 9, label: `状态`, visible: true },
+        { key: 10, label: `创建时间`, visible: true }
       ],
       // 表单校验
       rules: {
@@ -343,7 +375,14 @@ export default {
             message: "请输入正确的手机号码",
             trigger: "blur"
           }
-        ]
+        ],
+        // age: [
+        //   {
+        //     pattern: ,
+        //     message: "请输入合理的年龄",
+        //     trigger: "blur"
+        //   }
+        // ]
       }
     };
   },
@@ -551,7 +590,7 @@ export default {
       this.upload.open = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 80vh;padding: 20px;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
       this.getList();
     },
     // 提交上传文件

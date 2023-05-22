@@ -111,8 +111,8 @@
   display: inline-block;
   width: 600px;
   padding-bottom: 10px;
-  vertical-align: middle;
-  background-color: #FFFFFF;
+  vertical-align: inherit;
+  background-color: #FFFFFF; // #f5f5ff
   border-radius: 20px;
   border: 10px solid #e6ebf5;
   font-size: 18px;

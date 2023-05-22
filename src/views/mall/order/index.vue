@@ -31,22 +31,30 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <!-- 新闻数据表格 -->
-    <el-table v-viewer v-loading="loading" :data="orderList" @selection-change="handleSelectionChange" border>
+    <!-- 订单数据表格-->
+    <el-table v-viewer v-loading="loading" :data="orderList" @selection-change="handleSelectionChange" border
+      :header-cell-style="isCenter">
       <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="订单号" prop="orderId" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="商品信息" width="350" fixed prop="mallOrderGoodsVOList">
+        <template slot-scope="scope">
+          <div class="info_box">
+            <div class="info_box_img">
+              <img :src="scope.row.mallGoods.goodsImg" alt="" />
+            </div>
+            <div class="info_describe">
+              <p class="text">
+                <span>{{ scope.row.mallGoods.goodsTitle }}</span>
+              </p>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column label="用户" prop="userName" :show-overflow-tooltip="true" align="center" />
-
       <el-table-column label="总价" prop="totalPrice" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="支付状态" align="center" prop="payStatus" width="80">
-        <!-- <template slot-scope="scope">
-          <el-switch v-model="scope.row.payStatus" active-value="1" inactive-value="0"
-            @change="handleShowInAppChange(scope.row)"></el-switch>
-        </template> -->
-        <!-- success\info\warning\danger -->
         <template slot-scope="scope">
-          <el-tag :type="scope.row.payStatus === '0' ? 'info' : 'success'">{{ scope.row.payStatus === "0" ? "未支付" : "已支付"
-          }}</el-tag>
+          <dict-tag :options="dict.type.mall_order_pay_status" :value="scope.row.payStatus" />
         </template>
       </el-table-column>
       <el-table-column label="收货地址" prop="mallUserAddress.completeAddress" :show-overflow-tooltip="true" align="center" />
@@ -66,6 +74,7 @@
         </template>
       </el-table-column>
     </el-table>
+
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
 
@@ -161,6 +170,42 @@ export default {
     this.getList();
   },
   methods: {
+    // 合并单元格
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0 || columnIndex === 4 || columnIndex === 5 || columnIndex === 6 || columnIndex === 7 || columnIndex === 8 || columnIndex === 9 || columnIndex === 10) {
+        for (let i = 0; i < this.OrderIndexArr.length; i++) {
+          let element = this.OrderIndexArr[i]
+          for (let j = 0; j < element.length; j++) {
+            let item = element[j]
+            if (rowIndex == item) {
+              if (j == 0) {
+                return {
+                  rowspan: element.length,
+                  colspan: 1
+                }
+              } else if (j != 0) {
+                return {
+                  rowspan: 0,
+                  colspan: 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    tableRowClassName({ row, rowIndex }) {
+      let arr = this.hoverOrderArr
+      for (let i = 0; i < arr.length; i++) {
+        if (rowIndex == arr[i]) {
+          return 'hovered-row'
+        }
+      }
+    },
+    //表格内容居中显示
+    isCenter({ row, column, rowIndex, columnIndex }) {
+      return 'text-align:center'
+    },
     /** 查询商品列表 */
     getList() {
       this.loading = true;

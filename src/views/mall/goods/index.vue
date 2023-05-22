@@ -49,7 +49,12 @@
       <el-table-column label="单价" prop="goodsPrice" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="库存" prop="stock" :show-overflow-tooltip="true" align="center" />
       <el-table-column label="浏览量" prop="viewNum" width="80" align="center" />
-      <el-table-column label="所属用户" prop="nickName" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="所属用户" prop="nickName,avatar" :show-overflow-tooltip="true" align="center" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.nickName }}</span>
+          <img :src="scope.row.avatar">
+        </template>
+      </el-table-column>
       <el-table-column label="上架/下架" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
