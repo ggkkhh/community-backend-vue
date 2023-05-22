@@ -32,80 +32,98 @@
     </el-row>
 
     <!-- 订单数据表格-->
-    <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover">
-      <!-- 订单号等信息 -->
-      <div slot="header" class="clearfix orderInfo">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :lg="4" :xs="24">
-            <div> 订单号：<el-tag>{{ ol.orderId }}</el-tag></div>
-          </el-col>
-          <el-col :lg="4" :xs="24">
-            <div>下单用户：<el-tag>{{ ol.userName }}</el-tag></div>
-          </el-col>
-          <el-col :lg="6" :xs="24">
-            <div>下单时间：<el-tag>{{ parseTime(ol.createTime) }}</el-tag></div>
-          </el-col>
-          <el-col :lg="4" :xs="24">
-            <div>总价：<el-tag>{{ ol.totalPrice + '￥' }}</el-tag></div>
-          </el-col>
-          <el-col :lg="2" :xs="24">
-            <div><dict-tag :options="dict.type.mall_order_pay_status" :value="ol.payStatus" /></div>
-          </el-col>
-          <el-col :lg="6" :xs="24">
-            <div>
-              <el-popover title="支付单号：" :content="ol.orderId" placement="top" trigger="hover">
-                <el-button slot="reference" size="mini" round icon="el-icon-edit">支付单号</el-button>
-              </el-popover>
-              <el-button size="mini" round type="primary" icon="el-icon-view" @click="handleDetails(ol.orderId)"
-                v-hasPermi="['app:news:query']">详情</el-button>
-              <el-button size="mini" round icon="el-icon-edit" @click="handleNoticePay(ol.userId)"
-                v-hasPermi="['app:news:edit']">提醒支付</el-button>
-
-              <!-- <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['app:news:remove']">删除</el-button> -->
+    <!-- <el-table v-viewer v-loading="loading" :data="orderList" @selection-change="handleSelectionChange" border>
+      <el-table-column type="selection" width="40" align="center" />
+      <el-table-column label="订单号" prop="orderId" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="商品信息" width="350" fixed>
+        <template slot-scope="scope">
+          <div class="info_box">
+            <div class="info_box_img">
+              <img :src="scope.row.goodsImg" alt="" />
             </div>
-          </el-col>
-
-          <!-- <span>发货状态：</span><strong>{{ o.status }}</strong> -->
-          <!-- <strong style="float: right">{{ "￥" + o.totalPrice }}</strong><span style="float: right">订单总金额：</span> -->
-          <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
-        </el-row>
-      </div>
-      <!-- 收货地址 -->
-      <div slot="header" class="clearfix mallUserAddress">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :lg="4" :xs="24">
-            <div>收货人<el-tag>{{ ol.mallUserAddress.nickname }}</el-tag></div>
-          </el-col>
-          <el-col :lg="4" :xs="24">
-            <div>联系方式：<el-tag>{{ ol.mallUserAddress.telephone }}</el-tag></div>
-          </el-col>
-          <el-col :lg="16" :xs="24">
-            <div>收货地址：<el-tag>{{ ol.mallUserAddress.provinceCode + ol.mallUserAddress.cityCode +
-              ol.mallUserAddress.regionCode + ol.mallUserAddress.completeAddress }}</el-tag></div>
-          </el-col>
-        </el-row>
-      </div>
-      <!-- 商品表格 -->
-      <el-table v-loading="loading" :data="ol.mallOrderGoodsVOList" class="goods-table" border>
-        <el-table-column v-viewer label="商品封面" width="150" align="center">
-          <template slot-scope="scope">
-            <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.mallGoods.goodsImg"
-              :fit="contain"></el-image>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品名称" prop="mallGoods.goodsTitle" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="卖家" prop="mallGoods.userId" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="单价" prop="price" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="数量" prop="count" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="总价" prop="totalPrice" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="收货状态" prop="receive" :show-overflow-tooltip="true" align="center">
-          <template slot-scope="scope">
-            <dict-tag :options="dict.type.mall_order_goods_receive" :value="scope.row.receive" />
+            <div class="info_describe">
+              <p class="text">
+                <span>{{ scope.row.goodsTitle }}</span>
+              </p>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户" prop="userName" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="总价" prop="totalPrice" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="支付状态" align="center" prop="payStatus" width="80">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.mall_order_pay_status" :value="scope.row.payStatus" />
+        </template>
+      </el-table-column>
+      <el-table-column label="收货地址" prop="mallUserAddress.completeAddress" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="创建时间" align="center" prop="createTime" sortable width="150">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+        <template slot-scope="scope" v-if="scope.row.newsId !== 1">
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row.orderId)"
+            v-hasPermi="['mall:order:query']">详情</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['mall:order:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['mall:order:remove']">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table> -->
+    <el-card>
+      <el-table v-loading="loading" :data="orderList" :show-header="false" class="order-table">
+        <el-table-column>
+          <template v-slot="{ row }">
+            <el-row type="flex" align="middle">
+              <el-col :span="5">
+                订单号：{{ row.orderId }}
+                <el-popover title="支付单号：" :content="row.orderId" placement="right" width="200" trigger="click">
+                  <el-button slot="reference" type="text">更多</el-button>
+                </el-popover>
+              </el-col>
+              <el-col :span="5">下单时间：{{ parseTime(row.createTime) }}</el-col>
+              <el-col :span="4">支付状态：{{ row.payStatus }}
+              </el-col>
+              <el-col :span="6" align="right">
+                <el-button type="text" @click="goToDetail(row)">详情</el-button>
+              </el-col>
+            </el-row>
+            <!-- 订单下的商品 -->
+            <el-table :data="row.mallOrderGoodsVOList" border :show-header="true">
+              <el-table-column label="商品" prop="mallGoods" header-align="center" width="auto" min-width="300">
+                <template v-slot="{ row, $index }">
+                  <div class="goods-info">
+                    <img :src="row.goodsImg" />
+                    <span class="ellipsis-2" :title="row.goodsTitle">{{ row.goodsTitle }}</span>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="单价(元)/数量" prop="goodsPrice" align="center" width="115">
+                <template v-slot="{ row }">
+                  <div>￥{{ (row.originalUnitPrice / 100.0).toFixed(2) }}</div>
+                  <div>{{ row.count }} 件</div>
+                </template>
+              </el-table-column>
+              <!-- TODO @小程：这里应该是一个订单下，多个商品，只展示订单上的总金额，就是 order.payPrice -->
+              <el-table-column label="实付金额(元)" prop="amount" align="center" width="100" />
+              <!-- TODO @小程：这里应该是一个订单下，多个商品，只展示订单上的收件信息；使用 order.receiverXXX 开头的字段 -->
+              <el-table-column label="买家/收货人" prop="buyer" header-align="center" width="auto" min-width="300">
+                <template v-slot="{ row }">
+                  <!-- TODO @芋艿：以后增加一个会员详情界面 -->
+                  <div>{{ row.buyer }}</div>
+                  <div>{{ row.receiver }}{{ row.tel }}</div>
+                  <div class="ellipsis-2" :title="row.address">{{ row.address }}</div>
+                </template>
+              </el-table-column>
+              <!-- TODO @小程：这里应该是一个订单下，多个商品，交易状态是统一的；使用 order.status 字段 -->
+              <el-table-column label="交易状态" prop="status" align="center" width="100" />
+            </el-table>
           </template>
         </el-table-column>
       </el-table>
-
     </el-card>
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
@@ -159,7 +177,7 @@ import { listOrder } from "@/api/mall/order";
 
 export default {
   name: "Goods",
-  dicts: ['sys_normal_disable', 'mall_order_pay_status', 'mall_order_goods_receive'],
+  dicts: ['sys_normal_disable', 'mall_order_pay_status'],
   data() {
     return {
       // 遮罩层

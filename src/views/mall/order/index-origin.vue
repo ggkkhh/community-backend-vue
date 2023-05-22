@@ -32,81 +32,49 @@
     </el-row>
 
     <!-- 订单数据表格-->
-    <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover">
-      <!-- 订单号等信息 -->
-      <div slot="header" class="clearfix orderInfo">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :lg="4" :xs="24">
-            <div> 订单号：<el-tag>{{ ol.orderId }}</el-tag></div>
-          </el-col>
-          <el-col :lg="4" :xs="24">
-            <div>下单用户：<el-tag>{{ ol.userName }}</el-tag></div>
-          </el-col>
-          <el-col :lg="6" :xs="24">
-            <div>下单时间：<el-tag>{{ parseTime(ol.createTime) }}</el-tag></div>
-          </el-col>
-          <el-col :lg="4" :xs="24">
-            <div>总价：<el-tag>{{ ol.totalPrice + '￥' }}</el-tag></div>
-          </el-col>
-          <el-col :lg="2" :xs="24">
-            <div><dict-tag :options="dict.type.mall_order_pay_status" :value="ol.payStatus" /></div>
-          </el-col>
-          <el-col :lg="6" :xs="24">
-            <div>
-              <el-popover title="支付单号：" :content="ol.orderId" placement="top" trigger="hover">
-                <el-button slot="reference" size="mini" round icon="el-icon-edit">支付单号</el-button>
-              </el-popover>
-              <el-button size="mini" round type="primary" icon="el-icon-view" @click="handleDetails(ol.orderId)"
-                v-hasPermi="['app:news:query']">详情</el-button>
-              <el-button size="mini" round icon="el-icon-edit" @click="handleNoticePay(ol.userId)"
-                v-hasPermi="['app:news:edit']">提醒支付</el-button>
-
-              <!-- <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['app:news:remove']">删除</el-button> -->
+    <el-table v-viewer v-loading="loading" :data="orderList" @selection-change="handleSelectionChange" border
+      :header-cell-style="isCenter">
+      <el-table-column type="selection" width="40" align="center" />
+      <el-table-column label="订单号" prop="orderId" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="商品信息" width="350" fixed>
+        <template slot-scope="scope">
+          <div class="info_box">
+            <div class="info_box_img">
+              <img :src="scope.row.goodsImg" alt="" />
             </div>
-          </el-col>
+            <div class="info_describe">
+              <p class="text">
+                <span>{{ scope.row.goodsTitle }}</span>
+              </p>
+            </div>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="用户" prop="userName" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="总价" prop="totalPrice" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="支付状态" align="center" prop="payStatus" width="80">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.mall_order_pay_status" :value="scope.row.payStatus" />
+        </template>
+      </el-table-column>
+      <el-table-column label="收货地址" prop="mallUserAddress.completeAddress" :show-overflow-tooltip="true" align="center" />
+      <el-table-column label="创建时间" align="center" prop="createTime" sortable width="150">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+        <template slot-scope="scope" v-if="scope.row.newsId !== 1">
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row.orderId)"
+            v-hasPermi="['mall:order:query']">详情</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['mall:order:edit']">修改</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['mall:order:remove']">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
-          <!-- <span>发货状态：</span><strong>{{ o.status }}</strong> -->
-          <!-- <strong style="float: right">{{ "￥" + o.totalPrice }}</strong><span style="float: right">订单总金额：</span> -->
-          <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
-        </el-row>
-      </div>
-      <!-- 收货地址 -->
-      <div slot="header" class="clearfix mallUserAddress">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :lg="4" :xs="24">
-            <div>收货人<el-tag>{{ ol.mallUserAddress.nickname }}</el-tag></div>
-          </el-col>
-          <el-col :lg="4" :xs="24">
-            <div>联系方式：<el-tag>{{ ol.mallUserAddress.telephone }}</el-tag></div>
-          </el-col>
-          <el-col :lg="16" :xs="24">
-            <div>收货地址：<el-tag>{{ ol.mallUserAddress.provinceCode + ol.mallUserAddress.cityCode +
-              ol.mallUserAddress.regionCode + ol.mallUserAddress.completeAddress }}</el-tag></div>
-          </el-col>
-        </el-row>
-      </div>
-      <!-- 商品表格 -->
-      <el-table v-loading="loading" :data="ol.mallOrderGoodsVOList" class="goods-table" border>
-        <el-table-column v-viewer label="商品封面" width="150" align="center">
-          <template slot-scope="scope">
-            <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.mallGoods.goodsImg"
-              :fit="contain"></el-image>
-          </template>
-        </el-table-column>
-        <el-table-column label="商品名称" prop="mallGoods.goodsTitle" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="卖家" prop="mallGoods.userId" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="单价" prop="price" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="数量" prop="count" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="总价" prop="totalPrice" :show-overflow-tooltip="true" align="center" />
-        <el-table-column label="收货状态" prop="receive" :show-overflow-tooltip="true" align="center">
-          <template slot-scope="scope">
-            <dict-tag :options="dict.type.mall_order_goods_receive" :value="scope.row.receive" />
-          </template>
-        </el-table-column>
-      </el-table>
-
-    </el-card>
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
 
@@ -159,7 +127,7 @@ import { listOrder } from "@/api/mall/order";
 
 export default {
   name: "Goods",
-  dicts: ['sys_normal_disable', 'mall_order_pay_status', 'mall_order_goods_receive'],
+  dicts: ['sys_normal_disable', 'mall_order_pay_status'],
   data() {
     return {
       // 遮罩层
@@ -202,6 +170,42 @@ export default {
     this.getList();
   },
   methods: {
+    // 合并单元格
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0 || columnIndex === 4 || columnIndex === 5 || columnIndex === 6 || columnIndex === 7 || columnIndex === 8 || columnIndex === 9 || columnIndex === 10) {
+        for (let i = 0; i < this.OrderIndexArr.length; i++) {
+          let element = this.OrderIndexArr[i]
+          for (let j = 0; j < element.length; j++) {
+            let item = element[j]
+            if (rowIndex == item) {
+              if (j == 0) {
+                return {
+                  rowspan: element.length,
+                  colspan: 1
+                }
+              } else if (j != 0) {
+                return {
+                  rowspan: 0,
+                  colspan: 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    tableRowClassName({ row, rowIndex }) {
+      let arr = this.hoverOrderArr
+      for (let i = 0; i < arr.length; i++) {
+        if (rowIndex == arr[i]) {
+          return 'hovered-row'
+        }
+      }
+    },
+    //表格内容居中显示
+    isCenter({ row, column, rowIndex, columnIndex }) {
+      return 'text-align:center'
+    },
     /** 查询商品列表 */
     getList() {
       this.loading = true;
@@ -302,4 +306,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.newsDetails {
+  max-height: 80%;
+}
+</style>
