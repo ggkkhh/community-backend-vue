@@ -196,7 +196,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="年龄">
-              <el-input-number v-model="form.age" :min="1" :max="120"/>
+              <el-input-number v-model="form.age" :min="1" :max="120" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -222,7 +222,6 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-
         </el-row>
         <el-row>
           <el-col :span="24">
