@@ -49,7 +49,7 @@ export default {
   padding: 10px;
 
   .icon-list {
-    height: 200px;
+    height: 300px;
     overflow-y: scroll;
 
     div {
@@ -71,7 +71,7 @@ export default {
     }
 
     div:hover {
-      background-color: #1890ff;
+      background-color: #ffc11888;
     }
 
     span {
