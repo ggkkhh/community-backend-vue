@@ -50,7 +50,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:menu:edit']">修改</el-button>
@@ -83,7 +83,7 @@
           </el-col>
           <el-col :span="24" v-if="form.menuType != 'F'">
             <el-form-item label="菜单图标" prop="icon">
-              <el-popover placement="bottom-start" width="50%" trigger="click" @show="$refs['iconSelect'].reset()">
+              <el-popover placement="bottom-start" width="500px" trigger="click" @show="$refs['iconSelect'].reset()">
                 <IconSelect ref="iconSelect" @selected="selected" />
                 <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
                   <svg-icon v-if="form.icon" slot="prefix" :icon-class="form.icon" class="el-input__icon"
