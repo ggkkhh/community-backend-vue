@@ -202,7 +202,7 @@ export default {
     this.getList();
   },
   methods: {
-    /** 查询商品列表 */
+    /** 查询列表 */
     getList() {
       this.loading = true;
       listOrder(this.queryParams).then(res => {
@@ -212,7 +212,7 @@ export default {
       }
       );
     },
-    // 新闻详情
+    // 详情
     handleDetails(newsId) {
       newsDetails(newsId).then(res => {
         this.newsDetails = response.data;
@@ -220,10 +220,10 @@ export default {
       }
       );
     },
-    // 新闻状态修改
+    // 状态修改
     handleShowInAppChange(row) {
       let text = row.showInApp === 0 ? "停用" : "展示";
-      this.$modal.confirm('确认要"' + text + '""' + row.newsId + '"新闻吗？').then(function () {
+      this.$modal.confirm('确认要"' + text + '""' + row.newsId + '"吗？').then(function () {
         return changeNewsStatus(row.newsId, row.showInApp);
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");
