@@ -329,3 +329,7 @@ h6 {
   max-height: 50vh;
   overflow: auto;
 }
+
+.viewer-container{
+  z-index: 3000 !important;
+}

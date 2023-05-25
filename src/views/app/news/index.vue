@@ -30,7 +30,6 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
     <!-- 操作栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -39,7 +38,6 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
     <!-- 新闻数据表格 -->
     <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border
       :default-sort="{ prop: 'postTime', order: 'descending' }">
@@ -53,7 +51,10 @@
       </el-table-column>
       <el-table-column label="新闻标题" align="center" prop="newsTitle" :show-overflow-tooltip="true" />
       <el-table-column label="摘要" align="center" prop="digest" :show-overflow-tooltip="true" />
-      <el-table-column label="新闻类型" align="center" prop="newsType" width="80" />
+      <el-table-column label="新闻类型" align="center" prop="newsType" width="80">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.app_news_type" :value="scope.row.newsType" />
+        </template></el-table-column>
       <el-table-column label="来源" align="center" prop="source" :show-overflow-tooltip="true" width="120" />
       <el-table-column label="app展示" align="center" prop="showInApp" width="80">
         <template slot-scope="scope">
@@ -80,7 +81,6 @@
     </el-table>
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
-
     <!-- 修改对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="80%" append-to-body>
       <el-form ref="form" :model="form" label-width="100px">
@@ -110,18 +110,14 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-
     <!-- 新闻详情 -->
     <el-dialog :title="newsDetails.newsTitle" :data="newsDetails" :visible.sync="openDetails" width="80%" append-to-body>
       <div class="newsDetails">
         <hr />
-
         <div style="color: gold;text-align: end;">来源 ------ {{ newsDetails.source }}</div>
-
         <div style="overflow:auto;" v-viewer v-html="newsDetails.newsContent"></div>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -187,9 +183,11 @@ export default {
     },
     // 新闻详情
     handleDetails(newsId) {
+      this.loading = true;
       newsDetails(newsId).then(response => {
         this.newsDetails = response.data;
-        this.openDetails = true
+        this.openDetails = true;
+        this.loading = false;
       }
       );
     },
@@ -254,10 +252,12 @@ export default {
     handleDelete(row) {
       const newsIds = row.newsId || this.ids;
       this.$modal.confirm('是否永久删除编号为【' + newsIds + '】的新闻数据？').then(function () {
+        this.loading = true;
         return delNews(newsIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
+        this.loading = false;
       }).catch(() => { });
     },
     /** 提交按钮 */

@@ -83,7 +83,7 @@
           </el-col>
           <el-col :span="24" v-if="form.menuType != 'F'">
             <el-form-item label="菜单图标" prop="icon">
-              <el-popover placement="bottom-start" width="500px" trigger="click" @show="$refs['iconSelect'].reset()">
+              <el-popover placement="bottom-start" width="460px" trigger="click" @show="$refs['iconSelect'].reset()">
                 <IconSelect ref="iconSelect" @selected="selected" />
                 <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
                   <svg-icon v-if="form.icon" slot="prefix" :icon-class="form.icon" class="el-input__icon"
