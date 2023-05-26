@@ -6,7 +6,7 @@ import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
 
 import '@/assets/styles/index.scss' // global css
-import '@/assets/styles/ruoyi.scss' // ruoyi css
+import '@/assets/styles/roydon.scss' // roydon css
 import App from './App'
 import store from './store'
 import router from './router'
@@ -31,7 +31,7 @@ import {
   selectDictLabel,
   selectDictLabels,
   handleTree
-} from "@/utils/ruoyi";
+} from "@/utils/roydon";
 // 分页组件
 import Pagination from "@/components/Pagination";
 // 自定义表格工具组件

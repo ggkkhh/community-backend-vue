@@ -13,7 +13,7 @@ import errorCode from '@/utils/errorCode'
 import {
   tansParams,
   blobValidate
-} from "@/utils/ruoyi";
+} from "@/utils/roydon";
 import cache from '@/plugins/cache'
 import {
   saveAs
