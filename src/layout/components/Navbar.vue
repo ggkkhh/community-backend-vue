@@ -62,8 +62,8 @@ import Search from '@/components/HeaderSearch'
 import Notification from '@/components/Notification'
 import { listNotice } from "@/api/system/notice";
 import { getBase64 } from "@/api/system/qrcode";
-// import RuoYiGit from '@/components/RuoYi/Git'
-// import RuoYiDoc from '@/components/RuoYi/Doc'
+// import RoydonGit from '@/components/Roydon/Git'
+// import RoydonDoc from '@/components/Roydon/Doc'
 
 export default {
   components: {

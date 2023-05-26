@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import {
   parseStrEmpty
-} from "@/utils/ruoyi";
+} from "@/utils/roydon";
 
 // 查询用户列表
 export function listUser(query) {
