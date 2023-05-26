@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            系统社区数量
+            系统住户数量
           </div>
           <count-to :start-val="0" :end-val="sysCommunityAmount" :duration="3000" class="card-panel-num" />
         </div>
@@ -52,7 +52,7 @@ export default {
     return {
       sysCommunityAmount: 1,
       sysUserAmount: 1,
-      sysVisitPeople: 200,
+      sysVisitPeople: 2000,
     }
   },
   components: {
@@ -69,9 +69,9 @@ export default {
       getUserAmount().then(res => {
         this.sysUserAmount = res.data
       }),
-      getCommunityAmount().then(res => {
-      this.sysCommunityAmount = res.data
-      })
+        getCommunityAmount().then(res => {
+          this.sysCommunityAmount = res.data
+        })
 
     }
   }

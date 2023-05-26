@@ -252,12 +252,10 @@ export default {
     handleDelete(row) {
       const newsIds = row.newsId || this.ids;
       this.$modal.confirm('是否永久删除编号为【' + newsIds + '】的新闻数据？').then(function () {
-        this.loading = true;
         return delNews(newsIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-        this.loading = false;
       }).catch(() => { });
     },
     /** 提交按钮 */
