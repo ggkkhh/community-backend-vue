@@ -193,13 +193,13 @@ export default {
     },
     // 新闻状态修改
     handleShowInAppChange(row) {
-      let text = row.showInApp === 1 ? "停用" : "展示";
+      let text = row.showInApp === "0" ? "停用" : "展示";
       this.$modal.confirm('确认要"' + text + '""' + row.newsId + '"新闻吗？').then(function () {
         return changeNewsStatus(row.newsId, row.showInApp);
       }).then(() => {
         this.$modal.msgSuccess(text + "成功");
       }).catch(function () {
-        row.showInApp = row.showInApp === 0 ? 1 : 0;
+        row.showInApp = row.showInApp === "0" ? "1" : "0";
       });
     },
 
