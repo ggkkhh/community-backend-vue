@@ -12,7 +12,7 @@
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="数据状态" clearable>
           <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
-            :value="dict.value" />
+            :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item>
