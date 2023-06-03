@@ -99,6 +99,11 @@
               <el-tag>{{ scope.row.age }}</el-tag>
             </template>
           </el-table-column>
+          <el-table-column label="房东" align="center" key="isTenant" v-if="columns[9].visible" width="80">
+            <template slot-scope="scope">
+              <dict-tag :options="dict.type.sys_user_is_tenant" :value="scope.row.isTenant" />
+            </template>
+          </el-table-column>
           <el-table-column label="状态" align="center" key="status" v-if="columns[9].visible" width="80">
             <template slot-scope="scope">
               <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
@@ -110,7 +115,7 @@
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+          <el-table-column fixed="right" label="操作" align="center" width="160" class-name="small-padding fixed-width">
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
               <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:user:edit']">修改</el-button>
@@ -213,6 +218,18 @@
           </el-col>
         </el-row>
         <el-row>
+          <el-col :span="8">
+            <el-form-item label="房东">
+              <!-- <template slot-scope="scope">
+              <dict-tag :options="dict.type.sys_user_is_tenant" :value="scope.row.isTenant" />
+            </template> -->
+              <el-radio-group v-model="form.isTenant">
+                <el-radio v-for="dict in dict.type.sys_user_is_tenant" :key="dict.value" :label="dict.value">{{
+                  dict.label
+                }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
           <el-col :span="8">
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">

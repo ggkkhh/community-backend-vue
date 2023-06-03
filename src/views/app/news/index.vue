@@ -17,7 +17,7 @@
       </el-form-item>
       <el-form-item label="新闻状态" prop="delFlag">
         <el-select v-model="queryParams.showInApp" placeholder="新闻状态" clearable style="width: 240px">
-          <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
+          <el-option v-for="dict in dict.type.news_show_in_app" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
       </el-form-item>
@@ -126,7 +126,7 @@ import { listNews, newsDetails, changeNewsStatus, delNews, updateNews } from "@/
 
 export default {
   name: "News",
-  dicts: ['app_news_type', 'sys_normal_disable'],
+  dicts: ['app_news_type', 'sys_normal_disable', 'news_show_in_app'],
   data() {
     return {
       // 遮罩层
