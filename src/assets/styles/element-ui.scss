@@ -48,11 +48,15 @@
 
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
-  transform: none;
-  left: 0;
-  position: relative;
-  margin: 0 auto;
-  border-radius: 10px;
+  overflow: auto;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 0 auto !important;
+  max-height: 90vh;
+
+  .el-dialog__footer {
+    text-align: center;
+  }
 }
 
 // refine element ui upload
@@ -84,10 +88,68 @@
   box-sizing: content-box;
 }
 
-.el-menu--collapse
-  > div
-  > .el-submenu
-  > .el-submenu__title
-  .el-submenu__icon-arrow {
+.el-menu--collapse > div > .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
   display: none;
+}
+
+.index-container {
+  margin-bottom: 20px;
+
+  .el-card__body {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+.el-rate {
+  line-height: 2;
+}
+
+.el-message-box {
+  display: inline-block;
+  width: 600px;
+  padding-bottom: 10px;
+  vertical-align: inherit;
+  background-color: #FFFFFF; // #f5f5ff
+  border-radius: 20px;
+  border: 10px solid #e6ebf5;
+  font-size: 18px;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  text-align: left;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.el-dialog {
+  .el-dialog__body {
+    padding: 10px;
+  }
+}
+
+.field .form-cont .el-tabs__nav {
+  width: 100% !important;
+  float: none !important;
+
+  .el-tabs__item {
+    text-align: center;
+    padding: 0 !important;
+    width: 50%;
+  }
+}
+
+.el-card {
+  border-radius: 10px !important;
+}
+
+.el-transfer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.el-transfer__buttons {
+  padding: 0 !important;
+  margin: auto 10%;
 }

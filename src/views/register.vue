@@ -41,7 +41,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-register-footer">
-      <span>Copyright © 2018-2022 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © 2022-2023 roydon.top All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -131,7 +131,8 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.webp");
+  background-color: #e0e4eb;
+  background-image: url("../assets/images/bg.png");
   background-size: cover;
 }
 
@@ -142,7 +143,7 @@ export default {
 }
 
 .register-form {
-  border-radius: 6px;
+  border-radius: 20px;
   background: #ffffff;
   width: 400px;
   padding: 25px 25px 5px 25px;

@@ -38,10 +38,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    // 上传文件大小限制(MB)
+    // 上传文件大小限制(10MB)
     fileSize: {
       type: Number,
-      default: 5,
+      default: 10,
     },
     /* 类型（base64格式、url格式） */
     type: {
@@ -167,7 +167,7 @@ export default {
         // 获取光标所在位置
         let length = quill.getSelection().index;
         // 插入图片  res.url为服务器返回的图片地址
-        quill.insertEmbed(length, "image", process.env.VUE_APP_BASE_API + res.fileName);
+        quill.insertEmbed(length, "image", res.url);
         // 调整光标到最后
         quill.setSelection(length + 1);
       } else {

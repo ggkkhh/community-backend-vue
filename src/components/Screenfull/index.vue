@@ -1,6 +1,8 @@
 <template>
   <div>
-    <svg-icon :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'" @click="click" />
+    <el-tooltip class="item" effect="dark" content="全屏显示" placement="bottom">
+      <svg-icon :icon-class="isFullscreen ? 'exit-fullscreen' : 'fullscreen'" @click="click" />
+    </el-tooltip>
   </div>
 </template>
 
@@ -50,7 +52,6 @@ export default {
   display: inline-block;
   cursor: pointer;
   fill: #5a5e66;
-  ;
   width: 20px;
   height: 20px;
   vertical-align: 10px;

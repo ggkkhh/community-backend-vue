@@ -13,7 +13,7 @@ import errorCode from '@/utils/errorCode'
 import {
   tansParams,
   blobValidate
-} from "@/utils/ruoyi";
+} from "@/utils/roydon";
 import cache from '@/plugins/cache'
 import {
   saveAs
@@ -31,7 +31,7 @@ const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
   baseURL: process.env.VUE_APP_BASE_API,
   // 超时
-  timeout: 10000
+  timeout: 20000
 })
 
 // request拦截器
@@ -136,7 +136,7 @@ service.interceptors.response.use(res => {
     Message({
       message: message,
       type: 'error',
-      duration: 5 * 1000
+      duration: 3 * 1000
     })
     return Promise.reject(error)
   }

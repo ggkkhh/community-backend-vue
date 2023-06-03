@@ -1,6 +1,7 @@
 <template>
-  <div id="app">
-    <router-view />
+  <div id="app" class="app">
+    <router-view/>
+    <el-backtop></el-backtop>
   </div>
 </template>
 

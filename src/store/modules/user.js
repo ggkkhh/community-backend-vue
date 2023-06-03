@@ -1,7 +1,8 @@
 import {
   login,
   logout,
-  getInfo
+  getInfo,
+  smsLogin
 } from '@/api/login'
 import {
   getToken,
@@ -56,6 +57,22 @@ const user = {
       })
     },
 
+    SmsLogin({
+      commit
+    }, userInfo) {
+      const telephone = userInfo.telephone.trim()
+      const phoneCode = userInfo.phoneCode.trim()
+      return new Promise((resolve, reject) => {
+        smsLogin(telephone, phoneCode).then(res => {
+          setToken(res.token)
+          commit('SET_TOKEN', res.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
     // 获取用户信息
     GetInfo({
       commit,
@@ -64,7 +81,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           const user = res.user
-          const avatar = (user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
+          const avatar = (user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : user.avatar;
           if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', res.roles)
             commit('SET_PERMISSIONS', res.permissions)
@@ -79,6 +96,28 @@ const user = {
         })
       })
     },
+    // GetInfo({
+    //   commit,
+    //   state
+    // }) {
+    //   return new Promise((resolve, reject) => {
+    //     getInfo().then(res => {
+    //       const user = res.user
+    //       const avatar = (user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
+    //       if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+    //         commit('SET_ROLES', res.roles)
+    //         commit('SET_PERMISSIONS', res.permissions)
+    //       } else {
+    //         commit('SET_ROLES', ['ROLE_DEFAULT'])
+    //       }
+    //       commit('SET_NAME', user.userName)
+    //       commit('SET_AVATAR', avatar)
+    //       resolve(res)
+    //     }).catch(error => {
+    //       reject(error)
+    //     })
+    //   })
+    // },
 
     // 退出系统
     LogOut({

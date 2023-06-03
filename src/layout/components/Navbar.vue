@@ -1,40 +1,53 @@
 <template>
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
-      @toggleClick="toggleSideBar" />
+               @toggleClick="toggleSideBar"
+    />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav" />
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav" />
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
+    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
 
     <div class="right-menu">
+      <!-- 搜索 -->
       <template v-if="device !== 'mobile'">
-        <search id="header-search" class="right-menu-item" />
-
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
+        <search id="header-search" class="right-menu-item"/>
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <!-- 通知 -->
+      <notification id="notification" :noticeList="noticeList" class="right-menu-item hover-effect"/>
+      <!-- 下载手机App -->
+      <el-tooltip class="svg-icon-item" effect="dark" content="下载手机App" placement="bottom">
+        <el-badge is-dot>
+          <svg-icon icon-class="iphone12" @click.stop="Toast"/>
+        </el-badge>
+      </el-tooltip>
+      <!-- 设置 -->
+      <el-tooltip class="svg-icon-item" effect="dark" content="主题设置" placement="bottom">
+        <el-badge>
+          <svg-icon icon-class="system" @click.stop.native="setting = true"/>
+        </el-badge>
+      </el-tooltip>
+      <!-- 用户头像 -->
+      <el-dropdown class="user-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar">
+          <span class="user-name">{{ name }}</span>
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/profile">
-            <el-dropdown-item>
-              <i class="el-icon-user"></i>
+            <el-dropdown-item icon="el-icon-user">
               <span>个人中心</span>
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item @click.native="setting = true">
-            <i class="el-icon-setting"></i>
-            <span>布局设置</span>
-          </el-dropdown-item>
-          <el-dropdown-item divided @click.native="logout">
-            <i class="el-icon-switch-button"></i>
+          <el-dropdown-item divided @click.native="logout" icon="el-icon-switch-button">
             <span>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <!-- 全屏 -->
+      <template v-if="device !== 'mobile'">
+        <screenfull id="screenfull" class="right-menu-item hover-effect"/>
+      </template>
     </div>
   </div>
 </template>
@@ -47,8 +60,11 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 // import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-// import RuoYiGit from '@/components/RuoYi/Git'
-// import RuoYiDoc from '@/components/RuoYi/Doc'
+import Notification from '@/components/Notification'
+import { listNotice } from '@/api/system/notice'
+import { getBase64 } from '@/api/system/qrcode'
+// import RoydonGit from '@/components/Roydon/Git'
+// import RoydonDoc from '@/components/Roydon/Doc'
 
 export default {
   components: {
@@ -56,12 +72,36 @@ export default {
     TopNav,
     Hamburger,
     Screenfull,
-    Search
+    Search,
+    Notification
+  },
+  data() {
+    return {
+      // 公告表格数据
+      noticeList: [],
+      // 查询参数，noticeType: 1表示只会查询类型为通知的数据
+      queryParams: {
+        pageNum: 1,
+        pageSize: 5,
+        noticeTitle: undefined,
+        noticeType: 1,
+        createBy: undefined
+      },
+      qrCodeQueryParams: {
+        // content 为必填
+        content: 'https://www.roydon.top',
+        logoUrl: 'https://gcore.jsdelivr.net/gh/roydonGuo/CDN/avatar/ganyu.webp',
+        width: 160,
+        height: 160
+      },
+      phoneQrCode: ''
+    }
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
+      'name',
       'device'
     ]),
     setting: {
@@ -81,6 +121,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getNoticeList()
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
@@ -92,10 +135,34 @@ export default {
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
-          location.href = '/index';
+          location.href = '/index'
         })
-      }).catch(() => { });
+      }).catch(() => {
+      })
+    },
+    /** 查询公告列表 */
+    getNoticeList() {
+      listNotice(this.queryParams).then(response => {
+        this.noticeList = response.rows
+      })
+    },
+    Toast() {
+      //调用弹框组件的同时获取二维码
+      getBase64(this.qrCodeQueryParams).then(res => {
+        // console.log(res);
+        this.phoneQrCode = res.data
+        this.$customModal.info({
+          title: '扫码下载手机APP',
+          imgSrc: this.phoneQrCode,
+          content: '',
+          onCancel: () => {
+            console.log('...')
+          }
+        })
+      })
+
     }
+
   }
 }
 </script>
@@ -138,7 +205,8 @@ export default {
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    display: flex;
+    align-items: center;
 
     &:focus {
       outline: none;
@@ -146,8 +214,7 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
-      height: 100%;
+      padding: 0 10px;
       font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
@@ -169,22 +236,43 @@ export default {
         margin-top: 5px;
         position: relative;
 
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
+        .user-container {
+          // margin-right: 20px;
 
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
+          .avatar-wrapper {
+            display: flex;
+            align-items: center;
+
+            .user-avatar {
+              cursor: pointer;
+              width: 40px;
+              height: 40px;
+              border-radius: 10px;
+            }
+
+            .user-name {
+              max-width: 100px;
+              margin-left: 10px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+            .el-icon-caret-bottom {
+              cursor: pointer;
+              position: absolute;
+              right: -20px;
+              top: 25px;
+              font-size: 12px;
+            }
+          }
         }
       }
     }
   }
+}
+.svg-icon-item {
+  padding: 0 10px;
+  cursor: pointer;
 }
 </style>

@@ -6,7 +6,7 @@ import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
 
 import '@/assets/styles/index.scss' // global css
-import '@/assets/styles/ruoyi.scss' // ruoyi css
+import '@/assets/styles/roydon.scss' // roydon css
 import App from './App'
 import store from './store'
 import router from './router'
@@ -31,7 +31,7 @@ import {
   selectDictLabel,
   selectDictLabels,
   handleTree
-} from "@/utils/ruoyi";
+} from "@/utils/roydon";
 // 分页组件
 import Pagination from "@/components/Pagination";
 // 自定义表格工具组件
@@ -50,6 +50,11 @@ import DictTag from '@/components/DictTag'
 import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
+// 图片预览组件
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer'
+// 自定义弹框
+import customModal from '@/components/Toast/modal.js';
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -61,6 +66,7 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+Vue.prototype.$customModal = customModal;
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
@@ -87,6 +93,11 @@ DictData.install()
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'small' // set element-ui default size
+})
+
+Vue.use(Viewer)
+Viewer.setDefaults({
+  zIndexInline: 2022
 })
 
 Vue.config.productionTip = false

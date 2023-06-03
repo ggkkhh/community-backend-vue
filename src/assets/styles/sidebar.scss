@@ -8,7 +8,7 @@
   }
 
   .sidebarHide {
-    margin-left: 0!important;
+    margin-left: 0 !important;
   }
 
   .sidebar-container {
@@ -69,7 +69,8 @@
       width: 100% !important;
     }
 
-    .el-menu-item, .el-submenu__title {
+    .el-menu-item,
+    .el-submenu__title {
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
@@ -83,7 +84,7 @@
       }
     }
 
-    & .theme-dark .is-active > .el-submenu__title {
+    & .theme-dark .is-active>.el-submenu__title {
       color: $base-menu-color-active !important;
     }
 

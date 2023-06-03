@@ -17,7 +17,7 @@ NProgress.configure({
 })
 
 const whiteList = ['/login', '/auth-redirect', '/bind', '/register']
-
+// 封装权限
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
