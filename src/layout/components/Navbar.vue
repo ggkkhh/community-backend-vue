@@ -229,48 +229,40 @@ export default {
       }
     }
 
-    .avatar-container {
-      margin-right: 20px;
+    .user-container {
+      // margin-right: 20px;
 
       .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
+        display: flex;
+        align-items: center;
 
-        .user-container {
-          // margin-right: 20px;
+        .user-avatar {
+          cursor: pointer;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+        }
 
-          .avatar-wrapper {
-            display: flex;
-            align-items: center;
+        .user-name {
+          max-width: 100px;
+          margin-left: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
 
-            .user-avatar {
-              cursor: pointer;
-              width: 40px;
-              height: 40px;
-              border-radius: 10px;
-            }
-
-            .user-name {
-              max-width: 100px;
-              margin-left: 10px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-
-            .el-icon-caret-bottom {
-              cursor: pointer;
-              position: absolute;
-              right: -20px;
-              top: 25px;
-              font-size: 12px;
-            }
-          }
+        .el-icon-caret-bottom {
+          cursor: pointer;
+          position: absolute;
+          right: -20px;
+          top: 25px;
+          font-size: 12px;
         }
       }
     }
   }
 }
+
 .svg-icon-item {
   padding: 0 10px;
   cursor: pointer;
