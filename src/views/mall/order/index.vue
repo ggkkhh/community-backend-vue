@@ -19,7 +19,7 @@
     </el-form>
 
     <!-- 操作栏 -->
-    <el-row :gutter="10" class="mb8">
+    <!-- <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
           v-hasPermi="['mall:order:edit']">修改</el-button>
@@ -29,7 +29,7 @@
           v-hasPermi="['mall:order:remove']">删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+    </el-row> -->
 
     <!-- 订单数据表格-->
     <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover">
