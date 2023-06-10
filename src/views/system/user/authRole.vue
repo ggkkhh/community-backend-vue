@@ -21,10 +21,10 @@
       @selection-change="handleSelectionChange" :data="roles.slice((pageNum - 1) * pageSize, pageNum * pageSize)">
       <el-table-column label="序号" type="index" align="center">
         <template slot-scope="scope">
-          <span>{{(pageNum - 1) * pageSize + scope.$index + 1}}</span>
+          <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column type="selection" :reserve-selection="true" width="40"></el-table-column>
+      <el-table-column type="selection" :reserve-selection="true" align="center" width="50"></el-table-column>
       <el-table-column label="角色编号" align="center" prop="roleId" />
       <el-table-column label="角色名称" align="center" prop="roleName" />
       <el-table-column label="权限字符" align="center" prop="roleKey" />

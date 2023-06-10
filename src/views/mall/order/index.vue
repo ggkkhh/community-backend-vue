@@ -2,8 +2,8 @@
   <div class="app-container">
     <!-- 搜索框 -->
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-      <el-form-item label="用户账号" prop="userName">
-        <el-input v-model="queryParams.userName" placeholder="请输入用户账号" clearable style="width: 240px"
+      <el-form-item label="下单用户" prop="userName">
+        <el-input v-model="queryParams.userName" placeholder="请输入下单用户" clearable style="width: 240px"
           @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="订单状态" prop="payStatus">
@@ -18,70 +18,43 @@
       </el-form-item>
     </el-form>
 
-    <!-- 操作栏 -->
-    <!-- <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['mall:order:edit']">修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['mall:order:remove']">删除</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row> -->
-
     <!-- 订单数据表格-->
     <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover">
       <!-- 订单号等信息 -->
       <div slot="header" class="clearfix orderInfo">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :lg="4" :xs="24">
+        <el-row>
+          <el-col :lg="6" :xs="24">
             <div> 订单号：<el-tag>{{ ol.orderId }}</el-tag></div>
           </el-col>
-          <el-col :lg="4" :xs="24">
+          <el-col :lg="6" :xs="24">
             <div>下单用户：<el-tag>{{ ol.userName }}</el-tag></div>
           </el-col>
           <el-col :lg="6" :xs="24">
             <div>下单时间：<el-tag>{{ parseTime(ol.createTime) }}</el-tag></div>
           </el-col>
-          <el-col :lg="4" :xs="24">
-            <div>总价：<el-tag>{{ ol.totalPrice + '￥' }}</el-tag></div>
-          </el-col>
-          <el-col :lg="2" :xs="24">
-            <div><dict-tag :options="dict.type.mall_order_pay_status" :value="ol.payStatus" /></div>
-          </el-col>
           <el-col :lg="6" :xs="24">
-            <div>
-              <el-popover title="支付单号：" :content="ol.orderId" placement="top" trigger="hover">
-                <el-button slot="reference" size="mini" round icon="el-icon-edit">支付单号</el-button>
-              </el-popover>
-              <el-button size="mini" round type="primary" icon="el-icon-view" @click="handleDetails(ol.orderId)"
-                v-hasPermi="['app:news:query']">详情</el-button>
-              <el-button size="mini" round icon="el-icon-edit" @click="handleNoticePay(ol.userId)"
-                v-hasPermi="['app:news:edit']">提醒支付</el-button>
-
-              <!-- <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['app:news:remove']">删除</el-button> -->
-            </div>
+            <el-popover title="支付单号：" :content="ol.orderId" placement="top" trigger="hover">
+              <el-button slot="reference" size="mini" round icon="el-icon-edit">支付单号</el-button>
+            </el-popover>
           </el-col>
-
-          <!-- <span>发货状态：</span><strong>{{ o.status }}</strong> -->
-          <!-- <strong style="float: right">{{ "￥" + o.totalPrice }}</strong><span style="float: right">订单总金额：</span> -->
-          <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
         </el-row>
       </div>
       <!-- 收货地址 -->
       <div slot="header" class="clearfix mallUserAddress">
-        <el-row type="flex" align="middle" justify="center">
-          <el-col :lg="4" :xs="24">
-            <div>收货人<el-tag>{{ ol.mallUserAddress.nickname }}</el-tag></div>
+        <el-row>
+          <el-col :lg="6" :xs="24">
+            <div>收货人：<el-tag>{{ ol.mallUserAddress.nickname }}</el-tag></div>
           </el-col>
-          <el-col :lg="4" :xs="24">
+          <el-col :lg="6" :xs="24">
             <div>联系方式：<el-tag>{{ ol.mallUserAddress.telephone }}</el-tag></div>
           </el-col>
-          <el-col :lg="16" :xs="24">
-            <div>收货地址：<el-tag>{{ ol.mallUserAddress.provinceCode + ol.mallUserAddress.cityCode +
+          <el-col :lg="6" :xs="24">
+            <div>收货地址：<el-tag>{{
+              ol.mallUserAddress.provinceCode + '-' + ol.mallUserAddress.cityCode + '-' + ol.mallUserAddress.regionCode
+            }}</el-tag></div>
+          </el-col>
+          <el-col :lg="6" :xs="24">
+            <div>详细地址：<el-tag>{{ ol.mallUserAddress.provinceCode + ol.mallUserAddress.cityCode +
               ol.mallUserAddress.regionCode + ol.mallUserAddress.completeAddress }}</el-tag></div>
           </el-col>
         </el-row>
@@ -105,7 +78,24 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <div class="el-card__header">
+        <el-row type="flex" align="middle" justify="center">
+          <el-col :lg="8" :xs="24">
+            <div>总价：<el-tag>{{ ol.totalPrice + '￥' }}</el-tag></div>
+          </el-col>
+          <el-col :lg="8" :xs="24">
+            <div><dict-tag :options="dict.type.mall_order_pay_status" :value="ol.payStatus" /></div>
+          </el-col>
+          <el-col :lg="8" :xs="24">
+            <div class="table-operate">
+              <el-button size="mini" round type="primary" icon="el-icon-view" @click="handleDetails(ol.orderId)"
+                v-hasPermi="['app:news:query']">详情</el-button>
+              <el-button size="mini" round icon="el-icon-edit" @click="handleNoticePay(ol.userId)"
+                v-hasPermi="['app:news:edit']">提醒支付</el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
     </el-card>
     <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
       @pagination="getList" />
@@ -140,7 +130,7 @@
       </div>
     </el-dialog>
 
-    <!-- 新闻详情 -->
+    <!-- 详情 -->
     <el-dialog :title="newsDetails.newsTitle" :data="newsDetails" :visible.sync="openDetails" width="80%" append-to-body>
       <div class="newsDetails">
         <hr />

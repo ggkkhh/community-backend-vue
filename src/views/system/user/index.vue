@@ -16,7 +16,7 @@
       <el-col :span="20" :xs="24">
         <!-- 搜索栏 -->
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="用户名称" prop="userName">
+          <el-form-item label="用户账号" prop="userName">
             <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable style="width: 240px"
               @keyup.enter.native="handleQuery" />
           </el-form-item>
@@ -75,19 +75,20 @@
         </el-row>
         <!-- 用户表格 -->
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange" border>
-          <el-table-column type="selection" width="40" align="center" />
-          <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible"
-            :show-overflow-tooltip="true" />
-          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible"
-            :show-overflow-tooltip="true" />
+          <el-table-column fixed="left" type="selection" width="40" align="center" />
+          <el-table-column fixed="left" label="用户编号" align="center" key="userId" prop="userId"
+            v-if="columns[0].visible" />
+          <el-table-column fixed="left" label="用户账号" align="center" key="userName" prop="userName"
+            v-if="columns[1].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" width="160"
+            v-if="columns[2].visible" :show-overflow-tooltip="true" />
           <el-table-column label="所属单元" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible"
             :show-overflow-tooltip="true" />
           <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible"
-            width="100" />
+            width="120" />
           <el-table-column label="真实姓名" align="center" key="realName" prop="realName" v-if="columns[5].visible"
             :show-overflow-tooltip="true" />
-          <el-table-column label="身份证号" align="center" key="idCard" prop="idCard" v-if="columns[6].visible"
+          <el-table-column label="身份证号" align="center" key="idCard" prop="idCard" width="160" v-if="columns[6].visible"
             :show-overflow-tooltip="true" />
           <el-table-column label="性别" align="center" key="sex" prop="sex" v-if="columns[7].visible" width="80">
             <template slot-scope="scope">
@@ -110,12 +111,12 @@
                 @change="handleStatusChange(scope.row)"></el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[10].visible" width="150">
+          <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[10].visible" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" align="center" width="160" class-name="small-padding fixed-width">
+          <el-table-column fixed="right" label="操作" align="center" width="200" class-name="small-padding fixed-width">
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
               <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:user:edit']">修改</el-button>
