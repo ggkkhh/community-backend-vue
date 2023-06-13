@@ -164,5 +164,4 @@ export default {
   line-height: 110px;
   border-radius: 50%;
 }
-
 </style>

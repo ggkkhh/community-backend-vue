@@ -47,7 +47,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange" border>
-      <el-table-column type="selection" width="60" align="center" />
+      <el-table-column type="selection" width="40" align="center" />
       <el-table-column label="角色编号" prop="roleId" align="center" width="120" />
       <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" />
       <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" />
@@ -59,12 +59,12 @@
             @change="handleStatusChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope" v-if="scope.row.roleId !== 1">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:role:edit']">修改</el-button>

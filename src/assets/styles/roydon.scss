@@ -212,9 +212,9 @@ h6 {
   min-height: 40px;
 }
 
-.el-card__body {
-  padding: 10px 20px;
-}
+// .el-card__body {
+//   padding: 20px;
+// }
 
 .card-box {
   padding-right: 15px;
@@ -333,3 +333,9 @@ h6 {
 .viewer-container {
   z-index: 3000 !important;
 }
+
+div.is-center {
+  text-align: center;
+  margin: 0 auto;
+}
+

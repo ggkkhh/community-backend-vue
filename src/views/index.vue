@@ -32,6 +32,25 @@
       </el-row>
     </div>
 
+    <!-- 随机名言 -->
+    <div class="index-container">
+      <el-row>
+        <el-col :span="24">
+          <el-card>
+            <div class="is-center">
+              <el-tooltip effect="dark" content="点击刷新" placement="top">
+                <div class="is-center" style="cursor: pointer;" @click.stop="getRandomMingyan()"
+                  v-html="randomMingyan.content">
+                </div>
+              </el-tooltip>
+              <hr />
+              <div class="is-center" v-html="randomMingyan.origin"></div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
+
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:10px;margin-bottom:20px;border-radius: 10px;">
@@ -131,6 +150,7 @@ import BarChart from './dashboard/BarChart'
 import { listNotice } from "@/api/system/notice";
 import { mapGetters } from 'vuex'
 import ChinaMap from './dashboard/ChinaMap'
+import axios from 'axios'
 
 const lineChartData = {
   nowCommunityAmount: {
@@ -171,6 +191,8 @@ export default {
       timeDate: new Date(),
       //系统评分
       sysValue: null,
+      //随机名言
+      randomMingyan: {}
     }
   },
   computed: {
@@ -182,6 +204,7 @@ export default {
   },
   created() {
     this.getList()
+    this.getRandomMingyan()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -204,6 +227,15 @@ export default {
     openLink(link) {
       console.log(link);
       window.open(link, "_blank")
+    },
+    getRandomMingyan() {
+      axios({
+        method: 'get',
+        url: 'https://api.xygeng.cn/one'
+      }).then(async (res) => {
+        this.randomMingyan = res.data.data
+        // console.log(this.randomMingyan);
+      })
     }
   }
 }
@@ -244,6 +276,7 @@ export default {
       }
     }
   }
+
   .index-container {
     margin-bottom: 20px;
 

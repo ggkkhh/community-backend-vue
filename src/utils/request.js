@@ -92,7 +92,7 @@ service.interceptors.response.use(res => {
     if (code === 401) {
       if (!isRelogin.show) {
         isRelogin.show = true;
-        MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+        MessageBox.confirm('登录状态已过期，请重新登录', '系统提示', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
@@ -172,7 +172,7 @@ export function download(url, params, filename, config) {
     downloadLoadingInstance.close();
   }).catch((r) => {
     console.error(r)
-    Message.error('下载文件出现错误，请联系管理员！')
+    Message.error('下载文件出错，请联系管理员！')
     downloadLoadingInstance.close();
   })
 }
