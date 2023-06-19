@@ -80,7 +80,7 @@
     .submenu-title-noDropdown,
     .el-submenu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: #0c1e57b0 !important;
       }
     }
 
@@ -93,7 +93,7 @@
       min-width: $base-sidebar-width !important;
 
       &:hover {
-        background-color: #0000001a !important;
+        background-color: #07204bbb !important;
       }
     }
 
@@ -202,7 +202,7 @@
   .el-menu-item {
     &:hover {
       // you can use $subMenuHover
-      background-color: rgba(0, 0, 0, 0.06) !important;
+      background-color: #171479a4 !important;
     }
   }
 

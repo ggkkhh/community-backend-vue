@@ -73,8 +73,9 @@
         <el-form-item label="图片" prop="noticeImgUrl">
           <el-tooltip placement="top">
             <div slot="content">点击上传</div>
-            <el-upload style="text-align: center; margin-bottom: 10px" class="img-uploader" name="appNoticeFile"
-              :headers="headers" :action="uploadUrl" :show-file-list="false" :on-success="handleUploadSuccess">
+            <el-upload style="text-align: center; padding: 10px;border: 2px solid gray;border-radius: 10px;"
+              class="img-uploader" name="appNoticeFile" :headers="headers" :action="uploadUrl" :show-file-list="false"
+              :on-success="handleUploadSuccess">
               <img v-if="form.noticeImgUrl" :src="form.noticeImgUrl" class="img" />
               <i v-else class="el-icon-plus img-uploader-icon"></i> </el-upload>
           </el-tooltip>
@@ -295,17 +296,18 @@ export default {
 }
 
 .img-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
+  font-size: 40px;
+  color: #71767d;
   width: 100%;
-  height: 200px;
+  height: 100%;
   line-height: 200px;
   text-align: center;
 }
 
 .img {
   width: 100%;
-  height: 200px;
+  height: 100%;
+  max-height: 300px;
   display: block;
   border-radius: 10px;
 }
