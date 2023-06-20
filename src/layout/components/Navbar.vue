@@ -88,10 +88,10 @@ export default {
       },
       qrCodeQueryParams: {
         // content 为必填
-        content: 'https://www.roydon.top',
+        content: 'https://pan.baidu.com/s/1UWrboVGVt4Mp7db4rYHZTg?pwd=gany',
         logoUrl: 'https://gcore.jsdelivr.net/gh/roydonGuo/CDN/avatar/ganyu.webp',
-        width: 160,
-        height: 160
+        width: 200,
+        height: 200
       },
       phoneQrCode: ''
     }
