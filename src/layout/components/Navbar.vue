@@ -1,30 +1,29 @@
 <template>
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
-               @toggleClick="toggleSideBar"
-    />
+      @toggleClick="toggleSideBar" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav" />
+    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav" />
 
     <div class="right-menu">
       <!-- 搜索 -->
       <template v-if="device !== 'mobile'">
-        <search id="header-search" class="right-menu-item"/>
+        <search id="header-search" class="right-menu-item" />
       </template>
 
       <!-- 通知 -->
-      <notification id="notification" :noticeList="noticeList" class="right-menu-item hover-effect"/>
+      <notification id="notification" :noticeList="noticeList" class="right-menu-item hover-effect" />
       <!-- 下载手机App -->
       <el-tooltip class="svg-icon-item" effect="dark" content="下载手机App" placement="bottom">
         <el-badge is-dot>
-          <svg-icon icon-class="iphone12" @click.stop="Toast"/>
+          <svg-icon icon-class="iphone12" @click.stop="Toast" />
         </el-badge>
       </el-tooltip>
       <!-- 设置 -->
       <el-tooltip class="svg-icon-item" effect="dark" content="主题设置" placement="bottom">
         <el-badge>
-          <svg-icon icon-class="system" @click.stop.native="setting = true"/>
+          <svg-icon icon-class="system" @click.stop.native="setting = true" />
         </el-badge>
       </el-tooltip>
       <!-- 用户头像 -->
@@ -46,7 +45,7 @@
       </el-dropdown>
       <!-- 全屏 -->
       <template v-if="device !== 'mobile'">
-        <screenfull id="screenfull" class="right-menu-item hover-effect"/>
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
       </template>
     </div>
   </div>

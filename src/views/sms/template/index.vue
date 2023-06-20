@@ -37,17 +37,22 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="templateList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="templateList" @selection-change="handleSelectionChange" border>
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="模板id" align="center" prop="templateId" />
-      <el-table-column label="供应商id" align="center" prop="providerId" />
-      <el-table-column label="供应商名称" align="center" prop="providerName" />
-      <el-table-column label="模板名称" align="center" prop="templateName" />
-      <el-table-column label="模板类型" align="center" prop="templateType" />
-      <el-table-column label="模板code" align="center" prop="templateCode" />
-      <el-table-column label="模板内容" align="center" prop="templateContent" />
-      <el-table-column label="状态0正常1禁用" align="center" prop="status" />
-      <el-table-column label="${comment}" align="center" prop="remark" />
+      <el-table-column label="模板id" align="center" prop="templateId" :show-overflow-tooltip="true" />
+      <el-table-column label="供应商id" align="center" prop="providerId" :show-overflow-tooltip="true" />
+      <el-table-column label="供应商名称" align="center" prop="providerName" :show-overflow-tooltip="true" />
+      <el-table-column label="模板名称" align="center" prop="templateName" :show-overflow-tooltip="true" />
+      <el-table-column label="模板类型" align="center" prop="templateType" :show-overflow-tooltip="true" />
+      <el-table-column label="模板code" align="center" prop="templateCode" :show-overflow-tooltip="true" />
+      <el-table-column label="模板内容" align="center" prop="templateContent" :show-overflow-tooltip="true" />
+      <el-table-column label="状态" align="center" prop="status" width="80">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
+            @change="handleStatusChange(scope.row)"></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
@@ -95,10 +100,11 @@
 </template>
 
 <script>
-import { listTemplate, getTemplate, delTemplate, addTemplate, updateTemplate } from "@/api/sms/template";
+import { listTemplate, getTemplate, delTemplate, addTemplate, updateTemplate, changeTemplateStatus } from "@/api/sms/template";
 
 export default {
   name: "Template",
+  dicts: ['sms_template_status'],
   data() {
     return {
       // 遮罩层
@@ -205,6 +211,17 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改短信模板";
+      });
+    },
+    // 状态修改
+    handleStatusChange(row) {
+      let text = row.status === "1" ? "停用" : "开启";
+      this.$modal.confirm('确认要"' + text + '""' + row.templateId + '"新闻模板吗？').then(function () {
+        return changeTemplateStatus(row.templateId, row.status);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.status = row.status === "1" ? "0" : "1";
       });
     },
     /** 提交按钮 */
