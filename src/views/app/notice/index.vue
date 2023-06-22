@@ -283,26 +283,6 @@ export default {
 </script>
 
 <style scoped>
-.img-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 10px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.img-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-
-.img-uploader-icon {
-  font-size: 40px;
-  color: #71767d;
-  width: 100%;
-  height: 100%;
-  line-height: 200px;
-  text-align: center;
-}
 
 .img {
   width: 100%;

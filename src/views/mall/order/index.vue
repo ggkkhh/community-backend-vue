@@ -19,7 +19,7 @@
     </el-form>
 
     <!-- 订单数据表格-->
-    <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover">
+    <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover" v-loading="loading">
       <!-- 订单号等信息 -->
       <div slot="header" class="clearfix orderInfo">
         <el-row>

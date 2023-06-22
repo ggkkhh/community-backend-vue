@@ -157,3 +157,14 @@
 .el-row--flex.is-align-middle {
   text-align: center;
 }
+
+.el-drawer__header {
+  margin: 0px !important;
+  text-align: center;
+  padding: 20px !important;
+  border-bottom: 2px solid grey;
+}
+
+.el-drawer__body {
+  padding: 20px;
+}
