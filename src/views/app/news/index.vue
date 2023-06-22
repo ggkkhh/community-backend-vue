@@ -33,6 +33,10 @@
     <!-- 操作栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['app:news:edit']">修改</el-button>
+      </el-col>
+      <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
           v-hasPermi="['app:news:remove']">删除</el-button>
       </el-col>
@@ -217,8 +221,9 @@ export default {
     reset() {
       this.form = {
         newsTitle: undefined,
+        source: undefined,
         newsType: undefined,
-        newsContent: undefined
+        showInApp: undefined
       };
       this.resetForm("form");
     },
@@ -242,7 +247,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      newsDetails(row.newsId).then(response => {
+      const newsId = row.newsId || this.ids
+      newsDetails(newsId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改新闻";

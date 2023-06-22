@@ -122,6 +122,10 @@
   backface-visibility: hidden;
 }
 
+.el-message-box__btns {
+  text-align: center !important;
+}
+
 .el-dialog {
   .el-dialog__body {
     padding: 10px;

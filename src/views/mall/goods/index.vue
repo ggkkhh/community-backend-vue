@@ -307,7 +307,8 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      goodsDetails(row.goodsId).then(response => {
+      const goodsId = row.goodsId || this.ids
+      goodsDetails(goodsId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改商品";
