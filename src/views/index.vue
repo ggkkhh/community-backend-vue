@@ -370,7 +370,7 @@ export default {
 .random-wrapper {
   background: #fff;
   padding: 10px;
-  height: 300px;
+  height: 30vh;
   border-radius: 10px;
   margin-bottom: 20px;
 }

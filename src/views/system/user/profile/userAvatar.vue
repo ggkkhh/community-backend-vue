@@ -81,6 +81,7 @@ export default {
     // 编辑头像
     editCropper() {
       this.open = true;
+      // console.log(this.options.img);
     },
     // 打开弹出层结束时的回调
     modalOpened() {
@@ -131,6 +132,7 @@ export default {
     // 实时预览
     realTime(data) {
       this.previews = data;
+      // console.log(this.options.img);
     },
     // 关闭窗口
     closeDialog() {
