@@ -55,8 +55,8 @@
 
     <el-row style="background:#fff;padding:10px;margin-bottom:20px;border-radius: 10px;">
       <line-chart :chart-data="lineChartData" />
-
     </el-row>
+
     <el-row :gutter="24">
       <el-col :xs="24" :sm="24" :lg="12">
         <div class="chart-wrapper">
@@ -73,7 +73,6 @@
                 <span class="platform-name">github</span>
               </router-link>
             </el-card>
-
           </div>
         </div>
       </el-col>
@@ -93,6 +92,24 @@
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <bar-chart />
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="24">
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="random-wrapper">
+          <img style="width: 100%;height: 100%;border-radius: 10px;" src="https://t.mwm.moe/pc/">
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="random-wrapper">
+          <img style="width: 100%;height: 100%;border-radius: 10px;" src="https://t.mwm.moe/ai/">
+        </div>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="8">
+        <div class="random-wrapper">
+          <img style="width: 100%;height: 100%;border-radius: 10px;" src="https://t.mwm.moe/bd/">
         </div>
       </el-col>
     </el-row>
@@ -306,7 +323,6 @@ export default {
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 20px;
-
   }
 }
 
@@ -349,5 +365,13 @@ export default {
     }
   }
 
+}
+
+.random-wrapper {
+  background: #fff;
+  padding: 10px;
+  height: 400px;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 </style>

@@ -30,6 +30,7 @@ div {
     width: 5px;
     height: 5px;
   }
+
   // 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
   &::-webkit-scrollbar-button {
     display: none;
@@ -46,6 +47,7 @@ div {
   &::-webkit-scrollbar-corner {
     display: none;
   }
+
   // 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
   &::-webkit-resizer {
     display: none;

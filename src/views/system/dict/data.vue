@@ -98,6 +98,9 @@
         <el-form-item label="显示排序" prop="dictSort">
           <el-input-number v-model="form.dictSort" controls-position="right" :min="0" />
         </el-form-item>
+        <el-form-item label="显示排序" prop="dictSort" required>
+          <el-slider :max="100" :step='1' v-model="form.dictSort"></el-slider>
+        </el-form-item>
         <el-form-item label="回显样式" prop="listClass">
           <el-select v-model="form.listClass">
             <el-option v-for="item in listClassOptions" :key="item.value" :label="item.label + '(' + item.value + ')'"
