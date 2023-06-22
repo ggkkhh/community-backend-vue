@@ -96,7 +96,7 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="24">
+    <el-row v-viewer :gutter="24">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="random-wrapper">
           <img style="width: 100%;height: 100%;border-radius: 10px;" src="https://t.mwm.moe/pc/">
@@ -370,7 +370,7 @@ export default {
 .random-wrapper {
   background: #fff;
   padding: 10px;
-  height: 400px;
+  height: 300px;
   border-radius: 10px;
   margin-bottom: 20px;
 }
