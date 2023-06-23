@@ -241,7 +241,7 @@ export default {
 }
 
 .drawer-container {
-  padding: 20px;
+  // padding: 20px;
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;

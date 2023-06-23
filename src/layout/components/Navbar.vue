@@ -20,6 +20,9 @@
           <svg-icon icon-class="iphone12" @click.stop="Toast" />
         </el-badge>
       </el-tooltip>
+      <el-tooltip content="布局大小" effect="dark" placement="bottom">
+        <size-select id="size-select" class="right-menu-item hover-effect" />
+      </el-tooltip>
       <!-- 设置 -->
       <el-tooltip class="svg-icon-item" effect="dark" content="主题设置" placement="bottom">
         <el-badge>
@@ -57,7 +60,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import TopNav from '@/components/TopNav'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
-// import SizeSelect from '@/components/SizeSelect'
+import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import Notification from '@/components/Notification'
 import { listNotice } from '@/api/system/notice'
@@ -70,6 +73,7 @@ export default {
     Breadcrumb,
     TopNav,
     Hamburger,
+    SizeSelect,
     Screenfull,
     Search,
     Notification
