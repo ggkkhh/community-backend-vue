@@ -19,7 +19,7 @@
     </el-form>
 
     <!-- 订单数据表格-->
-    <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover" v-loading="loading">
+    <el-card v-for="ol in orderList" :key="ol.orderId" shadow="hover" v-loading="loading" class="order-card">
       <!-- 订单号等信息 -->
       <div slot="header" class="clearfix orderInfo">
         <el-row>
@@ -292,4 +292,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.order-card {
+  margin-bottom: 20px;
+}
+</style>
