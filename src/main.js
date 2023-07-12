@@ -55,6 +55,18 @@ import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 // 自定义弹框
 import customModal from '@/components/Toast/modal.js';
+// vue图片懒加载
+// import VueLazyload from 'vue-lazyload'
+// Vue.use(VueLazyload, {
+//   preLoad: 1.3,
+//   // 懒加载默认加载图片
+//   loading: require('@/assets/logo/logo.png'),
+//   // 加载失败后加载的图片
+//   error: require('@/assets/logo/logo.png'),
+//   attempt: 1
+//   // the default is ['scroll', 'wheel', 'mousewheel', 'resize', 'animationend', 'transitionend']
+//   // listenEvents: [ 'scroll' ]
+// })
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts

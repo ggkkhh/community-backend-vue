@@ -81,7 +81,6 @@ export default {
     // 编辑头像
     editCropper() {
       this.open = true;
-      // console.log(this.options.img);
     },
     // 打开弹出层结束时的回调
     modalOpened() {
@@ -132,13 +131,32 @@ export default {
     // 实时预览
     realTime(data) {
       this.previews = data;
-      // console.log(this.options.img);
     },
     // 关闭窗口
     closeDialog() {
       this.options.img = store.getters.avatar
       this.visible = false;
-    }
+    },
+    // 文件转base64
+    // readFile(file, callback) {
+    //   var reader = new FileReader();
+    //   reader.readAsDataURL(file);
+    //   reader.onload = function (e) {
+    //     callback(e.target.result)
+    //   }
+    // },
+    // base64转文件
+    // dataURLtoFile(dataurl, filename) {
+    //   var arr = dataurl.split(',')
+    //   var mime = arr[0].match(/:(.*?);/)[1]
+    //   var bstr = atob(arr[1])
+    //   var n = bstr.length
+    //   var u8arr = new Uint8Array(n)
+    //   while (n--) {
+    //     u8arr[n] = bstr.charCodeAt(n)
+    //   }
+    //   return new File([u8arr], filename, { type: mime })
+    // },
   }
 };
 </script>

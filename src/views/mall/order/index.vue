@@ -63,7 +63,7 @@
       <el-table v-loading="loading" :data="ol.mallOrderGoodsVOList" class="goods-table" border>
         <el-table-column v-viewer label="商品封面" width="150" align="center">
           <template slot-scope="scope">
-            <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.mallGoods.goodsImg"
+            <el-image style="height: 80px;border-radius: 8px;" lazy :src="scope.row.mallGoods.goodsImg"
               :fit="contain"></el-image>
           </template>
         </el-table-column>

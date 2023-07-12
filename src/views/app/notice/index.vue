@@ -36,7 +36,7 @@
       <el-table-column label="公告ID" align="center" prop="noticeId" />
       <el-table-column v-viewer label="图片地址" align="center" width="150">
         <template slot-scope="scope">
-          <el-image style="height: 80px;border-radius: 10px;" :src="scope.row.noticeImgUrl" :fit="contain"></el-image>
+          <el-image style="height: 80px;border-radius: 10px;" lazy :src="scope.row.noticeImgUrl" :fit="contain"></el-image>
         </template>
       </el-table-column>
       <el-table-column label="标题" align="center" prop="noticeTitle" />

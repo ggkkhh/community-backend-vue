@@ -49,7 +49,15 @@
       <el-table-column label="新闻标识" align="center" prop="newsId" width="150" />
       <el-table-column v-viewer label="新闻封面" align="center" width="150">
         <template slot-scope="scope">
-          <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.coverImg" :fit="contain"></el-image>
+          <!-- :preview-src-list="[scope.row.coverImg]" 开启大图预览 -->
+          <el-image style="height: 80px;border-radius: 8px;" lazy :src="scope.row.coverImg" :fit="contain">
+            <div slot="placeholder" class="image-slot">
+              <i class="el-icon-loading"></i>加载中
+            </div>
+            <div slot="error" class="image-slot">
+              <i class="el-icon-picture-outline"></i>
+            </div>
+          </el-image>
           <!-- <div><img style="max-height: 100px;" :src="scope.row.coverImg" /></div> -->
         </template>
       </el-table-column>

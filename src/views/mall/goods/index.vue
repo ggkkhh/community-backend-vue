@@ -42,7 +42,7 @@
       <el-table-column label="商品名称" prop="goodsTitle" :show-overflow-tooltip="true" align="center" />
       <el-table-column v-viewer label="商品封面" width="150" align="center">
         <template slot-scope="scope">
-          <el-image style="height: 80px;border-radius: 8px;" :src="scope.row.goodsImg" :fit="contain"></el-image>
+          <el-image style="height: 80px;border-radius: 8px;" lazy :src="scope.row.goodsImg" :fit="contain"></el-image>
         </template>
       </el-table-column>
       <el-table-column label="商品描述" prop="goodsDetails" :show-overflow-tooltip="true" align="center" />

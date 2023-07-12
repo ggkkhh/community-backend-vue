@@ -1,6 +1,6 @@
 <template xmlns="">
   <div class="container">
-    <div class="logo"></div>
+    <!-- <div class="logo"></div> -->
     <!-- 登录区域 -->
     <div class="content">
       <!-- 配图 -->
@@ -41,7 +41,7 @@
                     <img :src="codeUrl" @click="getCode" class="login-code-img" />
                   </div>
                 </el-form-item>
-                <el-checkbox v-model="loginForm.rememberMe" style="margin:0 0 25px 0;">记住密码</el-checkbox>
+                <el-checkbox v-model="loginForm.rememberMe" style="margin:0 0 10px 0;">记住密码</el-checkbox>
               </div>
 
               <!-- 手机短信登录 -->
@@ -54,9 +54,7 @@
                 <el-form-item prop="phoneCode">
                   <el-input v-model="loginForm.phoneCode" type="text" auto-complete="off" placeholder="短信验证码"
                     class="sms-login-mobile-code-prefix" @keyup.enter.native="handleLogin">
-                    <template>
-                      <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
-                    </template>
+                    <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon prefix-svg-icon" />
                     <template slot="append">
                       <span v-if="mobileCodeTimer <= 0" class="getMobileCode" @click="getSmsCode"
                         style="cursor: pointer;">获取验证码</span>
@@ -263,5 +261,9 @@ export default {
   :deep(.el-input__prefix) {
     top: 22%;
   }
+}
+
+.prefix-svg-icon {
+  height: 100%;
 }
 </style>
