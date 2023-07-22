@@ -1,7 +1,7 @@
 /* ===== PC DESIGN ===== */
 $W: 1000;
 $H: 1920;
-$picW: 438;
+$picW: 500;
 $picH: 560;
 $formW: 320;
 $tabW: $formW / 2;
@@ -22,7 +22,7 @@ $contentBgColor: #ffffff;
 // container-content-pic
 $picWidth: round($picW / $H * 100) * 1vw;
 $picHeight: inherit;
-$picImage: "../assets/images/pic.png";
+$picImage: "../assets/images/login-form-left-gif-n.gif";
 // container-content-field
 $fieldWidth: $contentWidth - $picWidth;
 $fieldHeight: inherit;

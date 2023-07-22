@@ -12,13 +12,13 @@ export function listNews(query) {
 // 新闻详情
 export function newsDetails(newsId) {
   return request({
-    url: '/app/news/'+newsId,
+    url: '/app/news/' + newsId,
     method: 'get'
   })
 }
 
 // 改变状态
-export function changeNewsStatus(newsId,showInApp) {
+export function changeNewsStatus(newsId, showInApp) {
   const data = {
     newsId,
     showInApp
@@ -26,6 +26,19 @@ export function changeNewsStatus(newsId,showInApp) {
   return request({
     url: '/app/news/changeStatus',
     method: 'put',
+    data: data
+  })
+}
+
+// 改变大图状态
+export function changeNewsShowType(newsId, showType) {
+  const data = {
+    newsId,
+    showType
+  }
+  return request({
+    url: '/app/news/changeShowType',
+    method: 'PUT',
     data: data
   })
 }

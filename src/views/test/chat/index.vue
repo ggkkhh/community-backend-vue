@@ -138,7 +138,8 @@ export default {
         console.log("您的浏览器不支持WebSocket");
       } else {
         console.log("您的浏览器支持WebSocket");
-        let socketUrl = "ws://localhost:8088/chat-server/" + username;
+        // let socketUrl = "ws://127.0.0.1:8088/chat-server/" + username;
+        let socketUrl = "ws://106.14.105.101:8088/chat-server/" + username;
         if (socket != null) {
           socket.close();
           socket = null;

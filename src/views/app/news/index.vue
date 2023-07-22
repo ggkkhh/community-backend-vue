@@ -74,6 +74,12 @@
             @change="handleShowInAppChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
+      <el-table-column label="大图展示" align="center" prop="showType" width="80">
+        <template slot-scope="scope">
+          <el-switch v-model="scope.row.showType" active-value="1" inactive-value="0"
+            @change="handleShowTypeChange(scope.row)"></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column label="阅读量" align="center" prop="viewNum" :show-overflow-tooltip="true" width="80" />
       <el-table-column label="推送时间" align="center" prop="postTime" sortable width="150">
         <template slot-scope="scope">
@@ -134,7 +140,7 @@
 </template>
 
 <script>
-import { listNews, newsDetails, changeNewsStatus, delNews, updateNews } from "@/api/app/news";
+import { listNews, newsDetails, changeNewsStatus, changeNewsShowType, delNews, updateNews } from "@/api/app/news";
 
 export default {
   name: "News",
@@ -214,7 +220,17 @@ export default {
         row.showInApp = row.showInApp === "0" ? "1" : "0";
       });
     },
-
+    // 新闻大图展示
+    handleShowTypeChange(row) {
+      let text = row.showType === "1" ? "大图展示" : "默认展示";
+      this.$modal.confirm('确认要"' + text + '""' + row.newsId + '"新闻吗？').then(function () {
+        return changeNewsShowType(row.newsId, row.showType);
+      }).then(() => {
+        this.$modal.msgSuccess(text + "成功");
+      }).catch(function () {
+        row.showType = row.showType === "1" ? "0" : "1";
+      });
+    },
     // 取消按钮
     cancel() {
       this.open = false;
