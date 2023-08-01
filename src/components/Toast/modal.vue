@@ -95,8 +95,8 @@ export default {
         }
 
         .content-info {
-          min-height: 80px;
-          font-size: 14px;
+          // min-height: 80px;
+          font-size: 16px;
           color: #3e25e1;
           text-align: center;
         }

@@ -46,10 +46,12 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .icon-body {
   width: 100%;
+  max-width: 50vw;
   padding: 10px;
 
   .icon-list {
     height: 300px;
+    min-width: 50vw;
     overflow-y: scroll;
 
     div {
