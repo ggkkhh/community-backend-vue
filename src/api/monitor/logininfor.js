@@ -32,3 +32,11 @@ export function cleanLogininfor() {
     method: 'delete'
   })
 }
+
+// 系统总访问量
+export function getLoginInfoSuccessAmount() {
+  return request({
+    url: '/monitor/loginInfo/total',
+    method: 'get'
+  })
+}

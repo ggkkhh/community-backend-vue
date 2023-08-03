@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="20" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('nowCommunityAmount')">
         <div class="card-panel-icon-wrapper icon-community">
           <svg-icon icon-class="community" class-name="card-panel-icon" />
@@ -13,7 +13,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('nowUserAmount')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
@@ -26,7 +26,20 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData('nowVisitPeople')">
+        <div class="card-panel-icon-wrapper icon-visit-people">
+          <svg-icon icon-class="visit-people" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">
+            系统访问人数
+          </div>
+          <count-to :start-val="0" :end-val="sysVisitPeople" :duration="3000" class="card-panel-num" />
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('nowVisitPeople')">
         <div class="card-panel-icon-wrapper icon-visit-people">
           <svg-icon icon-class="visit-people" class-name="card-panel-icon" />
@@ -46,13 +59,14 @@
 import CountTo from 'vue-count-to'
 import { getUserAmount } from "@/api/system/user";
 import { getCommunityAmount } from "@/api/system/dept";
+import { getLoginInfoSuccessAmount } from "@/api/monitor/logininfor";
 
 export default {
   data() {
     return {
       sysCommunityAmount: 1,
       sysUserAmount: 1,
-      sysVisitPeople: 2000,
+      sysVisitPeople: 200,
     }
   },
   components: {
@@ -68,10 +82,13 @@ export default {
     getAmount() {
       getUserAmount().then(res => {
         this.sysUserAmount = res.data
-      }),
-        getCommunityAmount().then(res => {
-          this.sysCommunityAmount = res.data
-        })
+      })
+      getCommunityAmount().then(res => {
+        this.sysCommunityAmount = res.data
+      })
+      getLoginInfoSuccessAmount().then(res => {
+        this.sysVisitPeople = res.data
+      })
     }
   }
 }
@@ -141,6 +158,8 @@ export default {
     .card-panel-icon {
       float: left;
       font-size: 48px;
+      height: 3rem;
+      width: 3rem;
     }
 
     .card-panel-description {

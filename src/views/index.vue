@@ -96,6 +96,7 @@
       </el-col>
     </el-row>
 
+    <!-- 图片api -->
     <el-row v-viewer :gutter="24">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="random-wrapper">
