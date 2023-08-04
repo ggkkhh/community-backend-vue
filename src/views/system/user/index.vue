@@ -78,6 +78,20 @@
           <el-table-column fixed="left" type="selection" width="40" align="center" />
           <el-table-column fixed="left" label="用户编号" align="center" key="userId" prop="userId"
             v-if="columns[0].visible" />
+          <el-table-column v-viewer label="头像" align="center" width="80">
+            <template slot-scope="scope">
+              <el-image style="height: 50px;border-radius: 6px;" lazy :src="scope.row.avatar"
+                :preview-src-list="[scope.row.avatar]" :fit="contain">
+                <div slot="placeholder" class="image-slot">
+                  <i class="el-icon-loading"></i>加载中...
+                </div>
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+              <!-- <div><img style="max-height: 100px;" :src="scope.row.coverImg" /></div> -->
+            </template>
+          </el-table-column>
           <el-table-column fixed="left" label="用户账号" align="center" key="userName" prop="userName"
             v-if="columns[1].visible" :show-overflow-tooltip="true" />
           <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" width="160"

@@ -52,7 +52,7 @@
           <!-- :preview-src-list="[scope.row.coverImg]" 开启大图预览 -->
           <el-image style="height: 80px;border-radius: 8px;" lazy :src="scope.row.coverImg" :fit="contain">
             <div slot="placeholder" class="image-slot">
-              <i class="el-icon-loading"></i>加载中
+              <i class="el-icon-loading"></i>加载中...
             </div>
             <div slot="error" class="image-slot">
               <i class="el-icon-picture-outline"></i>

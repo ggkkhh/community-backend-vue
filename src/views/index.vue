@@ -223,6 +223,7 @@ export default {
   created() {
     this.getList()
     this.getRandomMingyan()
+    this.roydonLog()
   },
   methods: {
     handleSetLineChartData(type) {
@@ -254,6 +255,38 @@ export default {
         this.randomMingyan = res.data.data
         // console.log(this.randomMingyan);
       })
+    },
+    roydonLog() {
+      console.log(
+        "%croydon",
+        "background-color: gold ; color: pink ;text-shadow: 3px 1px 3px black ; font-weight: bolder ; border-radius: 10px;font-size: 50px ;padding: 10px 100px;"
+      );
+      console.log(
+        "%ccommunity-backend-vue",
+        "background-color: pink ; color: white ; font-weight: bold ; border-radius: 6px;" +
+        "font-size: 32px ; font-style: italic ; text-decoration: underline ; " +
+        "font-family: 'american typewriter' ; text-shadow: 1px 2px 3px black ;"
+      );
+      // console.log(
+      //   "%ccommunity-backend-vue",
+      //   "display: inline-block ; border: 3px solid red ; border-radius: 7px ; " +
+      //   "padding: 10px ; margin: 20px ;"
+      // );
+      // console.log(
+      //   "%ccommunity-backend-vue",
+      //   "display: inline-block ;border-radius: 6px; background-image: url( ' https://community-server-oss.oss-cn-shanghai.aliyuncs.com/notice-file/2023/06/13/wallhaven-nmkek9.jpg2155e5629f274122addc6bd8602cd818.jpg' ); " +
+      //   "background-size: cover ; padding: 10px 175px 158px 10px ; " +
+      //   "border: 2px solid black ; font-size: 12px ; line-height: 12px ; " +
+      //   "font-family: monospace ;"
+      // );
+      console.group(
+        "%cccommunity",
+        "background-color: #e0005a ; color: #ffffff ; font-weight: bold ; padding: 4px ;"
+      );
+      console.log("backend");
+      console.log("vue");
+      console.groupEnd();
+
     }
   }
 }
