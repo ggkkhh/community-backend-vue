@@ -11,7 +11,7 @@
     </div>
 
     <!-- 首页个人信息卡片 -->
-    <div class="index-container">
+    <div class="index-container driver-item">
       <el-row>
         <el-col :span="24">
           <el-card>
@@ -169,6 +169,7 @@ import { listNotice } from "@/api/system/notice";
 import { mapGetters } from 'vuex'
 import ChinaMap from './dashboard/ChinaMap'
 import axios from 'axios'
+// import driver from '@/plugins/driver'
 
 const lineChartData = {
   nowCommunityAmount: {
@@ -287,7 +288,31 @@ export default {
       console.log("vue");
       console.groupEnd();
 
-    }
+    },
+    // setup() {
+    //   const driver = new Driver({
+    //     doneBtnText: '完成',
+    //     closeBtnText: '关闭',
+    //     nextBtnText: '下一步',
+    //     prevBtnText: '上一步'
+    //   })
+    //   const show = () => {
+    //     driver.defineSteps([
+    //       {
+    //         element: '.index-carousel',
+    //         popover: {
+    //           title: '图标',
+    //           description: '这是Vue的图标',
+    //           position: 'bottom',
+    //           offset: 20
+    //         }
+    //       }
+    //     ])
+
+    //     driver.start()
+    //   }
+    // }
+
   }
 }
 </script>

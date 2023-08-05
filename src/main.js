@@ -67,6 +67,9 @@ import customModal from '@/components/Toast/modal.js';
 //   // the default is ['scroll', 'wheel', 'mousewheel', 'resize', 'animationend', 'transitionend']
 //   // listenEvents: [ 'scroll' ]
 // })
+// 页面引导库
+// import Driver from "driver.js"
+// import "driver.js/dist/driver.css"
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -79,6 +82,20 @@ Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
 Vue.prototype.$customModal = customModal;
+
+// const driver = new Driver();
+// Vue.prototype.$Driver = new Driver({
+//   classname: "driver-item", // 为你的指示模块添加类名 如果你要取消 某一个按钮(比如:"上一步""下一步""完成")的 这个类名还是要加上的
+//   animate: true, //在更改突出显示的元素时设置动画
+//   opacity: 0.7, //背景不透明度(0表示只有弹出窗口没有覆盖)
+//   padding: 10, //元素与边缘的距离
+//   allowclose: true, //单击覆盖是否应关闭
+//   donebtntext: "完成", //最后一个按钮上的文本
+//   closebtnext: '关闭', //此步骤的"关闭"按钮上的文本
+//   prevBtnText: "上一步", //此步骤的上一个按钮文本
+//   nextBtnText: '下一步', //此步骤的下一步按钮文本
+//   onNext: (() => {})
+// })
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
