@@ -17,7 +17,6 @@ export function listCategoryExcludeChild(unitId) {
   })
 }
 
-
 // 查询商品分类详细
 export function getCategory(categoryId) {
   return request({

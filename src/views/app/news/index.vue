@@ -21,6 +21,12 @@
             :value="dict.value" />
         </el-select>
       </el-form-item>
+      <el-form-item label="展示状态" prop="showType">
+        <el-select v-model="queryParams.showType" placeholder="展示状态" clearable style="width: 240px">
+          <el-option v-for="dict in dict.type.app_news_show_type" :key="dict.value" :label="dict.label"
+            :value="dict.value" />
+        </el-select>
+      </el-form-item>
       <el-form-item label="推送时间">
         <el-date-picker v-model="dateRange" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"
           range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
@@ -144,7 +150,7 @@ import { listNews, newsDetails, changeNewsStatus, changeNewsShowType, delNews, u
 
 export default {
   name: "News",
-  dicts: ['app_news_type', 'sys_normal_disable', 'news_show_in_app'],
+  dicts: ['app_news_type', 'sys_normal_disable', 'news_show_in_app', 'app_news_show_type'],
   data() {
     return {
       // 遮罩层
@@ -179,7 +185,8 @@ export default {
         newsTitle: undefined,
         source: undefined,
         newsType: undefined,
-        showInApp: undefined
+        showInApp: undefined,
+        showType: undefined,
       },
       // 表单参数
       form: {},

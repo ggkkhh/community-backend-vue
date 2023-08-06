@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <!-- 搜索 -->
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="公告标题" prop="noticeTitle">
         <el-input v-model="queryParams.noticeTitle" placeholder="请输入标题" clearable @keyup.enter.native="handleQuery" />
@@ -14,7 +15,7 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
+    <!-- 操作 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
@@ -30,13 +31,14 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
+    <!-- 数据 -->
     <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange" border>
       <el-table-column type="selection" width="50" align="center" />
       <el-table-column label="公告ID" align="center" prop="noticeId" />
       <el-table-column v-viewer label="图片地址" align="center" width="150">
         <template slot-scope="scope">
-          <el-image style="height: 80px;border-radius: 10px;" lazy :src="scope.row.noticeImgUrl" :fit="contain"></el-image>
+          <el-image style="height: 80px;border-radius: 10px;" lazy :src="scope.row.noticeImgUrl"
+            :fit="contain"></el-image>
         </template>
       </el-table-column>
       <el-table-column label="标题" align="center" prop="noticeTitle" />
@@ -46,6 +48,7 @@
             @change="handleShowInAppChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
+      <el-table-column label="排序" align="center" prop="orderNum" />
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="160">
         <template slot-scope="scope">
@@ -80,13 +83,22 @@
               <i v-else class="el-icon-plus img-uploader-icon"></i> </el-upload>
           </el-tooltip>
         </el-form-item>
-        <el-form-item label="状态" prop="showInApp">
-          <el-radio-group v-model="form.showInApp">
-            <el-radio v-for="dict in dict.type.show_in_app" :key="dict.value" :label="dict.value">{{
-              dict.label
-            }}</el-radio>
-          </el-radio-group>
-        </el-form-item>
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="状态" prop="showInApp">
+              <el-radio-group v-model="form.showInApp">
+                <el-radio v-for="dict in dict.type.show_in_app" :key="dict.value" :label="dict.value">{{
+                  dict.label
+                }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="排序" prop="orderNum">
+              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入备注" />
         </el-form-item>
@@ -178,6 +190,7 @@ export default {
         noticeTitle: null,
         noticeImgUrl: null,
         showInApp: '0',
+        orderNum: 0,
         remark: null
       };
       this.resetForm("form");
@@ -283,7 +296,6 @@ export default {
 </script>
 
 <style scoped>
-
 .img {
   width: 100%;
   height: 100%;
