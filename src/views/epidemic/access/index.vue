@@ -1,10 +1,6 @@
 <template>
   <div class="app-container">
     <!-- 搜索栏 -->
-    <!-- realName: null,
-        telephone: null,
-        accessType: null,
-        reportType: null, -->
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="真实姓名" prop="realName">
         <el-input v-model="queryParams.realName" placeholder="请输入真实姓名" clearable @keyup.enter.native="handleQuery" />

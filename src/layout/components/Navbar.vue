@@ -20,6 +20,7 @@
           <svg-icon icon-class="iphone12" @click.stop="Toast" />
         </el-badge>
       </el-tooltip>
+      <!--布局大小设置 -->
       <el-tooltip content="布局大小" effect="dark" placement="bottom">
         <size-select id="size-select" class="right-menu-item hover-effect" />
       </el-tooltip>
