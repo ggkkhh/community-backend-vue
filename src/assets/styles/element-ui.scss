@@ -176,3 +176,24 @@
 .el-drawer__body {
   padding: 20px;
 }
+
+.el-menu-item>span {
+  white-space: nowrap;
+  overflow: hidden;
+  animation: marquee 3s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.el-dialog__header {
+  text-align: center;
+  font-weight: bold;
+}

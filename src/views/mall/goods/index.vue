@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <!-- 搜索框 -->
+    <!-- 搜索 -->
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
       <el-form-item label="商品标题" prop="goodsTitle">
         <el-input v-model="queryParams.goodsTitle" placeholder="请输入商品标题" clearable style="width: 240px"
@@ -17,8 +17,7 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
-    <!-- 操作栏 -->
+    <!-- 操作 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
@@ -34,8 +33,7 @@
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-
-    <!-- 数据表格 -->
+    <!-- 数据 -->
     <el-table v-viewer v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange" border
       :default-sort="{ prop: 'updateTime', order: 'descending' }">
       <el-table-column type="selection" width="40" align="center" />
