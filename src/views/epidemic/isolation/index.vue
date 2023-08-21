@@ -20,19 +20,23 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['system:record:add']">新增</el-button>
+          v-hasPermi="['epidemic:isolation:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['system:record:edit']">修改</el-button>
+          v-hasPermi="['epidemic:isolation:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:record:remove']">删除</el-button>
+          v-hasPermi="['epidemic:isolation:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['system:record:export']">导出</el-button>
+          v-hasPermi="['epidemic:isolation:export']">导出</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="danger" plain icon="el-icon-edit" size="mini" @click="handlePolicy"
+          v-hasPermi="['epidemic:isolation:edit']">修改隔离政策</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -89,11 +93,27 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 修改隔离政策对话框 -->
+    <el-dialog :title="title" :visible.sync="openPolicy" width="500px" append-to-body>
+      <el-form ref="policyForm" :model="policyForm" :rules="policyRules" label-width="120px">
+        <el-form-item label="隔离时长(天)" prop="isolationDay">
+          <el-input-number v-model="policyForm.isolationDay" :min="1" :max="14" :precision="0" label="请输入隔离天数" />
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="policyForm.remark" placeholder="请输入备注" type="textarea" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitPolicyForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listRecord, getRecord, delRecord, addRecord, updateRecord } from "@/api/epidemic/isolation";
+import { listRecord, getRecord, delRecord, addRecord, updateRecord, getPolicy, updatePolicy } from "@/api/epidemic/isolation";
 
 export default {
   name: "Record",
@@ -118,6 +138,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 是否显示隔离政策弹窗
+      openPolicy: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -139,6 +161,13 @@ export default {
         isolationTime: [
           { required: true, message: "隔离时长不能为空", trigger: "blur" }
         ]
+      },
+      // 隔离政策
+      policyForm: {},
+      policyRules: {
+        isolationDay: [
+          { required: true, message: "隔离时长不能为空", trigger: "blur" }
+        ]
       }
     };
   },
@@ -158,6 +187,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.openPolicy = false;
       this.reset();
     },
     // 表单重置
@@ -170,6 +200,10 @@ export default {
         remark: null
       };
       this.resetForm("form");
+      this.policyForm = {
+        isolationDay: null,
+        remark: null
+      }
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -203,6 +237,14 @@ export default {
         this.title = "修改隔离记录";
       });
     },
+    // 隔离政策操作
+    handlePolicy() {
+      getPolicy(1).then(response => {
+        this.policyForm = response.data;
+        this.openPolicy = true;
+        this.title = "修改隔离政策";
+      });
+    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -222,6 +264,16 @@ export default {
           }
         }
       });
+    },
+    submitPolicyForm() {
+      this.$refs["policyForm"].validate(valid => {
+        if (valid) {
+          updatePolicy(this.policyForm).then(response => {
+            this.$modal.msgSuccess("修改成功");
+            this.openPolicy = false;
+          });
+        }
+      })
     },
     /** 删除按钮操作 */
     handleDelete(row) {

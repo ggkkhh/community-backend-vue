@@ -42,3 +42,22 @@ export function delRecord(recordId) {
     method: 'delete'
   })
 }
+
+// 隔离政策列表===============================================
+// 查询隔离政策详细
+export function getPolicy(policyId) {
+  return request({
+    url: '/epidemic/isolation/policy/' + policyId,
+    method: 'get'
+  })
+}
+
+// 修改隔离政策
+export function updatePolicy(data) {
+  return request({
+    url: '/epidemic/isolation/policy',
+    method: 'put',
+    data: data
+  })
+}
+//=========================================================
