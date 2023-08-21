@@ -87,18 +87,18 @@
         </template>
       </el-table-column>
       <el-table-column label="阅读量" align="center" prop="viewNum" :show-overflow-tooltip="true" width="80" />
-      <el-table-column label="推送时间" align="center" prop="postTime" sortable width="150">
+      <el-table-column label="推送时间" align="center" prop="postTime" sortable width="160">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.postTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="scope" v-if="scope.row.newsId !== 1">
-          <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetails(scope.row.newsId)"
+          <el-button size="mini" round icon="el-icon-view" type="primary" @click="handleDetails(scope.row.newsId)"
             v-hasPermi="['app:news:query']">详情</el-button>
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+          <el-button size="mini" round icon="el-icon-edit" type="warning" @click="handleUpdate(scope.row)"
             v-hasPermi="['app:news:edit']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+          <el-button size="mini" round icon="el-icon-delete" type="danger" @click="handleDelete(scope.row)"
             v-hasPermi="['app:news:remove']">删除</el-button>
         </template>
       </el-table-column>
