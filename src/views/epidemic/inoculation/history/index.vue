@@ -51,7 +51,7 @@
       <el-table-column label="联系电话" align="center" prop="telephone" />
       <el-table-column label="身份证号" align="center" prop="idCard" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:history:edit']">修改</el-button>

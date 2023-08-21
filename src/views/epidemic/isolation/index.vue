@@ -44,13 +44,13 @@
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange" border>
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="用户id" align="center" prop="userId" />
-      <el-table-column label="用户" align="center" prop="username" />
+      <el-table-column label="创建账号" align="center" prop="username" />
       <el-table-column label="真实姓名" align="center" prop="realName" />
       <el-table-column label="联系电话" align="center" prop="telephone" />
       <el-table-column label="隔离时长(天)" align="center" prop="isolationTime" />
       <el-table-column label="隔离结束时间" align="center" prop="isolationFinishTime" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:record:edit']">修改</el-button>

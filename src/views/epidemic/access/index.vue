@@ -67,7 +67,7 @@
       <el-table-column label="修改人" align="center" prop="updateBy" width="160" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
       <el-table-column label="修改时间" align="center" prop="updateTime" width="160" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['epidemic:access:edit']">修改</el-button>
@@ -263,6 +263,15 @@ export default {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
+              // 弹出已添加隔离记录
+              if (this.form.accessType === '1') {
+                this.$notify({
+                  title: '已添加一条隔离记录',
+                  dangerouslyUseHTMLString: true,
+                  message: '收到<strong>' + this.form.realName + '</strong>的进入社区报备，已根据隔离政策添加隔离记录',
+                  type: 'success'
+                });
+              }
             });
           }
         }
