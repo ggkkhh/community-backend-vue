@@ -73,7 +73,8 @@ export default {
           this.fileList = list.map(item => {
             if (typeof item === "string") {
               if (item.indexOf(this.baseUrl) === -1) {
-                item = { name: this.baseUrl + item, url: this.baseUrl + item };
+                // item = { name: this.baseUrl + item, url: this.baseUrl + item };
+                item = { name: item, url: item };
               } else {
                 item = { name: item, url: item };
               }
@@ -134,7 +135,8 @@ export default {
     // 上传成功回调
     handleUploadSuccess(res, file) {
       if (res.code === 200) {
-        this.uploadList.push({ name: res.fileName, url: res.fileName });
+        // this.uploadList.push({ name: res.fileName, url: res.fileName });
+        this.uploadList.push({ name: res.fileName, url: res.url });
         this.uploadedSuccessfully();
       } else {
         this.number--;
@@ -178,7 +180,8 @@ export default {
       separator = separator || ",";
       for (let i in list) {
         if (list[i].url) {
-          strs += list[i].url.replace(this.baseUrl, "") + separator;
+          // strs += list[i].url.replace(this.baseUrl, "") + separator;
+          strs += list[i].url + separator;
         }
       }
       return strs != '' ? strs.substr(0, strs.length - 1) : '';
