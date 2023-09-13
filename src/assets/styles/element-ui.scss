@@ -197,3 +197,17 @@
   text-align: center;
   font-weight: bold;
 }
+
+.el-input__inner {
+  border-radius: 6px;
+}
+
+.el-button--medium {
+  border-radius: 8px;
+  box-shadow: 0 2px 0 rgba(5, 40, 130, 0.2);
+  ;
+}
+
+.el-button--mini {
+  border-radius: 6px;
+}

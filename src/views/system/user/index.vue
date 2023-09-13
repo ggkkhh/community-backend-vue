@@ -335,6 +335,8 @@ export default {
       postOptions: [],
       // 角色选项
       roleOptions: [],
+      // 用户头像填充方式
+      contain: 'fit',
       // 表单参数
       form: {},
       defaultProps: {
