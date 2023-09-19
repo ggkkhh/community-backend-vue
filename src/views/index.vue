@@ -32,25 +32,6 @@
       </el-row>
     </div>
 
-    <!-- 随机名言 -->
-    <div class="index-container">
-      <el-row>
-        <el-col :span="24">
-          <el-card>
-            <div class="is-center">
-              <el-tooltip effect="dark" content="点击刷新" placement="top">
-                <div class="is-center" style="cursor: pointer;" @click.stop="getRandomMingyan()"
-                  v-html="randomMingyan.content">
-                </div>
-              </el-tooltip>
-              <hr />
-              <div class="is-center" v-html="randomMingyan.origin"></div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
-    </div>
-
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:10px;margin-bottom:20px;border-radius: 10px;">
@@ -97,7 +78,7 @@
     </el-row>
 
     <!-- 图片api -->
-    <el-row v-viewer :gutter="24">
+    <!-- <el-row v-viewer :gutter="24">
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="random-wrapper">
           <img style="width: 100%;height: 100%;border-radius: 10px;" src="https://t.mwm.moe/pc/">
@@ -113,7 +94,26 @@
           <img style="width: 100%;height: 100%;border-radius: 10px;" src="https://t.mwm.moe/bd/">
         </div>
       </el-col>
-    </el-row>
+    </el-row> -->
+
+    <!-- 随机名言 -->
+    <div class="index-container">
+      <el-row>
+        <el-col :span="24">
+          <el-card>
+            <div class="is-center">
+              <el-tooltip effect="dark" content="点击刷新" placement="top">
+                <div class="is-center" style="cursor: pointer;" @click.stop="getRandomMingyan()"
+                  v-html="randomMingyan.content">
+                </div>
+              </el-tooltip>
+              <hr />
+              <div class="is-center" v-html="randomMingyan.origin"></div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
 
     <el-row :gutter="24">
       <el-col :xs="24" :sm="24" :lg="8">

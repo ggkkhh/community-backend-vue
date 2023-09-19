@@ -233,7 +233,7 @@ export default {
 .tags-view-container {
   height: 34px;
   width: 100%;
-  background: #fff;
+  background: white;
   border-bottom: 1px solid #d8dce5;
   box-shadow: 1px 0px grey;
 
@@ -243,7 +243,7 @@ export default {
       position: relative;
       cursor: pointer;
       height: 26px;
-      border-radius: 10px;
+      border-radius: 6px;
       line-height: 26px;
       border: 1px solid #d8dce5;
       color: #495060;

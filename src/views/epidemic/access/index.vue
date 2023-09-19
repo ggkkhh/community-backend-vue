@@ -46,10 +46,10 @@
     </el-row>
     <!-- 数据表格 -->
     <el-table v-loading="loading" :data="recordList" @selection-change="handleSelectionChange" border>
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户账号" align="center" prop="username" />
-      <el-table-column label="真实姓名" align="center" prop="realName" />
-      <el-table-column label="联系电话" align="center" prop="telephone" />
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column label="用户账号" align="center" prop="username" :show-overflow-tooltip="true" />
+      <el-table-column label="真实姓名" align="center" prop="realName" :show-overflow-tooltip="true" />
+      <el-table-column label="联系电话" align="center" prop="telephone" :show-overflow-tooltip="true" />
       <el-table-column label="进出类型" align="center" prop="accessType" width="80">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.access_type" :value="scope.row.accessType" />
@@ -63,8 +63,8 @@
       <el-table-column label="出发地" align="center" prop="placeStart" :show-overflow-tooltip="true" />
       <el-table-column label="目的地" align="center" prop="placeEnd" :show-overflow-tooltip="true" />
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
-      <el-table-column label="创建人" align="center" prop="createBy" width="160" />
-      <el-table-column label="修改人" align="center" prop="updateBy" width="160" />
+      <el-table-column label="创建人" align="center" prop="createBy" :show-overflow-tooltip="true" />
+      <el-table-column label="修改人" align="center" prop="updateBy" :show-overflow-tooltip="true" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
       <el-table-column label="修改时间" align="center" prop="updateTime" width="160" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">

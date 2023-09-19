@@ -199,7 +199,7 @@
 }
 
 .el-input__inner {
-  border-radius: 6px;
+  border-radius: 0.4rem;
 }
 
 .el-button--medium {
@@ -209,5 +209,14 @@
 }
 
 .el-button--mini {
-  border-radius: 6px;
+  border-radius: 0.4rem;
+  box-shadow: 1px 1px 0px #80808030;
+}
+
+.el-picker-panel {
+  border-radius: 0.8rem;
+}
+
+.el-popper {
+  border-radius: 0.6rem;
 }

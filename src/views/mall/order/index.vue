@@ -24,7 +24,7 @@
       <div slot="header" class="clearfix orderInfo">
         <el-row>
           <el-col :lg="6" :xs="24">
-            <div> 订单号：<el-tag>{{ ol.orderId }}</el-tag></div>
+            <div class="overflow-flex"> 订单号：<el-tag>{{ ol.orderId }}</el-tag></div>
           </el-col>
           <el-col :lg="6" :xs="24">
             <div>下单用户：<el-tag>{{ ol.userName }}</el-tag></div>
@@ -49,13 +49,11 @@
             <div>联系方式：<el-tag>{{ ol.mallUserAddress.telephone }}</el-tag></div>
           </el-col>
           <el-col :lg="6" :xs="24">
-            <div>收货地址：<el-tag>{{
-              ol.mallUserAddress.provinceCode + '-' + ol.mallUserAddress.cityCode + '-' + ol.mallUserAddress.regionCode
+            <div>收货地址：<el-tag>{{ ol.mallUserAddress.regionCode
             }}</el-tag></div>
           </el-col>
           <el-col :lg="6" :xs="24">
-            <div>详细地址：<el-tag>{{ ol.mallUserAddress.provinceCode + ol.mallUserAddress.cityCode +
-              ol.mallUserAddress.regionCode + ol.mallUserAddress.completeAddress }}</el-tag></div>
+            <div class="overflow-flex">详细地址：<el-tag>{{ ol.mallUserAddress.completeAddress }}</el-tag></div>
           </el-col>
         </el-row>
       </div>
@@ -81,7 +79,7 @@
       <div class="el-card__header">
         <el-row type="flex" align="middle" justify="center">
           <el-col :lg="8" :xs="24">
-            <div>总价：<el-tag>{{ ol.totalPrice + '￥' }}</el-tag></div>
+            <div>总价：<el-tag>{{ '￥' + ol.totalPrice }}</el-tag></div>
           </el-col>
           <el-col :lg="8" :xs="24">
             <div><dict-tag :options="dict.type.mall_order_pay_status" :value="ol.payStatus" /></div>
@@ -295,5 +293,11 @@ export default {
 <style lang="scss" scoped>
 .order-card {
   margin-bottom: 20px;
+}
+
+.overflow-flex {
+  overflow: hidden;
+  white-space: nowrap;
+  // text-overflow: ellipsis;
 }
 </style>

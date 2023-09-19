@@ -52,7 +52,7 @@
     <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border
       :default-sort="{ prop: 'postTime', order: 'descending' }">
       <el-table-column type="selection" width="40" align="center" />
-      <el-table-column label="新闻标识" align="center" prop="newsId" width="150" />
+      <el-table-column label="新闻标识" align="center" prop="newsId" :show-overflow-tooltip="true" />
       <el-table-column v-viewer label="新闻封面" align="center" width="150">
         <template slot-scope="scope">
           <!-- :preview-src-list="[scope.row.coverImg]" 开启大图预览 -->
@@ -227,11 +227,9 @@ export default {
     },
     // 新闻详情
     handleDetails(newsId) {
-      this.loading = true;
       newsDetails(newsId).then(response => {
         this.newsDetails = response.data;
         this.openDetails = true;
-        this.loading = false;
       }
       );
     },

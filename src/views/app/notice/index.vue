@@ -57,9 +57,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+          <el-button size="mini" round type="warning" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['app:notice:edit']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+          <el-button size="mini" round type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)"
             v-hasPermi="['app:notice:remove']">删除</el-button>
         </template>
       </el-table-column>
