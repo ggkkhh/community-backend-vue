@@ -51,7 +51,7 @@
       <el-table-column label="姓名" align="center" prop="realName" />
       <el-table-column label="联系电话" align="center" prop="telephone" />
       <el-table-column label="身份证号" align="center" prop="idCard" />
-      <el-table-column label="预约时间" align="center" prop="orderTime" sortable width="160">
+      <el-table-column label="预约时间" align="center" prop="orderTime" width="160">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.orderTime) }}</span>
         </template>
@@ -86,6 +86,13 @@
         </el-form-item>
         <el-form-item label="身份证号" prop="idCard">
           <el-input v-model="form.idCard" placeholder="请输入身份证号" />
+        </el-form-item>
+        <el-form-item label="预约状态" prop="orderStatus" v-if="title == '修改预约核酸检测NAT'">
+          <el-radio-group v-model="form.orderStatus">
+            <el-radio v-for="dict in dict.type.nat_order_status" :key="dict.value" :label="dict.value">{{
+              dict.label
+            }}</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入备注" />
@@ -179,7 +186,7 @@ export default {
         realName: null,
         telephone: null,
         idCard: null,
-        orderStatus: null,
+        orderStatus: '0',
         createTime: null,
         updateTime: null,
         createBy: null,

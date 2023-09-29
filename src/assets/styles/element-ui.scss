@@ -220,3 +220,11 @@
 .el-popper {
   border-radius: 0.6rem;
 }
+
+.el-input-number__increase {
+  border-radius: 0 6px 6px 0;
+}
+
+.el-input-number__decrease {
+  border-radius: 6px 0 0 6px;
+}

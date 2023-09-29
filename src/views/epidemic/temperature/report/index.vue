@@ -45,11 +45,11 @@
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="用户名" align="center" prop="username" />
       <el-table-column label="真实姓名" align="center" prop="realName" />
-      <el-table-column label="联系电话" align="center" prop="telephone" />
-      <el-table-column label="身份证号" align="center" prop="idCard" />
+      <el-table-column label="联系电话" align="center" prop="telephone" :show-overflow-tooltip="true" />
+      <el-table-column label="身份证号" align="center" prop="idCard" :show-overflow-tooltip="true" />
       <el-table-column label="体温" align="center" prop="temperature">
         <template slot-scope="scope">
-          <span>{{ scope.row.temperature + ' `C' }}</span>
+          <span>{{ scope.row.temperature + ' ℃' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="上报时间" align="center" prop="createTime" sortable width="160">
@@ -58,12 +58,12 @@
         </template>
       </el-table-column>
       <el-table-column label="上报账号" align="center" prop="createBy" />
-      <!-- <el-table-column label="备注" align="center" prop="remark" /> -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope">
-          <!-- <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['temperature:report:edit']">修改</el-button> -->
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+          <el-button size="mini" round type="warning" icon="el-icon-edit" @click="handleUpdate(scope.row)"
+            v-hasPermi="['temperature:report:edit']">修改</el-button>
+          <el-button size="mini" round type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)"
             v-hasPermi="['temperature:report:remove']">删除</el-button>
         </template>
       </el-table-column>
@@ -73,7 +73,7 @@
       @pagination="getList" />
 
     <!-- 添加或修改体温上报对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="50%" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="真实姓名" prop="realName">
           <el-input v-model="form.realName" placeholder="请输入真实姓名" />
@@ -85,7 +85,7 @@
           <el-input v-model="form.idCard" placeholder="请输入身份证号" />
         </el-form-item>
         <el-form-item label="体温" prop="temperature">
-          <el-input v-model="form.temperature" placeholder="请输入体温" />
+          <el-input-number v-model="form.temperature" :min="36.0" :max="42.0" :precision='1' label="请输入体温" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" placeholder="请输入备注" />
@@ -145,6 +145,9 @@ export default {
         ],
         idCard: [
           { required: true, message: "身份证号不能为空", trigger: "blur" }
+        ],
+        temperature: [
+          { required: true, message: "体温不能为空", trigger: "blur" }
         ],
       }
     };
