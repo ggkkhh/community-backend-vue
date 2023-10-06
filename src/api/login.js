@@ -83,3 +83,27 @@ export function getCodeImg() {
     timeout: 20000
   })
 }
+
+// 扫码登陆=============================
+// 获取登录二维码
+export function getLoginQRCode() {
+  return request({
+    url: '/getLoginQRCode',
+    headers: {
+      isToken: false
+    },
+    method: 'get',
+    timeout: 20000
+  })
+}
+// 获取二维码状态
+export function getLoginQrCodeStatus(uuid, currentStatus) {
+  return request({
+    url: '/getLoginQrCodeStatus',
+    method: 'get',
+    params: {
+      uuid: uuid,
+      currentStatus: currentStatus,
+    }
+  })
+}

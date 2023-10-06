@@ -16,6 +16,7 @@
           <el-tabs class="form" v-model="loginType" style="float:none;">
             <el-tab-pane label="账号密码登录" name="up"></el-tab-pane>
             <el-tab-pane label="手机短信登录" name="sms"></el-tab-pane>
+            <el-tab-pane label="二维码登录" name="qr"></el-tab-pane>
           </el-tabs>
           <div>
             <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
@@ -65,8 +66,20 @@
                 </el-form-item>
               </div>
 
+              <!-- 二维码登录 -->
+              <div v-if="loginType === 'qr'">
+                <div class="login-qr-code">
+                  <!-- <img :src="qrCodeUrl" @click="getLoginQRCodeImg" class="login-qr-code-img" /> -->
+                  <img :src="qrCodeUrl" class="login-qr-code-img" />
+                </div>
+                <div class="login-qr-code">
+                  <h3>{{ qrCodeState }}</h3>
+                  <span>请使用移动端扫码登录</span>
+                </div>
+              </div>
+
               <!-- 登录按钮 -->
-              <el-form-item style="width:100%;">
+              <el-form-item style="width:100%;" v-if="loginType != 'qr'">
                 <el-button :loading="loading" size="medium" type="primary" style="width:100%;"
                   @click.native.prevent="handleLogin">
                   <span v-if="!loading">登 录</span>
@@ -79,10 +92,10 @@
               </el-form-item>
 
               <!-- 教程说明 -->
-              <el-form-item style="width:100%; margin-top:-25px">
+              <!-- <el-form-item style="width:100%; margin-top:-25px">
                 <el-link href="#">📚开发指南</el-link>
                 <el-link href="#" style="margin-left: 10px">⚡面试手册</el-link>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
           </div>
         </div>
@@ -96,7 +109,7 @@
 </template>
 
 <script>
-import { getCodeImg, sendSmsCode } from "@/api/login";
+import { getCodeImg, sendSmsCode, getLoginQRCode, getLoginQrCodeStatus } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 
@@ -105,6 +118,11 @@ export default {
   data() {
     return {
       codeUrl: "",
+      // 二维码登录
+      qrCodeUrl: "",
+      uuid: "",
+      qrCodeState: "",
+      timer: "",
       mobileCodeTimer: 0,
       // 验证码开关
       captchaEnabled: true,
@@ -113,7 +131,7 @@ export default {
       loginType: "up",
       loginForm: {
         username: "admin",
-        password: "123456",
+        password: "admin#123456",
         rememberMe: false,
         code: "",
         uuid: "",
@@ -156,6 +174,7 @@ export default {
   created() {
     this.getCode();
     this.getCookie();
+    this.getLoginQRCodeImg()
   },
   methods: {
     getCode() {
@@ -168,6 +187,34 @@ export default {
         }
       });
     },
+    // 获取登录二维码
+    getLoginQRCodeImg() {
+      getLoginQRCode().then((res) => {
+        this.qrCodeUrl = res.data.qrcode;
+        this.uuid = res.data.uuid
+        this.timer = setInterval(() => {
+          this.getLoginQRCodeState(this.uuid, '0')
+        }, 5000);
+      });
+    },
+    // 获取二维码状态
+    getLoginQRCodeState(uuid, currentStatus) {
+      getLoginQrCodeStatus(uuid, currentStatus).then((res) => {
+        this.qrCodeState = res.status;
+        if (this.qrCodeState === '0') {
+          // 待扫描
+          this.qrCodeState = ""
+        }
+        if (this.qrCodeState === '1') {
+          // 已扫描
+          this.qrCodeState = "已扫码，待确认"
+          this.qrCodeUrl = res.avatar
+          clearTimeout(this.timer);
+        }
+        console.log(this.qrCodeState);
+      });
+    },
+    //
     getCookie() {
       const username = Cookies.get("username");
       const password = Cookies.get("password");
@@ -225,6 +272,9 @@ export default {
       });
     }
   },
+  beforeDestroy() {
+    clearTimeout(this.timer);
+  },
 };
 </script>
 
@@ -265,5 +315,13 @@ export default {
 
 .prefix-svg-icon {
   height: 100%;
+}
+
+.login-qr-code {
+  text-align: center;
+}
+
+.login-qr-code-img {
+  width: 160px;
 }
 </style>
