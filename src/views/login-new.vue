@@ -69,8 +69,11 @@
               <!-- 二维码登录 -->
               <div v-if="loginType === 'qr'">
                 <div class="login-qr-code">
+                  <div v-if="showQRCodeErrorMask == true" class="mask-qrcode br10">
+                    <h3 style="color: red;">二维码已失效</h3>
+                  </div>
                   <!-- <img :src="qrCodeUrl" @click="getLoginQRCodeImg" class="login-qr-code-img" /> -->
-                  <img :src="qrCodeUrl" class="login-qr-code-img" />
+                  <img :src="qrCodeUrl" class="login-qr-code-img br10" />
                 </div>
                 <div class="login-qr-code">
                   <h3>{{ qrCodeState }}</h3>
@@ -112,6 +115,12 @@
 import { getCodeImg, sendSmsCode, getLoginQRCode, getLoginQrCodeStatus } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
+import store from "@/store";
+import {
+  getToken,
+  setToken,
+  removeToken
+} from '@/utils/auth'
 
 export default {
   name: "Login",
@@ -123,6 +132,7 @@ export default {
       uuid: "",
       qrCodeState: "",
       timer: "",
+      showQRCodeErrorMask: false,
       mobileCodeTimer: 0,
       // 验证码开关
       captchaEnabled: true,
@@ -194,7 +204,7 @@ export default {
         this.uuid = res.data.uuid
         this.timer = setInterval(() => {
           this.getLoginQRCodeState(this.uuid, '0')
-        }, 5000);
+        }, 2000);
       });
     },
     // 获取二维码状态
@@ -209,9 +219,20 @@ export default {
           // 已扫描
           this.qrCodeState = "已扫码，待确认"
           this.qrCodeUrl = res.avatar
+          // clearTimeout(this.timer);
+        }
+        if (this.qrCodeState === '2') {
+          // 已确认
+          setToken(res.token)
+          store.commit('SET_TOKEN', res.token)
+          this.$router.push({ path: this.redirect || "/" })
           clearTimeout(this.timer);
         }
         console.log(this.qrCodeState);
+      }).catch(r => {
+        console.log("二维码已过期");
+        clearTimeout(this.timer);
+        this.showQRCodeErrorMask = true
       });
     },
     //
@@ -318,10 +339,29 @@ export default {
 }
 
 .login-qr-code {
+  position: relative;
   text-align: center;
 }
 
 .login-qr-code-img {
   width: 160px;
+}
+
+.mask-qrcode {
+  width: 160px;
+  height: 160px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff9e9e85;
+  backdrop-filter: blur(2px);
+}
+
+.br10 {
+  border-radius: 10px;
 }
 </style>
