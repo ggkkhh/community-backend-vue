@@ -50,7 +50,7 @@
             <el-card v-for="i in 8" :key="i" shadow="hover" class="platform-card">
               <router-link to="" @click.native="openLink(`https://github.com/`)">
                 <img class="platform-avatar"
-                  src="https://community-server-oss.oss-cn-shanghai.aliyuncs.com/2023/05/21/53699ba393b4495a8c407896567bf0c3favicon.png">
+                  src="https://community-server-oss.oss-cn-shanghai.aliyuncs.com/user-avatar/2023/05/23/blob0edbd97936514351a2c5c9075f3db8f9.jpeg">
                 <span class="platform-name">github</span>
               </router-link>
             </el-card>

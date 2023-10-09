@@ -118,16 +118,6 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-
-    <!-- 详情 -->
-    <!-- <el-dialog :title="goodsDetails.goodsTitle" :data="goodsDetails" :visible.sync="openDetails" width="80%"
-      append-to-body>
-      <div class="goods-details">
-        <hr />
-        <div style="color: gold;text-align: end;">来源 ------ {{ goodsDetails.goodsTitle }}</div>
-        <div style="overflow:auto;" v-viewer v-html="goodsDetails.goodsPrice"></div>
-      </div>
-    </el-dialog> -->
     <!-- 详情（抽屉样式） -->
     <el-drawer title="商品详情" :visible.sync="drawer" :direction="direction" :before-close="handleClose">
       <div class="goods-details">

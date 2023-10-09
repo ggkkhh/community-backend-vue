@@ -52,7 +52,7 @@
     <el-table v-viewer v-loading="loading" :data="newsList" @selection-change="handleSelectionChange" border
       :default-sort="{ prop: 'postTime', order: 'descending' }">
       <el-table-column type="selection" width="40" align="center" />
-      <el-table-column label="新闻标识" align="center" prop="newsId" :show-overflow-tooltip="true" />
+      <el-table-column label="新闻标题" align="center" prop="newsTitle" :show-overflow-tooltip="true" />
       <el-table-column v-viewer label="新闻封面" align="center" width="150">
         <template slot-scope="scope">
           <!-- :preview-src-list="[scope.row.coverImg]" 开启大图预览 -->
@@ -67,8 +67,7 @@
           <!-- <div><img style="max-height: 100px;" :src="scope.row.coverImg" /></div> -->
         </template>
       </el-table-column>
-      <el-table-column label="新闻标题" align="center" prop="newsTitle" :show-overflow-tooltip="true" />
-      <el-table-column label="摘要" align="center" prop="digest" :show-overflow-tooltip="true" />
+      <!-- <el-table-column label="摘要" align="center" prop="digest" :show-overflow-tooltip="true" /> -->
       <el-table-column label="新闻类型" align="center" prop="newsType" width="80">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.app_news_type" :value="scope.row.newsType" />
@@ -92,8 +91,10 @@
           <span>{{ parseTime(scope.row.postTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="320" class-name="small-padding fixed-width">
         <template slot-scope="scope" v-if="scope.row.newsId !== 1">
+          <el-button size="mini" round icon="el-icon-view" type="primary" @click="handleCommentList(scope.row.newsId)"
+            v-hasPermi="['app:news:query']">评论列表</el-button>
           <el-button size="mini" round icon="el-icon-view" type="primary" @click="handleDetails(scope.row.newsId)"
             v-hasPermi="['app:news:query']">详情</el-button>
           <el-button size="mini" round icon="el-icon-edit" type="warning" @click="handleUpdate(scope.row)"
@@ -161,11 +162,49 @@
         <div style="overflow:auto;" v-viewer v-html="newsDetails.newsContent"></div>
       </div>
     </el-dialog>
+    <!-- 新闻评论（抽屉样式） -->
+    <el-drawer title="评论列表" :visible.sync="drawer" :direction="direction" :before-close="handleClose">
+      <div class="news-comment-tree" v-for="(item, index) in newsCommentTree" :key="item.commentId">
+        <div class="comment-continer">
+          <el-card class="comment-info">
+            <div class="user-info">
+              <el-image class="user-avatar" :src="item.avatar" alt="" lazy></el-image>
+              <div class="user-nickname">
+                <h4 class="nickname">{{ item.nickName }}</h4>
+                <span style="color: gray;" class="create-time">{{ parseTime(item.createTime) }}</span>
+              </div>
+            </div>
+            <div class="comment-content">
+              <p>{{ item.content }}</p>
+            </div>
+            <!-- 二级评论 -->
+            <div class="comment-children">
+              <div v-for="(child, index) in item.children" :key="child.commentId">
+                <div class="user-info">
+                  <el-image class="user-avatar" :src="child.avatar" alt="" lazy></el-image>
+                  <div class="user-nickname">
+                    <h4 class="nickname">{{ child.nickName }}<span class="aite" v-if="child.replayUserId != null">{{
+                      '@' + child.replayUserNickName }}</span>
+                    </h4>
+                    <span style="color: gray;" class="create-time">{{ parseTime(child.createTime) }}</span>
+                  </div>
+                </div>
+                <div class="comment-content">
+                  <p>{{ child.content }}</p>
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </div>
+      </div>
+      <pagination v-show="commentTotal > 0" :total="commentTotal" :page.sync="commentQueryParams.pageNum"
+        :limit.sync="commentQueryParams.pageSize" @pagination="getCommentList" />
+    </el-drawer>
   </div>
 </template>
 
 <script>
-import { listNews, newsDetails, changeNewsStatus, changeNewsShowType, delNews, updateNews } from "@/api/app/news";
+import { listNews, newsDetails, changeNewsStatus, changeNewsShowType, delNews, updateNews, listNewsComment } from "@/api/app/news";
 
 export default {
   name: "News",
@@ -207,8 +246,21 @@ export default {
         showInApp: undefined,
         showType: undefined,
       },
+      // 新闻评论查询参数
+      commentQueryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        newsId: undefined,
+      },
+      commentTotal: 0,
       // 表单参数
       form: {},
+      newsId: "",
+      newsCommentTree: "",// 评论树
+      // 抽屉
+      drawer: false,
+      // 从右往左开，ltr>从左往右开，ttb>从上往下开，btt>从下往上开
+      direction: 'rtl',
     };
   },
   created() {
@@ -324,6 +376,27 @@ export default {
           });
         }
       });
+    },
+    handleClose(done) {
+      done();
+    },
+    // 评论列表
+    handleCommentList(newsId) {
+      this.commentQueryParams.newsId = newsId
+      this.newsId = newsId
+      this.drawer = true
+      listNewsComment(this.commentQueryParams).then(res => {
+        this.newsCommentTree = res.data;
+        this.commentTotal = res.total;
+      })
+    },
+    getCommentList() {
+      this.commentQueryParams.newsId = this.newsId
+      listNewsComment(this.commentQueryParams).then(res => {
+        this.drawer = true
+        this.newsCommentTree = res.data;
+        this.commentTotal = res.total;
+      })
     }
   }
 };
@@ -332,5 +405,46 @@ export default {
 <style lang="scss" scoped>
 .newsDetails {
   max-height: 80%;
+}
+
+.comment-continer {
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  box-shadow: 0 0 2px gray
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+
+  .user-nickname {
+    padding-left: 10px;
+
+    .nickname {
+      margin: 10px;
+    }
+
+    .create-time {
+      padding-left: 10px;
+    }
+  }
+}
+
+.comment-children {
+  padding-left: 64px;
+}
+
+.comment-content {
+  padding-left: 64px;
+}
+
+.aite {
+  padding-left: 10px;
+  color: blue;
 }
 </style>

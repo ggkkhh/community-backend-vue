@@ -8,7 +8,7 @@ export default {
   components: { iFrame },
   data() {
     return {
-      url: "https://chatgpt.roydon.xyz"
+      url: "https://chatgpt.roydon.cc"
     };
   },
 };

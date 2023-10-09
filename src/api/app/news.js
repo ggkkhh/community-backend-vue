@@ -59,3 +59,12 @@ export function updateNews(data) {
     data: data
   })
 }
+
+// 新闻评论 ========================
+export function listNewsComment(data) {
+  return request({
+    url: '/app/news/comment/tree',
+    method: 'POST',
+    data: data
+  })
+}
